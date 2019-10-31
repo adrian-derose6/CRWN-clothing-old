@@ -7,8 +7,18 @@
   
     .logo-container {
       height: 100%;
-      width: 70px;
       padding: 25px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      text-align: center;
+
+      .brand-name {
+        font-size: 2em;
+        margin-left: 15px;
+      }
+
     }
   
     .options {
