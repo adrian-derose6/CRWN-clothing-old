@@ -59,7 +59,7 @@ class App extends React.Component {
             render={() => this.props.currentUser ? <Redirect to='/' /> : <SignInAndSignUp />} 
           />
         </Switch>
-      </div>
+    </div>
     );
   }
 }

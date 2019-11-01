@@ -1,9 +1,13 @@
 .header {
     height: 70px;
     width: 100%;
+    top: 0;
+    position: fixed;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     margin-bottom: 25px;
+    background-color: #292a33;
   
     .logo-container {
       height: 100%;
@@ -17,6 +21,7 @@
       .brand-name {
         font-size: 2em;
         margin-left: 15px;
+        color: white;
       }
 
     }
@@ -31,7 +36,9 @@
   
       .option {
         padding: 10px 15px;
+        font-size: 15px;
         cursor: pointer;
+        color: white;
       }
     }
   }
