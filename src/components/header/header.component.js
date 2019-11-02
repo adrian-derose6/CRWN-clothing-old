@@ -20,10 +20,27 @@ const Header = ({ currentUser, hidden }) => (
             <Logo className='logo' />
             <span className='brand-name'>CRWN</span>
         </Link>
-        <div className='options'>
+        <div className='options left'>
+            <Link className='option'>
+                GUYS
+            </Link>
+            <Link className='option'>
+                GIRLS
+            </Link>
+            <Link className='option'>
+                HATS
+            </Link>
+            <Link className='option'>
+                JACKETS
+            </Link>
+            <Link className='option'>
+                SNEAKERS
+            </Link>
             <Link className='option' to='/shop'>
                 SHOP
             </Link>
+        </div>
+        <div className='options'>
             <Link className='option' to='/shop'>
                 CONTACT
             </Link>
