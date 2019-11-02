@@ -14,6 +14,7 @@ const MenuItem = ({ title, imageUrl, linkUrl, size, history, match}) => {
                     backgroundImage: `url(${imageUrl})`
                 }}
             />
+            <div className='tint-overlay'/>
             <div className='content'>
                 <h1 className='title'>{title.toUpperCase()}</h1>
             </div>

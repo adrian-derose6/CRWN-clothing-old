@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   border: 1px solid lightgray;
-  margin: 0 7.5px 15px;
+  margin: 2px 2px 2px;
   overflow: hidden;
-  box-shadow: 0px 0px 5px -2px rgba(140,138,140,1);
+  position: relative;
 
   &:hover {
     cursor: pointer;
@@ -23,14 +23,6 @@
     }
   }
 
-  &:first-child {
-    margin-right: 7.5px;
-  }
-
-  &:last-child {
-    margin-left: 7.5px;
-  }
-
   &.large {
     height: 380px;
   }
@@ -40,6 +32,14 @@
     width: 100%;
     background-position: center;
     background-size: cover;
+  }
+
+  .tint-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: black;
+    opacity: 0.3;
   }
 
   .content {
