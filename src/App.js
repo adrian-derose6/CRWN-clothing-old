@@ -9,6 +9,8 @@ import HatsPage from './pages/hatspage/hatspage.component';
 import ShopPage from './pages/shop/shop.component.js';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component.js';
+import TopBanner from './components/top-banner/top-banner.component';
+import Footer from './components/footer/footer.component.js';
 
 import { setCurrentUser } from './redux/user/user.actions.js';
 
@@ -48,18 +50,22 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/checkout' component={CheckoutPage} />
-          <Route 
-            exact 
-            path='/signin' 
-            render={() => this.props.currentUser ? <Redirect to='/' /> : <SignInAndSignUp />} 
-          />
-        </Switch>
-    </div>
+        <div>
+          <TopBanner />
+          <Header />
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route 
+              exact 
+              path='/signin' 
+              render={() => this.props.currentUser ? <Redirect to='/' /> : <SignInAndSignUp />} 
+            />
+          </Switch>
+        </div>
+        <Footer />
+      </div>
     );
   }
 }
