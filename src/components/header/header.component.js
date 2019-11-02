@@ -21,19 +21,19 @@ const Header = ({ currentUser, hidden }) => (
             <span className='brand-name'>CRWN</span>
         </Link>
         <div className='options left'>
-            <Link className='option'>
+            <Link className='option' to='/shop/guys'>
                 GUYS
             </Link>
-            <Link className='option'>
+            <Link className='option' to='/shop/girls'>
                 GIRLS
             </Link>
-            <Link className='option'>
+            <Link className='option' to='/shop/hats'>
                 HATS
             </Link>
-            <Link className='option'>
+            <Link className='option' to='/shop/jackets'>
                 JACKETS
             </Link>
-            <Link className='option'>
+            <Link className='option' to='/shop/sneakers'>
                 SNEAKERS
             </Link>
             <Link className='option' to='/shop'>
