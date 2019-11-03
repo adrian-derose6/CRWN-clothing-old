@@ -14,8 +14,9 @@ import Footer from './components/footer/footer.component.js';
 
 import { setCurrentUser } from './redux/user/user.actions.js';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selectors.js';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 import './App.scss';
 
@@ -71,7 +72,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  user: selectCurrentUser
+  user: selectCurrentUser,
+  collections: selectCollectionsForPreview
 });
 
 const mapDispatchToProps = dispatch => ({
