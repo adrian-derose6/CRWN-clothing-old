@@ -18,7 +18,6 @@ export const fetchCollectionsFailure= (error) => ({
 export const fetchCollections = () => {
     return async dispatch => {
         const collectionRef = await firestore.collection('collections');
-        dispatch(fetchCollectionsStart());
 
         collectionRef.get().then( async snapshot => {
             const collectionsMap = await convertCollectionsSnapshotToMap(snapshot);
