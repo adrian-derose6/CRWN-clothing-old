@@ -16,14 +16,14 @@ export const fetchCollectionsFailure= (error) => ({
 });
 
 export const fetchCollections = () => {
-    return dispatch => {
-        const collectionRef = firestore.collection('collections');
+    return async dispatch => {
+        const collectionRef = await firestore.collection('collections');
         dispatch(fetchCollectionsStart());
 
-        collectionRef.get().then(snapshot => {
-            const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+        collectionRef.get().then( async snapshot => {
+            const collectionsMap = await convertCollectionsSnapshotToMap(snapshot);
             
             dispatch(fetchCollectionsSuccess(collectionsMap));
-        }).catch(error => dispatch(fetchCollectionsFailure(OverconstrainedError)))
+        }).catch(error => dispatch(fetchCollectionsFailure(error)))
     }
 }
