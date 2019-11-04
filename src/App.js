@@ -12,7 +12,7 @@ import Header from './components/header/header.component.js';
 import TopBanner from './components/top-banner/top-banner.component';
 import Footer from './components/footer/footer.component.js';
 
-import { setCurrentUser } from './redux/user/user.actions.js';
+import { setCurrentUser, checkUserSession } from './redux/user/user.actions.js';
 
 import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selectors.js';
@@ -21,14 +21,11 @@ import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 import './App.scss';
 
 class App extends React.Component {
-
-  unsubscribeFromAuth = null;
-
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { checkUserSession } = this.props;
 
-    
-  
+    checkUserSession();
+
   }
 
   componentWillUnmount() {
@@ -64,7 +61,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  checkUserSession: () => dispatch(checkUserSession())
 });
 
 export default connect(
