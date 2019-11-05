@@ -28,6 +28,21 @@ export const checkUserSession = () => ({
     type: userActionTypes.CHECK_USER_SESSION
 });
 
+export const signUpStart = (signInData) => ({
+    type: userActionTypes.SIGN_UP_START,
+    payload: signInData
+});
+
+export const signUpSuccess = (user) => ({
+    type: userActionTypes.SIGN_UP_SUCCESS,
+    payload: user
+});
+
+export const signUpFailure = (error) => ({
+    type: userActionTypes.SIGN_UP_FAILURE,
+    payload: error 
+});
+
 export const signOutStart = () => ({
     type: userActionTypes.SIGN_OUT_START
 });
