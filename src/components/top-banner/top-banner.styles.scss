@@ -10,4 +10,9 @@
 .banner-text {
     color: white;
     font-size: 15px;
+
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
