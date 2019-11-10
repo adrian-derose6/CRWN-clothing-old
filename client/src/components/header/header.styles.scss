@@ -1,13 +1,23 @@
 .header {
     height: 70px;
-    width: 100%;
+    max-width: 100%;
     top: 0;
     position: sticky;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #292a33;
     padding: 0 20px;
+
+    @media screen and (max-width: 900px) {
+      height: 55px;
+    }
+
+    .menu-icon { 
+      color: white;
+      cursor: pointer;
+    }
   
     .logo-container {
       height: 100%;
@@ -18,10 +28,25 @@
       align-items: center;
       text-align: center;
 
+      @media screen and (max-width: 900px) {
+        justify-content: center;
+      }
+
+      .logo {
+        @media screen and (max-width: 900px) {
+          height: 30px;
+        }
+      }
+
       .brand-name {
         font-size: 2em;
         margin-left: 15px;
         color: white;
+
+        @media screen and (max-width: 900px) {
+          font-size: 1.5em;
+          margin-left: 5px;
+        }
       }
 
     }
@@ -32,7 +57,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-    
+
       &.left {
         justify-content: flex-start;
       }

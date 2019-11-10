@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import MediaQuery from 'react-responsive';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
+import { ReactComponent as MenuIcon } from '../../assets/menu-icon.svg';
+import { ReactComponent as UserIcon } from '../../assets/user.svg';
 
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
@@ -13,47 +16,62 @@ import { signOutStart } from '../../redux/user/user.actions';
 
 import './header.styles.scss';
 
-const Header = ({ currentUser, hidden, signOutStart }) => (
-    <div className='header'>
-        <Link className='logo-container' to='/'>
-            <Logo className='logo' />
-            <span className='brand-name'>CRWN</span>
-        </Link>
-        <div className='options left'>
-            <Link className='option' to='/shop/guys'>
-                GUYS
-            </Link>
-            <Link className='option' to='/shop/girls'>
-                GIRLS
-            </Link>
-            <Link className='option' to='/shop/hats'>
-                HATS
-            </Link>
-            <Link className='option' to='/shop/jackets'>
-                JACKETS
-            </Link>
-            <Link className='option' to='/shop/sneakers'>
-                SNEAKERS
-            </Link>
-            <Link className='option' to='/shop'>
-                SHOP
-            </Link>
+const Header = ({ currentUser, hidden, signOutStart }) => {
+
+    return (
+        <div className='header'>
+            <MediaQuery query="(max-width: 900px)">
+                <MenuIcon className='menu-icon'/>
+                <Link className='logo-container' to='/'>
+                    <Logo className='logo' />
+                    <span className='brand-name'>CRWN</span>
+                </Link>
+                <CartIcon />
+            </MediaQuery>
+            <MediaQuery query="(min-width: 900px)">
+                <Link className='logo-container' to='/'>
+                    <Logo className='logo' />
+                    <span className='brand-name'>CRWN</span>
+                </Link>
+                <div className='options left'>
+                    <Link className='option' to='/shop/guys'>
+                        GUYS
+                    </Link>
+                    <Link className='option' to='/shop/girls'>
+                        GIRLS
+                    </Link>
+                    <Link className='option' to='/shop/hats'>
+                        HATS
+                    </Link>
+                    <Link className='option' to='/shop/jackets'>
+                        JACKETS
+                    </Link>
+                    <Link className='option' to='/shop/sneakers'>
+                        SNEAKERS
+                    </Link>
+                    <Link className='option' to='/shop'>
+                        SHOP
+                    </Link>
+                </div>
+                <div className='options'>
+                    <Link className='option' to='/shop'>
+                        CONTACT
+                    </Link>
+                    {
+                        currentUser ? 
+                        <div className='option' onClick={signOutStart}>SIGN OUT</div>
+                        : 
+                        <Link className='option' to='/signin'>
+                            <UserIcon />
+                        </Link>
+                    }
+                    <CartIcon />
+                </div>
+                { hidden ? null : <CartDropdown />}
+            </MediaQuery>
         </div>
-        <div className='options'>
-            <Link className='option' to='/shop'>
-                CONTACT
-            </Link>
-            {
-                currentUser ? 
-                <div className='option' onClick={signOutStart}>SIGN OUT</div>
-                : 
-                <Link className='option' to='/signin'>SIGN IN</Link>
-            }
-            <CartIcon />
-        </div>
-        { hidden ? null : <CartDropdown />}
-    </div>
-)
+    );
+}
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,

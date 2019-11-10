@@ -5,14 +5,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media screen and (max-width: 800px) {
+        display: none;
+    }
 }
 
 .banner-text {
     color: white;
-    font-size: 15px;
-
+    font-size: 14px;
+    text-align: center;
     &:hover {
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    @media screen and (max-width: 800px) {
+        font-size: 12px;
     }
 }

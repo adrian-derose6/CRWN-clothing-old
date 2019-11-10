@@ -10,6 +10,10 @@
   overflow: hidden;
   position: relative;
 
+  @media screen and (max-width: 800px) {
+    height: 200px;
+  }
+
   &:hover {
     cursor: pointer;
 
@@ -25,6 +29,10 @@
 
   &.large {
     height: 380px;
+
+    @media screen and (max-width: 800px) {
+      height: 240px;
+    }
   }
 
   .background-image {
@@ -55,9 +63,12 @@
     .title {
       font-weight: bold;
       margin-bottom: 6px;
-      font-size: 22px;
       color: white;
-      font-size: 2em;
+      font-size: 1.7em;
+
+      @media screen and (max-width: 800px) {
+        font-size: 1.5em;
+      }
     }
 
     .subtitle {
