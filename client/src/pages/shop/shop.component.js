@@ -15,24 +15,32 @@ import './shop.styles.scss';
 const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
 const CollectionPage = lazy(() => import('../collection/collection.component'));
 
+const guysLinks = [
+    { toUrl: 'hat', name: 'Hats' },
+    { toUrl: 'jacket', name: 'Jackets' },
+    { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans'}
+];
+
+const girlsLinks = [
+    { toUrl: 'dresses', name: 'Dresses' },
+    { toUrl: 'bags', name: 'Bags' },
+    { toUrl: 'skirts', name: 'Skirts' },
+    { toUrl: 'jeans', name: 'Jeans' },
+    { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans' }
+];
+
 const ShopPage = () => {
     const { url, path } = useRouteMatch();
-
+    const { categoryId } = useParams();
+    const links = (categoryId === 'guys') ? guysLinks : girlsLinks;
     return (
         <div className='shop-page'>
             <ul>
-                <li>
-                    <Link to={`${url}/hat`}>Hat</Link>
-                </li>
-                <li>
-                    <Link to={`${url}/jacket`}>Jacket</Link>
-                </li>
-                <li>
-                    <Link to={`${url}/jeans`}>Jeans</Link>
-                </li>
-                <li>
-                    <Link to={`${url}/jeans/skinny-jeans`}>Skinny Jeans</Link>
-                </li>
+               {
+                   links.map(link => {
+                       return <li><Link to={`${url}/${link.toUrl}`}>{link.name}</Link></li>;
+                   })
+               }
             </ul>
             <Suspense fallback={<Spinner/>}>
                 <Switch>
