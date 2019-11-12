@@ -1,4 +1,5 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { 
     Switch,
     Route,
@@ -6,9 +7,11 @@ import {
     useParams,
     useRouteMatch
 } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import Spinner from '../../components/spinner/spinner.component';
+
+import { selectCategoriesByGender } from '../../redux/shop/shop.selectors';
+import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
 
@@ -29,19 +32,19 @@ const girlsLinks = [
     { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans' }
 ];
 
-const ShopPage = () => {
+const ShopPage = ({ fetchCategoriesStart, categories }) => {
     const { url, path } = useRouteMatch();
     const { categoryId } = useParams();
     const links = (categoryId === 'guys') ? guysLinks : girlsLinks;
+    
+    useEffect(() => {
+        fetchCategoriesStart();
+    }, []);
+
+    console.log(categories)
+
     return (
         <div className='shop-page'>
-            <ul>
-               {
-                   links.map(link => {
-                       return <li><Link to={`${url}/${link.toUrl}`}>{link.name}</Link></li>;
-                   })
-               }
-            </ul>
             <Suspense fallback={<Spinner/>}>
                 <Switch>
                     <Route exact path={path}>
@@ -59,4 +62,15 @@ const ShopPage = () => {
     );
 };
 
-export default ShopPage;
+const mapStateToProps = (state, ownProps) => ({
+    categories: selectCategoriesByGender(ownProps.match.params.categoryId)(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchCategoriesStart: () => dispatch(fetchCategoriesStart())
+});
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(ShopPage);

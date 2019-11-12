@@ -17,8 +17,7 @@ const CollectionPage = ({ fetchCollectionsStart }) => {
     }, []);
 
     return (
-        <div className='collection-page'>
-            
+        <div className='collection-page'> 
             <h2 className='title'>{categoryId} {collectionId} {subcollectionId}</h2>
             <div className='items'>
                 {}
@@ -35,7 +34,7 @@ const CollectionPage = ({ fetchCollectionsStart }) => {
 });*/
 
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStart: collectionsMap => dispatch(fetchCollectionsStart(collectionsMap))
+    fetchCollectionsStart: collectionsMap => dispatch(fetchCollectionsStart(collectionsMap)),
 });
 
 export default connect(
