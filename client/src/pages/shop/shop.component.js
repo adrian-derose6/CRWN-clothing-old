@@ -1,49 +1,54 @@
 import React, { lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { 
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Spinner from '../../components/spinner/spinner.component';
 
-import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-
 import './shop.styles.scss';
 
 const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
-const CollectionPageContainer = lazy(() => import('../collection/collection.container'));
+const CollectionPage = lazy(() => import('../collection/collection.component'));
 
-class ShopPage extends React.Component {
-    componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
-        
-        fetchCollectionsStart();
-    }
+const ShopPage = () => {
+    const { url, path } = useRouteMatch();
 
-    render() {
-        const { match } = this.props;
-
-        return (
-            <div className='shop-page'>
-                <Suspense fallback={<Spinner/>}>
-                    <Route 
-                        exact 
-                        path={`${match.path}`} 
-                        component={CollectionsOverviewContainer}      
-                    />
-                    <Route 
-                        path={`${match.path}/:collectionId`} 
-                        component={CollectionPageContainer} 
-                    />
-                </Suspense>
-            </div>
-        )
-    }
+    return (
+        <div className='shop-page'>
+            <ul>
+                <li>
+                    <Link to={`${url}/hat`}>Hat</Link>
+                </li>
+                <li>
+                    <Link to={`${url}/jacket`}>Jacket</Link>
+                </li>
+                <li>
+                    <Link to={`${url}/jeans`}>Jeans</Link>
+                </li>
+                <li>
+                    <Link to={`${url}/jeans/skinny-jeans`}>Skinny Jeans</Link>
+                </li>
+            </ul>
+            <Suspense fallback={<Spinner/>}>
+                <Switch>
+                    <Route exact path={path}>
+                        <CollectionPage />
+                    </Route>
+                    <Route exact path={`${path}/:collectionId`}>
+                        <CollectionPage />
+                    </Route>
+                    <Route exact path={`${path}/:collectionId/:subcollectionId`}>
+                        <CollectionPage />
+                    </Route>
+                </Switch>
+            </Suspense>
+        </div>
+    );
 };
 
-const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStart: collectionsMap => dispatch(fetchCollectionsStart(collectionsMap))
-});
-
-export default connect(
-    null,
-    mapDispatchToProps
-)(ShopPage);
+export default ShopPage;

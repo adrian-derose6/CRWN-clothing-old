@@ -34,36 +34,21 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <Link className='option' to='/shop/guys'>
+                    <Link className='option' to='/guys'>
                         GUYS
                     </Link>
-                    <Link className='option' to='/shop/girls'>
+                    <Link className='option' to='/girls'>
                         GIRLS
-                    </Link>
-                    <Link className='option' to='/shop/hats'>
-                        HATS
-                    </Link>
-                    <Link className='option' to='/shop/jackets'>
-                        JACKETS
-                    </Link>
-                    <Link className='option' to='/shop/sneakers'>
-                        SNEAKERS
-                    </Link>
-                    <Link className='option' to='/shop'>
-                        SHOP
                     </Link>
                 </div>
                 <div className='options'>
-                    <Link className='option' to='/shop'>
-                        CONTACT
-                    </Link>
                     {
                         currentUser ? 
-                        <div className='option' onClick={signOutStart}>SIGN OUT</div>
-                        : 
-                        <Link className='option' to='/signin'>
-                            <UserIcon />
-                        </Link>
+                            <div className='option' onClick={signOutStart}>SIGN OUT</div>
+                            : 
+                            <Link className='option' to='/signin'>
+                                <UserIcon />
+                            </Link>
                     }
                     <CartIcon />
                 </div>
