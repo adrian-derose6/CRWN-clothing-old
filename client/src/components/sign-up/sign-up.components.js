@@ -6,16 +6,7 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import { signUpStart } from '../../redux/user/user.actions';
 
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
-
 import './sign-up.styles.scss';
-
-const INITIAL_STATE = {
-    displayName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-}
 
 const SignUp = ({ signUpStart }) =>  {
     const [userCredentials, setCredentials] = useState({

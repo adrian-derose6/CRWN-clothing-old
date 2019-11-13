@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { 
     Switch,
@@ -9,13 +9,13 @@ import {
 } from 'react-router-dom';
 
 import Spinner from '../../components/spinner/spinner.component';
+import CategorySelection from '../../components/category-selection/category-selection.component';
 
-import { selectCategoriesByGender } from '../../redux/shop/shop.selectors';
+import { selectCategoriesByGender} from '../../redux/shop/shop.selectors';
 import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
 
-const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
 const CollectionPage = lazy(() => import('../collection/collection.component'));
 
 const guysLinks = [
@@ -32,34 +32,48 @@ const girlsLinks = [
     { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans' }
 ];
 
-const ShopPage = ({ fetchCategoriesStart, categories }) => {
-    const { url, path } = useRouteMatch();
-    const { categoryId } = useParams();
-    const links = (categoryId === 'guys') ? guysLinks : girlsLinks;
-    
-    useEffect(() => {
+class ShopPage extends React.Component {
+    componentDidMount() {
+        const { fetchCategoriesStart } = this.props;
+
         fetchCategoriesStart();
-    }, []);
+    }
 
-    console.log(categories)
+    shouldComponentRender = () => {
+        const { categories } = this.props;
 
-    return (
-        <div className='shop-page'>
-            <Suspense fallback={<Spinner/>}>
-                <Switch>
-                    <Route exact path={path}>
-                        <CollectionPage />
-                    </Route>
-                    <Route exact path={`${path}/:collectionId`}>
-                        <CollectionPage />
-                    </Route>
-                    <Route exact path={`${path}/:collectionId/:subcollectionId`}>
-                        <CollectionPage />
-                    </Route>
-                </Switch>
-            </Suspense>
-        </div>
-    );
+        if (!categories) return false;
+
+        return true;
+    }
+
+    render() {
+        const { path, url } = this.props.match;
+        const { categories } = this.props;
+
+        if (!this.shouldComponentRender()) return <Spinner />;
+
+        return (
+            <div className='shop-page'>
+                <div className='left-panel'>
+                    <CategorySelection categories={categories}/>
+                </div>
+                <Suspense fallback={<Spinner/>}>
+                    <Switch>
+                        <Route exact path={path}>
+                            <CollectionPage />
+                        </Route>
+                        <Route exact path={`${path}/:collectionId`}>
+                            <CollectionPage />
+                        </Route>
+                        <Route exact path={`${path}/:collectionId/:subcollectionId`}>
+                            <CollectionPage />
+                        </Route>
+                    </Switch>
+                </Suspense>
+            </div>
+        );
+    }
 };
 
 const mapStateToProps = (state, ownProps) => ({

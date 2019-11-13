@@ -39,14 +39,14 @@ export function* fetchCategoriesAsync() {
 
         const reduceJson = (json, categoryType) => {
             return json
-                    .filter(category => category.CatName === 'Men')
+                    .filter(category => category.CatName === categoryType)
                     .map(category => {
                         return category.CategoriesArray
                                 .filter(subcategory => subcategory.CatName === 'Shop by Concept')[0]
                                 .CategoriesArray
                                 .filter(concept => concept.CatName === 'Divided')[0]
                                 .CategoriesArray      
-                    });
+                    })[0];
         };
 
         const mapJsonToState = {
@@ -54,7 +54,6 @@ export function* fetchCategoriesAsync() {
             girls: reduceJson(categoriesApiJson, 'Women')
         };
 
-        console.log(mapJsonToState);
         yield put(fetchCategoriesSuccess(mapJsonToState));
     } catch (error) {
         yield put(fetchCategoriesFailure(error.message));

@@ -2,7 +2,7 @@ import ShopActionTypes from './shop.types.js';
 
 const INITIAL_STATE = {
     collections: null,
-    categories: {},
+    categories: null,
     isFetching: false,
     errorMessage: undefined
 };
@@ -19,7 +19,8 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                collections: action.payload
+                collections: action.payload,
+                errorMessage: null
             };
         case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
         case ShopActionTypes.FETCH_CATEGORIES_FAILURE:
@@ -32,7 +33,8 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                categories: action.payload
+                categories: action.payload,
+                errorMessage: null
             };
         default:
             return state;

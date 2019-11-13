@@ -1,4 +1,11 @@
 .shop-page {
-    margin-top: 70px;
-    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+
+    .left-panel {
+        width: 250px;
+        padding: 22px;
+        border-right: 1px solid lightgray;
+    }
 }
