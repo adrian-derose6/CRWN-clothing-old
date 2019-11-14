@@ -21,7 +21,7 @@ const ShopPage = lazy(() => import('./pages/shop/shop.component.js'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component.js'));
 const SignInAndSignUp = lazy(() => import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'));
 
-const App = ({ checkUserSession, currentUser }) => {
+const App = ({ checkUserSession, user }) => {
   useEffect(() => {
     checkUserSession()
   }, [checkUserSession]);
@@ -40,7 +40,7 @@ const App = ({ checkUserSession, currentUser }) => {
               <Route 
                 exact 
                 path='/signin' 
-                render={() => currentUser ? <Redirect to='/' /> : <SignInAndSignUp />} 
+                render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
               />
             </Suspense>
           </ErrorBoundary>

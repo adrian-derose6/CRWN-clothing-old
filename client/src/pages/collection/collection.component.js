@@ -6,22 +6,30 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 
 import './collection.styles.scss';
 
-const CollectionPage = ({ fetchCollectionsStart }) => {
-    const { categoryId, collectionId, subcollectionId } = useParams();
-    const match = useRouteMatch();
+class CollectionList extends React.Component {
+    componentDidMount() {
+        const { fetchCollectionsStart, category } = this.props;
+        const tagCode = category.tagCodes[0];
 
-    return (
-        <div className='collection-page'> 
-            <h2 className='title'>{categoryId} {collectionId} {subcollectionId}</h2>
-            <div className='items'>
+        fetchCollectionsStart(tagCode);
+    }
+
+    render() {
+        const { category, categoryId } = this.props;
+        return (
+            <div className='collection-page'> 
+                <h2 className='title'>{categoryId.charAt(0).toUpperCase() + categoryId.slice(1)} {category.CatName}</h2>
+                <div className='items'>
+
+                </div>
             </div>
-        </div>
-    )
+        );
+    }
 }
 
-/*const mapStateToProps = (state, ownProps) => ({
-    collection: selectCollection(ownProps.match.params.collectionId)(state)
-});*/
+const mapStateToProps = (state) => ({
+    collection: state.shop.collection,
+});
 
 const mapDispatchToProps = dispatch => ({
     fetchCollectionsStart: collectionsMap => dispatch(fetchCollectionsStart(collectionsMap)),
@@ -30,4 +38,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     null,
     mapDispatchToProps
-)(CollectionPage);
+)(CollectionList);

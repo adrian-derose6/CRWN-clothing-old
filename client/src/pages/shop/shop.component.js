@@ -4,8 +4,6 @@ import {
     Switch,
     Route,
     Link,
-    useParams,
-    useRouteMatch
 } from 'react-router-dom';
 
 import Spinner from '../../components/spinner/spinner.component';
@@ -16,7 +14,7 @@ import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
 
-const CollectionPage = lazy(() => import('../collection/collection.component'));
+const CollectionList = lazy(() => import('../collection/collection.component'));
 
 const guysLinks = [
     { toUrl: 'hat', name: 'Hats' },
@@ -48,7 +46,7 @@ class ShopPage extends React.Component {
     }
 
     render() {
-        const { path, url } = this.props.match;
+        const { path, params } = this.props.match;
         const { categories } = this.props;
 
         if (!this.shouldComponentRender()) return <Spinner />;
@@ -60,15 +58,13 @@ class ShopPage extends React.Component {
                 </div>
                 <Suspense fallback={<Spinner/>}>
                     <Switch>
-                        <Route exact path={path}>
-                            <CollectionPage />
-                        </Route>
-                        <Route exact path={`${path}/:collectionId`}>
-                            <CollectionPage />
-                        </Route>
-                        <Route exact path={`${path}/:collectionId/:subcollectionId`}>
-                            <CollectionPage />
-                        </Route>
+                        {
+                            categories.map((category, index) => (
+                                <Route exact key={index} path={`${path}/${category.CategoryValue}`}>
+                                    <CollectionList category={category} categoryId={params.categoryId}/>
+                                </Route>
+                            ))
+                        }
                     </Switch>
                 </Suspense>
             </div>

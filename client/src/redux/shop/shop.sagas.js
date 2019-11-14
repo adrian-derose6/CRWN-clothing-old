@@ -9,6 +9,7 @@ import {
     fetchCategoriesFailure
 } from './shop.actions';
 
+import { SEARCH_ALL } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 
 export function* fetchCollectionsAsync() {
@@ -50,8 +51,8 @@ export function* fetchCategoriesAsync() {
         };
 
         const mapJsonToState = {
-            guys: reduceJson(categoriesApiJson, 'Men'),
-            girls: reduceJson(categoriesApiJson, 'Women')
+            guys: SEARCH_ALL.guys.concat(reduceJson(categoriesApiJson, 'Men')),
+            girls: SEARCH_ALL.girls.concat(reduceJson(categoriesApiJson, 'Women'))
         };
 
         yield put(fetchCategoriesSuccess(mapJsonToState));
