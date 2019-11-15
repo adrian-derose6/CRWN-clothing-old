@@ -8,18 +8,19 @@ import { addItem } from '../../redux/cart/cart.actions.js';
 import './collection-item.styles.scss';
 
 const CollectionItem = ({ item, addItem }) => {
-    const { name, price, imageUrl } = item;
+    const { name } = item;
+    const { url } = item.images[0];
+
     return (
         <div className='collection-item'>
             <div 
                 className='image'
                 style={{
-                    backgroundImage: `url(${imageUrl})`
+                    backgroundImage: `url(${url})`
                 }}
             />
             <div className='collection-footer'>
                 <span className='name'>{name}</span>
-                <span className='price'>{price}</span>
             </div>
             <CustomButton onClick={() => addItem(item)} inverted>
                 ADD TO CART 
