@@ -12,23 +12,9 @@ import {
 import { SEARCH_ALL } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 
-export function* fetchCollectionsAsync() {
+export function* fetchCollectionsAsync({ payload: { tagCode, collectionName }}) {
     try {
-        const collectionRef = firestore.collection('collections');
-        const snapshot = yield collectionRef.get();
-        const collectionsMap = yield call(
-            convertCollectionsSnapshotToMap, 
-            snapshot
-        );
-        yield put(fetchCollectionsSuccess(collectionsMap));
-    } catch (error) {
-        yield put(fetchCollectionsFailure(error.message))
-    }
-}
-
-export function* fetchCategoriesAsync() {
-    try {
-        const categoriesApiData = yield fetch("https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/categories/list?country=us&lang=en", {
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&sortBy=stock&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -36,7 +22,33 @@ export function* fetchCategoriesAsync() {
             }
         });
 
-        const categoriesApiJson = yield categoriesApiData.json();
+        const responseJson = yield response.json();
+        const reducedJson = Object.assign({}, responseJson.results, responseJson.pagination);
+        const mapJsonToState = {
+            name: collectionName,
+            collection: {
+                results: responseJson.results,
+                pagination: responseJson.pagination
+            }
+        };
+
+        yield put(fetchCollectionsSuccess(mapJsonToState));
+    } catch (error) {
+        yield put(fetchCollectionsFailure(error.message))
+    }
+}
+
+export function* fetchCategoriesAsync() {
+    try {
+        const response = yield fetch("https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/categories/list?country=us&lang=en", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
+                "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
+            }
+        });
+
+        const responseJson = yield response.json();
 
         const reduceJson = (json, categoryType) => {
             return json
@@ -51,8 +63,8 @@ export function* fetchCategoriesAsync() {
         };
 
         const mapJsonToState = {
-            guys: SEARCH_ALL.guys.concat(reduceJson(categoriesApiJson, 'Men')),
-            girls: SEARCH_ALL.girls.concat(reduceJson(categoriesApiJson, 'Women'))
+            guys: SEARCH_ALL.guys.concat(reduceJson(responseJson, 'Men')),
+            girls: SEARCH_ALL.girls.concat(reduceJson(responseJson, 'Women'))
         };
 
         yield put(fetchCategoriesSuccess(mapJsonToState));

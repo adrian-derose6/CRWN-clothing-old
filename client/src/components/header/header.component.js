@@ -34,10 +34,10 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <Link className='option' to='/guys'>
+                    <Link className='option' to='/guys/all'>
                         GUYS
                     </Link>
-                    <Link className='option' to='/girls'>
+                    <Link className='option' to='/girls/all'>
                         GIRLS
                     </Link>
                 </div>

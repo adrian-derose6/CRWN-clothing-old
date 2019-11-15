@@ -1,7 +1,8 @@
 import ShopActionTypes from './shop.types.js';
 
-export const fetchCollectionsStart = () => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_START,  
+export const fetchCollectionsStart = (queryParams) => ({
+    type: ShopActionTypes.FETCH_COLLECTIONS_START,
+    payload: queryParams  
 });
 
 export const fetchCollectionsSuccess = (collectionsMap) => ({
