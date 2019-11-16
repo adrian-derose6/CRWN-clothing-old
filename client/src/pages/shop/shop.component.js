@@ -32,9 +32,11 @@ const girlsLinks = [
 
 class ShopPage extends React.Component {
     componentDidMount() {
-        const { fetchCategoriesStart } = this.props;
+        const { fetchCategoriesStart, categories } = this.props;
 
-        fetchCategoriesStart();
+        if (!categories) {
+            fetchCategoriesStart();
+        }
     }
 
     shouldComponentRender = () => {
@@ -52,11 +54,11 @@ class ShopPage extends React.Component {
         if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
-            <div className='shop-page'>
-                <div className='left-panel'>
-                    <CategorySelection categories={categories}/>
-                </div>
-                <Suspense fallback={<Spinner/>}>
+            <div className='shop-page'>  
+                <Suspense fallback={<Spinner />}>          
+                    <div className='left-panel'>
+                        <CategorySelection categories={categories}/>
+                    </div>
                     <Switch>
                         {
                             categories.map((category, index) => (

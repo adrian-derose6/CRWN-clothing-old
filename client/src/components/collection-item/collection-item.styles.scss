@@ -1,9 +1,14 @@
 .collection-item {
     display: flex;
     flex-direction: column;
-    height: 350px;
+    height: 380px;
     align-items: center;
     position: relative;
+    cursor: pointer;
+
+    @media screen and (max-width: 500px) {
+      height: 275px;
+    }
   
     .image {
       width: 100%;
@@ -20,12 +25,8 @@
       top: 255px;
       display: none;
     }
-
-    &:hover {
-      .image {
-        opacity: 0.8;
-      }
       
+    &:hover {
       .custom-button {
         opacity: 0.85;
         display: flex;

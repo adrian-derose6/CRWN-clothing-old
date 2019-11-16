@@ -7,16 +7,19 @@ import { selectCollection } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
+import FilterBar from '../../components/filter-bar/filter-bar.component';
 
 import './collection.styles.scss';
 
 class CollectionList extends React.Component {
     componentDidMount() {
-        const { fetchCollectionsStart, category } = this.props;
+        const { fetchCollectionsStart, category, collection } = this.props;
         const tagCode = category.tagCodes[0];
         const collectionName = category.CategoryValue;
 
-        fetchCollectionsStart({ collectionName, tagCode });
+        if (!collection) {
+            fetchCollectionsStart({ collectionName, tagCode });
+        }
     }
 
     shouldComponentRender = () => {
@@ -34,7 +37,8 @@ class CollectionList extends React.Component {
 
         return (
             <div className='collection-page'> 
-                <h2 className='title'>{categoryId.charAt(0).toUpperCase() + categoryId.slice(1)} {category.CatName}</h2>
+                <h2 className='title'>{categoryId} {category.CatName}</h2>
+                <FilterBar />
                 <div className='items'>
                     {
                         collection.results.map((item, index) => {

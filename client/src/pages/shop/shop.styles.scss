@@ -11,5 +11,9 @@
         position: sticky;
         position: -webkit-sticky;
         top: 70px;
+
+        @media screen and (max-width: 900px) {
+            display: none;
+        }
     }
 }
