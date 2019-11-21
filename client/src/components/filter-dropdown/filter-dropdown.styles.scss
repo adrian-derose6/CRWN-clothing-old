@@ -52,6 +52,7 @@ option {
         &.open {
            visibility: visible;
            max-height: 500px;
+           overflow: auto;
         }
 
         &.closed {

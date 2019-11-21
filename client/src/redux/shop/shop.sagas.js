@@ -9,7 +9,8 @@ import {
     fetchCategoriesFailure
 } from './shop.actions';
 
-import { SEARCH_ALL } from './shop.data.js';
+import { SEARCH_ALL, FACETS_MAP } from './shop.data.js';
+import { mapFacetsToState } from './shop.utils.js';
 import ShopActionTypes from './shop.types';
 
 export function* fetchCollectionsAsync({ payload: { tagCode, collectionName }}) {
@@ -23,12 +24,14 @@ export function* fetchCollectionsAsync({ payload: { tagCode, collectionName }}) 
         });
 
         const responseJson = yield response.json();
-        const reducedJson = Object.assign({}, responseJson.results, responseJson.pagination);
+        const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP);
+        console.log(facetsMap)
         const mapJsonToState = {
             name: collectionName,
             collection: {
                 results: responseJson.results,
-                pagination: responseJson.pagination
+                pagination: responseJson.pagination,
+                facets: facetsMap
             }
         };
 

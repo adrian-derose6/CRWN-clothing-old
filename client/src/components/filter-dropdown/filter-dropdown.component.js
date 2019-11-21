@@ -45,6 +45,8 @@ class FilterDropdown extends React.Component {
     render() {
         const { label, list } = this.props;
         const { listOpen } = this.state;
+        
+        if (!list) return null;
 
         return (
             <div className='filter-dropdown' ref={this.setWrapperRef}>
@@ -55,7 +57,11 @@ class FilterDropdown extends React.Component {
                 <div className={`${listOpen ? 'open' : 'closed'} dropdown-container`} >
                     {
                         list.map((item, index) => (
-                            <FilterDropdownItem label={item.title} number={4}/>
+                            <FilterDropdownItem 
+                                label={item.name || item.code} 
+                                number={4}
+                                key={index}
+                            />
                         ))
                     }
                 </div>

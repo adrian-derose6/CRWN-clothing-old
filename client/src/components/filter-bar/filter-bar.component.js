@@ -43,15 +43,25 @@ const LIST = [
     }
 ]
 
-const FilterBar = (props) => {
+const FilterBar = ({ facets }) => {
+    if (!facets) return null;
+
+    console.log(facets)
+
     return (
         <div className='filter-bar'>
             <div className='filter-tabs'>
-                <FilterDropdown label={'Sort By'} list={LIST}/>
-                <FilterDropdown label={'Quality'} list={LIST}/>
-                <FilterDropdown label={'Color'} list={LIST}/>
-                <FilterDropdown label={'Size'} list={LIST}/>
-                <FilterDropdown label={'Fit'} list={LIST}/>
+              {
+                Object.keys(facets).map((key, index) => {
+                  const label = facets[key].name;
+                  const list = facets[key].values
+                  return <FilterDropdown 
+                            label={label} 
+                            key={index} 
+                            list={list}
+                          />
+                })
+              }
             </div>
         </div>
     );

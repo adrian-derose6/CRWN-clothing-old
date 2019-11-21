@@ -3,7 +3,7 @@ import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { selectCollection } from '../../redux/shop/shop.selectors';
+import { selectCollection, selectCollectionFacets } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -38,7 +38,7 @@ class CollectionList extends React.Component {
         return (
             <div className='collection-page'> 
                 <h2 className='title'>{categoryId} {category.CatName}</h2>
-                <FilterBar />
+                <FilterBar facets={collection.facets} />
                 <div className='items'>
                     {
                         collection.results.map((item, index) => {
@@ -54,7 +54,7 @@ class CollectionList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    collection: selectCollection(ownProps.category.CategoryValue)(state),
+    collection: selectCollection(ownProps.category.CategoryValue)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
