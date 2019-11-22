@@ -43,7 +43,7 @@ class FilterDropdown extends React.Component {
     }
 
     render() {
-        const { label, list } = this.props;
+        const { label, list, type } = this.props;
         const { listOpen } = this.state;
         
         if (!list) return null;
@@ -58,9 +58,11 @@ class FilterDropdown extends React.Component {
                     {
                         list.map((item, index) => (
                             <FilterDropdownItem 
-                                label={item.name || item.code} 
+                                label={type === 'sizes' ? item.name || item.numberSize || item.code : item.name || item.code} 
                                 number={4}
                                 key={index}
+                                type={type}
+                                item={item}
                             />
                         ))
                     }

@@ -8,24 +8,44 @@ export const mapFacetsToState = (facetsArray, facetsMap) => {
 
         if (code in facetsState) {
             const values = facet.values.map(item => {
-                return splitCodeString(item, code);
+                return splitCodeStringToObject(item, code)
             });
 
-            facetsState[code] = { ...facetsState[code], values: facet.values };
+            console.log(values)
+
+            facetsState[code] = { ...facetsState[code], values: values };
         }
     })
 
     return facetsState;
 }
 
-export const splitCodeString = (facetObject, type) => {
+export const splitCodeStringToObject = (facetObject, type) => {
+    const { code } = facetObject;
+    let name = null;
     switch (type) {
         case 'sizes':
-            const name = facetObject.code.match(/(?<=\_)(xxs|xs|s|m|l|xl|2xl|3xl)(.*?)(?=\_)/g);
+            name = code.match(/(?<=\_)(xxs|xs|s|m|l|xl|2xl|3xl|4xl)(.*?)(?=\_)/g);
+            const type = code.match(/(menswear|womenswear|footwear|waist)/g);
+            const numberSizeArray = code.match(/(?<=\_)([0-9])(.*?)(?=\_)/g);
+
             return { 
                 ...facetObject,
-                name
+                name: name ? name[0] : null,
+                type: type ? type[0] : null,
+                numberSize: numberSizeArray ? numberSizeArray[0]: null
             };
+        case 'colorWithNames':
+            const hexMatch = code.match(/([a-fA-F0-9]{6})/g);
+            const colorMatch = code.match(/([a-z]+)/g);
+            const hexCode = (hexMatch) ? `#${hexMatch[0]}` : null;
+            name = colorMatch ? colorMatch[0] : null;
+
+            return {
+                ...facetObject,
+                name,
+                hexCode
+            }
         default:
             return facetObject;
     }
