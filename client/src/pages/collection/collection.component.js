@@ -13,12 +13,12 @@ import './collection.styles.scss';
 
 class CollectionList extends React.Component {
     componentDidMount() {
-        const { fetchCollectionsStart, category, collection } = this.props;
+        const { fetchCollectionsStart, category, collection, categoryId } = this.props;
         const tagCode = category.tagCodes[0];
         const collectionName = category.CategoryValue;
 
         if (!collection) {
-            fetchCollectionsStart({ collectionName, tagCode });
+            fetchCollectionsStart({ collectionName, tagCode, categoryId });
         }
     }
 
@@ -32,6 +32,7 @@ class CollectionList extends React.Component {
 
     render() {
         const { category, categoryId, collection } = this.props;
+        console.log(collection)
 
         if (!this.shouldComponentRender()) return <Spinner />;
 
@@ -47,15 +48,19 @@ class CollectionList extends React.Component {
                             )
                         })
                     }
-                </div>
+                </div> 
             </div>
         );
     }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    collection: selectCollection(ownProps.category.CategoryValue)(state)
-});
+const mapStateToProps = (state, ownProps) => {
+    const { category, categoryId } = ownProps;
+
+    return ({
+        collection: selectCollection(categoryId, category.CategoryValue)(state)
+    });
+};
 
 const mapDispatchToProps = dispatch => ({
     fetchCollectionsStart: queryParams => dispatch(fetchCollectionsStart(queryParams)),

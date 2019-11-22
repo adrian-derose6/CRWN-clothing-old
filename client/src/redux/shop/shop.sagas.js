@@ -13,7 +13,7 @@ import { SEARCH_ALL, FACETS_MAP } from './shop.data.js';
 import { mapFacetsToState } from './shop.utils.js';
 import ShopActionTypes from './shop.types';
 
-export function* fetchCollectionsAsync({ payload: { tagCode, collectionName }}) {
+export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId }}) {
     try {
         const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&sortBy=stock&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
@@ -25,9 +25,9 @@ export function* fetchCollectionsAsync({ payload: { tagCode, collectionName }}) 
 
         const responseJson = yield response.json();
         const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP);
-        console.log(facetsMap)
         const mapJsonToState = {
             name: collectionName,
+            categoryId,
             collection: {
                 results: responseJson.results,
                 pagination: responseJson.pagination,
@@ -69,6 +69,8 @@ export function* fetchCategoriesAsync() {
             guys: SEARCH_ALL.guys.concat(reduceJson(responseJson, 'Men')),
             girls: SEARCH_ALL.girls.concat(reduceJson(responseJson, 'Women'))
         };
+
+        console.log(mapJsonToState)
 
         yield put(fetchCategoriesSuccess(mapJsonToState));
     } catch (error) {
