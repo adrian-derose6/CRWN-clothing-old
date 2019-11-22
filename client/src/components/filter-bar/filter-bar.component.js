@@ -18,7 +18,7 @@ const FilterBar = ({ facets }) => {
                             label={label} 
                             key={index} 
                             list={list}
-                            type={key}
+                            facet={key}
                           />
                 })
               }

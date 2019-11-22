@@ -1,4 +1,5 @@
 import React from 'react';
+import Collapsible from 'react-collapsible';
 
 import expandIcon from '../../assets/expand-arrow.png';
 import collapseIcon from '../../assets/collapse-arrow.png';
@@ -6,6 +7,16 @@ import collapseIcon from '../../assets/collapse-arrow.png';
 import FilterDropdownItem from '../filter-dropdown-item/filter-dropdown-item.component';
 
 import './filter-dropdown.styles.scss';
+import '../filter-dropdown-item/filter-dropdown-item.styles.scss';
+
+const TriggerContainer = ({ label, open }) => (
+    <div className='dropdown-item'>
+        <span className='trigger-label'>
+            {label}
+        </span>
+        <img className='arrow' src={open ? collapseIcon : expandIcon} />
+    </div>
+);
 
 class FilterDropdown extends React.Component {
     constructor(props) {
@@ -13,6 +24,7 @@ class FilterDropdown extends React.Component {
 
         this.state = {
             listOpen: false,
+            openedCollapsible: ''
         }
     }
 
@@ -42,8 +54,53 @@ class FilterDropdown extends React.Component {
         }));
     }
 
+    handleCollapsibleOpen = (key) => {
+        this.setState({ openedCollapsible: key });
+    }
+
+    handleCollapsibleClose = () => {
+        this.setState({ openedCollapsible: '' });
+    }
+
+    renderCollapsible = () => {
+        const { list, facet } = this.props;
+        const { openedCollapsible } = this.state;
+        let collapsibles = {};
+
+        list.forEach(item => {
+            return collapsibles[item.type] ? collapsibles[item.type] = [...collapsibles[item.type], item] : collapsibles[item.type] = [item]
+        });
+
+        return (
+            <div>
+                {
+                    Object.keys(collapsibles).map((key, index) => ( 
+                        <Collapsible 
+                            trigger={<TriggerContainer label={key} open={(key === openedCollapsible)}/>} 
+                            key={index} 
+                            onOpen={() => this.handleCollapsibleOpen(key)}
+                            onClose={this.handleCollapsibleClose}
+                        >
+                            {
+                                collapsibles[key].map((item, index) => (
+                                    <FilterDropdownItem 
+                                        label={item.name || item.numberSize || item.codef} 
+                                        number={item.count}
+                                        key={index}
+                                        type={facet}
+                                        item={item}
+                                    />
+                                ))
+                            }
+                        </Collapsible>
+                    ))
+                }
+            </div>
+        )
+    }
+
     render() {
-        const { label, list, type } = this.props;
+        const { label, list, facet } = this.props;
         const { listOpen } = this.state;
         
         if (!list) return null;
@@ -56,15 +113,18 @@ class FilterDropdown extends React.Component {
                 </button>
                 <div className={`${listOpen ? 'open' : 'closed'} dropdown-container`} >
                     {
-                        list.map((item, index) => (
-                            <FilterDropdownItem 
-                                label={type === 'sizes' ? item.name || item.numberSize || item.code : item.name || item.code} 
-                                number={4}
-                                key={index}
-                                type={type}
-                                item={item}
-                            />
-                        ))
+                        (facet === 'sizes') ? 
+                            this.renderCollapsible() 
+                        :
+                            list.map((item, index) => (
+                                <FilterDropdownItem 
+                                    label={item.name || item.code} 
+                                    number={item.count}
+                                    key={index}
+                                    type={facet}
+                                    item={item}
+                                />
+                            ))
                     }
                 </div>
             </div>
