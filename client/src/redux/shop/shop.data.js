@@ -10,7 +10,7 @@ export const FACETS_MAP = {
         values: [
             {
                 code: 'newProduct',
-                name: 'Newest'
+                name: 'Newest',
             },
             {
                 code: 'ascPrice',

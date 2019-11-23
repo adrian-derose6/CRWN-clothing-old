@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
+import checkmarkIcon from '../../assets/checkmark.png';
+
 import { toggleFilter } from '../../redux/shop/shop.actions';
 
 import './filter-dropdown-item.styles.scss';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const FilterDropdownItem = ({ label, number, type, item, toggleFilter, filters }) => {
+const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected, radio }) => {
     const labelToDisplay = label.replace('-', ' ');
     let uppercase = letterSizes.includes(label) ? 'uppercase' : '';
-    let checkboxStyle = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
-
+    let checkboxColor = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
     const handleClick = () => {
         toggleFilter(item);
     }
@@ -19,7 +20,11 @@ const FilterDropdownItem = ({ label, number, type, item, toggleFilter, filters }
     return (
         <div className='dropdown-item' onClick={handleClick}>
             <div className='label-container'>
-                <div className='checkbox' style={checkboxStyle}></div>
+                <div className='checkbox' style={checkboxColor}>
+                    {
+                        (selected) ? <img src={checkmarkIcon} className='checkmark' /> : null
+                    }
+                </div>
                 <span className={`${uppercase} label-text`}>{labelToDisplay}</span>
             </div>
             <span>{number}</span>

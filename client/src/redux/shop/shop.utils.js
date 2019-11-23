@@ -7,15 +7,21 @@ export const mapFacetsToState = (facetsArray, facetsMap, collectionName, categor
         const { code } = facet;
 
         if (code in facetsState) {
-            const values = facet.values.map(item => {
+            const values = facet.values.map((item, index) => {
                 return splitCodeStringToObject(item, code, collectionName, categoryId)
             });
 
-            console.log(values)
-
             facetsState[code] = { ...facetsState[code], values: values };
         }
-    })
+    });
+
+    const categorizedSort = facetsState.sortBy.values.map(item => ({
+        ...item,
+        collection: collectionName,
+        categoryId
+    }));
+
+    facetsState.sortBy.values = categorizedSort;
 
     return facetsState;
 }

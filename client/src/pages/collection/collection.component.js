@@ -3,7 +3,7 @@ import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { selectCollection, selectCollectionFacets, selectFilters } from '../../redux/shop/shop.selectors';
+import { selectCollection, selectFilters } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -33,14 +33,13 @@ class CollectionList extends React.Component {
 
     render() {
         const { category, categoryId, collection, filters } = this.props;
-        console.log(collection)
-
+        
         if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
             <div className='collection-page'> 
                 <h2 className='title'>{categoryId} {category.CatName}</h2>
-                <FilterBar facets={collection.facets} />
+                <FilterBar facets={collection.facets} filters={filters}/>
                 <SelectedFilters filters={filters} />
                 <div className='items'>
                     {

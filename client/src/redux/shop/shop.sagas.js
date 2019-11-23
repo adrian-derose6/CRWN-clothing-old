@@ -25,6 +25,7 @@ export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, cat
 
         const responseJson = yield response.json();
         const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP, collectionName, categoryId);
+        console.log(facetsMap)
         const mapJsonToState = {
             name: collectionName,
             categoryId,

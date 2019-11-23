@@ -6,6 +6,8 @@ import collapseIcon from '../../assets/collapse-arrow.png';
 
 import FilterDropdownItem from '../filter-dropdown-item/filter-dropdown-item.component';
 
+import { selectFilters } from '../../redux/shop/shop.selectors';
+
 import './filter-dropdown.styles.scss';
 import '../filter-dropdown-item/filter-dropdown-item.styles.scss';
 
@@ -24,7 +26,8 @@ class FilterDropdown extends React.Component {
 
         this.state = {
             listOpen: false,
-            openedCollapsible: ''
+            openedCollapsible: '', 
+            selectedItems: []
         }
     }
 
@@ -84,11 +87,12 @@ class FilterDropdown extends React.Component {
                             {
                                 collapsibles[key].map((item, index) => (
                                     <FilterDropdownItem 
-                                        label={item.name || item.numberSize || item.codef} 
+                                        label={item.name || item.numberSize || item.code} 
                                         number={item.count}
                                         key={index}
                                         type={facet}
                                         item={item}
+                                        selected={this.isItemSelected(item)}
                                     />
                                 ))
                             }
@@ -97,6 +101,16 @@ class FilterDropdown extends React.Component {
                 }
             </div>
         )
+    }
+
+    isItemSelected = (item) => {
+        const { filters } = this.props;
+
+        console.log(item)
+
+        if (filters.filter(filter => JSON.stringify(filter) === JSON.stringify(item)).length >= 1) return true;
+        
+        return false;
     }
 
     render() {
@@ -123,6 +137,7 @@ class FilterDropdown extends React.Component {
                                     key={index}
                                     type={facet}
                                     item={item}
+                                    selected={this.isItemSelected(item)}
                                 />
                             ))
                     }
