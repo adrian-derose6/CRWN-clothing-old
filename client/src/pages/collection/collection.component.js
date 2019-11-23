@@ -3,11 +3,12 @@ import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { selectCollection, selectCollectionFacets } from '../../redux/shop/shop.selectors';
+import { selectCollection, selectCollectionFacets, selectFilters } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
 import FilterBar from '../../components/filter-bar/filter-bar.component';
+import SelectedFilters from '../../components/selected-filters/selected-filters.component';
 
 import './collection.styles.scss';
 
@@ -31,7 +32,7 @@ class CollectionList extends React.Component {
     }
 
     render() {
-        const { category, categoryId, collection } = this.props;
+        const { category, categoryId, collection, filters } = this.props;
         console.log(collection)
 
         if (!this.shouldComponentRender()) return <Spinner />;
@@ -40,6 +41,7 @@ class CollectionList extends React.Component {
             <div className='collection-page'> 
                 <h2 className='title'>{categoryId} {category.CatName}</h2>
                 <FilterBar facets={collection.facets} />
+                <SelectedFilters filters={filters} />
                 <div className='items'>
                     {
                         collection.results.map((item, index) => {
@@ -58,7 +60,8 @@ const mapStateToProps = (state, ownProps) => {
     const { category, categoryId } = ownProps;
 
     return ({
-        collection: selectCollection(categoryId, category.CategoryValue)(state)
+        collection: selectCollection(categoryId, category.CategoryValue)(state),
+        filters: selectFilters(categoryId, category.CategoryValue)(state)
     });
 };
 

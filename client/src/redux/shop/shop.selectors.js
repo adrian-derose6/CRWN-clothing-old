@@ -37,6 +37,18 @@ export const selectCollection = (categoryId, collectionUrlParam) => {
     );
 }
 
+export const selectFilters = (categoryId, collectionUrlParam) => 
+    createSelector(
+        [selectShop],
+        shop => shop.filters ? 
+            shop.filters.filter(
+                filter => filter.categoryId === categoryId && 
+                          filter.collection === collectionUrlParam
+            )
+            : 
+            null
+    );
+
 export const selectIsCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching

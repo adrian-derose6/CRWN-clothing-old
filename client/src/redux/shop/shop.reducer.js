@@ -1,10 +1,12 @@
 import ShopActionTypes from './shop.types.js';
+import { toggleFilter } from './shop.utils';
 
 const INITIAL_STATE = {
     collections: {
         guys: null,
         girls: null
     },
+    filters: [],
     categories: null,
     isFetching: false,
     errorMessage: undefined
@@ -19,7 +21,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                 isFetching: true
             };
         case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS:
-            const { categoryId, name, collection } = action.payload;
+            let { categoryId, name, collection } = action.payload;
 
             return {
                 ...state,
@@ -46,6 +48,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                 isFetching: false,
                 categories: action.payload,
                 errorMessage: null
+            };
+        case ShopActionTypes.TOGGLE_FILTER:
+            return {
+                ...state,
+                filters: toggleFilter(state.filters, action.payload)
             };
         default:
             return state;

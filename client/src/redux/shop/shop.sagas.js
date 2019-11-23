@@ -15,7 +15,6 @@ import ShopActionTypes from './shop.types';
 
 export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId }}) {
     try {
-        console.log(tagCode)
         const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&sortBy=stock&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
@@ -25,8 +24,7 @@ export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, cat
         });
 
         const responseJson = yield response.json();
-        console.log(responseJson)
-        const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP);
+        const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP, collectionName, categoryId);
         const mapJsonToState = {
             name: collectionName,
             categoryId,

@@ -10,7 +10,7 @@ import './filter-dropdown.styles.scss';
 import '../filter-dropdown-item/filter-dropdown-item.styles.scss';
 
 const TriggerContainer = ({ label, open }) => (
-    <div className='dropdown-item'>
+    <div className='dropdown-item' style={open ? {background: 'lightgray'} : null}>
         <span className='trigger-label'>
             {label}
         </span>

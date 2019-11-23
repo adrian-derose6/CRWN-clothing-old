@@ -1,4 +1,4 @@
-export const mapFacetsToState = (facetsArray, facetsMap) => {
+export const mapFacetsToState = (facetsArray, facetsMap, collectionName, categoryId) => {
     const facetsState = { ...facetsMap };
 
     if (!facetsArray) return null;
@@ -8,7 +8,7 @@ export const mapFacetsToState = (facetsArray, facetsMap) => {
 
         if (code in facetsState) {
             const values = facet.values.map(item => {
-                return splitCodeStringToObject(item, code)
+                return splitCodeStringToObject(item, code, collectionName, categoryId)
             });
 
             console.log(values)
@@ -20,10 +20,10 @@ export const mapFacetsToState = (facetsArray, facetsMap) => {
     return facetsState;
 }
 
-export const splitCodeStringToObject = (facetObject, type) => {
+export const splitCodeStringToObject = (facetObject, facetCode, collectionName, categoryId) => {
     const { code } = facetObject;
     let name = null;
-    switch (type) {
+    switch (facetCode) {
         case 'sizes':
             name = code.match(/(?<=\_)(xxs|xs|s|m|l|xl|2xl|3xl|4xl)(.*?)(?=\_)/g);
             const type = code.match(/(menswear|womenswear|footwear|waist)/g);
@@ -33,7 +33,10 @@ export const splitCodeStringToObject = (facetObject, type) => {
                 ...facetObject,
                 name: name ? name[0] : null,
                 type: type ? type[0] : null,
-                numberSize: numberSizeArray ? numberSizeArray[0]: null
+                numberSize: numberSizeArray ? numberSizeArray[0]: null,
+                facet: facetCode,
+                collection: collectionName,
+                categoryId
             };
         case 'colorWithNames':
             const hexMatch = code.match(/([a-fA-F0-9]{6})/g);
@@ -44,9 +47,31 @@ export const splitCodeStringToObject = (facetObject, type) => {
             return {
                 ...facetObject,
                 name,
-                hexCode
+                hexCode,
+                facet: facetCode,
+                collection: collectionName,
+                categoryId
             }
         default:
-            return facetObject;
+            return {
+                ...facetObject,
+                facet: facetCode,
+                collection: collectionName,
+                categoryId
+            };
     }
 }
+
+export const toggleFilter = (filters, filterToAdd) => {
+    const existingFilter = filters.find(
+        filter => filter.code === filterToAdd.code && 
+                  filter.categoryId === filterToAdd.categoryId && 
+                  filter.collection === filterToAdd.collection
+    );
+
+    if (!existingFilter) {   
+        return [ ...filters, filterToAdd ];
+    }
+
+    return filters.filter(item => JSON.stringify(item) !== JSON.stringify(filterToAdd));
+};
