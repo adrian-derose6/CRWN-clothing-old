@@ -9,13 +9,13 @@ import './filter-dropdown-item.styles.scss';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected, radio }) => {
+const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected, categoryId, collectionName }) => {
     const labelToDisplay = label.replace('-', ' ');
     let uppercase = letterSizes.includes(label) ? 'uppercase' : '';
     let checkboxColor = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
     
     const handleClick = () => {
-        toggleFilter(item);
+        toggleFilter({ item, categoryId, collectionName });
     }
 
     return (
@@ -33,12 +33,8 @@ const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected,
     )
 }
 
-const mapStateToProps = state => ({
-    filters: state.shop.filters
-});
-
 const mapDispatchToProps = dispatch => ({
-    toggleFilter: (item) => dispatch(toggleFilter(item))
+    toggleFilter: (params) => dispatch(toggleFilter(params))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdownItem);
+export default connect(null, mapDispatchToProps)(FilterDropdownItem);

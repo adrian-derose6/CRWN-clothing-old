@@ -9,11 +9,11 @@ import './selected-filters.styles.scss';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const SelectedFilters = ({ filters, toggleFilter }) => {
-    if (!filters || filters.length <= 1) return null;
+const SelectedFilters = ({ filters, toggleFilter, categoryId, collectionName }) => {
+    if (!filters || filters.length === 0) return null;
 
     const handleClick = (filter) => {
-        toggleFilter(filter);
+        toggleFilter({ item: filter, categoryId, collectionName });
     }
 
     return (
@@ -24,11 +24,11 @@ const SelectedFilters = ({ filters, toggleFilter }) => {
                     if (filter.facet === 'sortBy') return null;
                     
                     const nameClass = letterSizes.includes(filter.name)  ? 'uppercase' : 'capitalize';
-                    const displayName = (filter.numberSize && !filter.name) ? filter.numberSize : filter.name || filter.code;
+
                     return (
                         <div className='filter-box'>
                             <div className='inner-box'>
-                                <span className={`${nameClass}`}>{displayName}</span>
+                                <span className={`${nameClass}`}>{filter.name}</span>
                             </div>
                             <div className='cancel-box inner-box' onClick={() => handleClick(filter)}>
                                 <img src={deleteIcon} className='delete-icon'/>

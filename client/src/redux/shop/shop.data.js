@@ -11,18 +11,22 @@ export const FACETS_MAP = {
             {
                 code: 'newProduct',
                 name: 'Newest',
+                facet: 'sortBy'
             },
             {
                 code: 'ascPrice',
-                name: 'Lowest Price'
+                name: 'Lowest Price',
+                facet: 'sortBy'
             },
             {
                 code: 'descPrice',
-                name: 'Highest Price'
+                name: 'Highest Price',
+                facet: 'sortBy'
             },
             {
                 code: 'stock',
-                name: 'Stock'
+                name: 'Stock',
+                facet: 'sortBy'
             }
         ]
     },

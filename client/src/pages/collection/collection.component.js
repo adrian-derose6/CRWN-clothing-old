@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { createContext } from 'react';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -39,20 +39,31 @@ class CollectionList extends React.Component {
 
     render() {
         const { category, categoryId, collection } = this.props;
-        const { filters } = collection;
         
         if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
             <div className='collection-page'> 
                 <h2 className='title'>{categoryId} {category.CatName}</h2>
-                <FilterBar facets={collection.facets} filters={filters}/>
-                <SelectedFilters filters={filters} />
+                <FilterBar 
+                    facets={collection.facets} 
+                    filters={collection.filters} 
+                    categoryId={categoryId} 
+                    collectionName={category.CategoryValue}
+                />
+                <SelectedFilters 
+                    filters={collection.filters} 
+                    categoryId={categoryId} 
+                    collectionName={category.CategoryValue}
+                />
                 <div className='items'>
                     {
                         collection.results.map((item, index) => {
                             return (
-                                <CollectionItem item={item} key={index}/>
+                                <CollectionItem 
+                                    item={item} 
+                                    key={index}
+                                />
                             )
                         })
                     }

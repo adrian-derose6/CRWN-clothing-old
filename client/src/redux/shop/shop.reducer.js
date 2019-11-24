@@ -53,9 +53,9 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             };
         }
         case ShopActionTypes.TOGGLE_FILTER: {
-            const { categoryId, collectionName } = action.payload;
+            const { categoryId, collectionName, item } = action.payload;
             const { filters } = state.collections[categoryId][collectionName];
-            
+
             return {
                 ...state,
                 collections: {
@@ -64,7 +64,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                         ...state.collections[categoryId],
                         [collectionName]: {
                             ...state.collections[categoryId][collectionName],
-                            filters: toggleFilter(filters, action.payload)
+                            filters: toggleFilter(filters, item)
                         }
                     }
                 }

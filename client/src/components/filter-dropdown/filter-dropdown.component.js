@@ -66,7 +66,7 @@ class FilterDropdown extends React.Component {
     }
 
     renderCollapsible = () => {
-        const { list, facet } = this.props;
+        const { list, facet, collectionName, categoryId } = this.props;
         const { openedCollapsible } = this.state;
         let collapsibles = {};
 
@@ -87,12 +87,14 @@ class FilterDropdown extends React.Component {
                             {
                                 collapsibles[key].map((item, index) => (
                                     <FilterDropdownItem 
-                                        label={item.name || item.numberSize || item.code} 
+                                        label={item.name} 
                                         number={item.count}
                                         key={index}
                                         type={facet}
                                         item={item}
                                         selected={this.isItemSelected(item)}
+                                        categoryId={categoryId}
+                                        collectionName={collectionName}
                                     />
                                 ))
                             }
@@ -112,7 +114,7 @@ class FilterDropdown extends React.Component {
     }
 
     render() {
-        const { label, list, facet } = this.props;
+        const { label, list, facet, categoryId, collectionName } = this.props;
         const { listOpen } = this.state;
         
         if (!list) return null;
@@ -130,11 +132,13 @@ class FilterDropdown extends React.Component {
                         :
                             list.map((item, index) => (
                                 <FilterDropdownItem 
-                                    label={item.name || item.code}
+                                    label={item.name}
                                     key={index}
                                     type={facet}
                                     item={item}
                                     selected={this.isItemSelected(item)}
+                                    categoryId={categoryId}
+                                    collectionName={collectionName}
                                 />
                             ))
                     }

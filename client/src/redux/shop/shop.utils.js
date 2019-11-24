@@ -81,22 +81,18 @@ const splitCodeStringToObject = (facetValue) => {
 }
 
 export const toggleFilter = (filters, filterToAdd) => {
-    console.log(filters);
-    console.log(filterToAdd);
+    const existingFilter = filters.find(filter => JSON.stringify(filter) === JSON.stringify(filterToAdd));
+    const existingSortFilter = filters.find(filter => filter.facet === 'sortBy');
 
-    const existingFilter = filters.find(item => JSON.stringify(item) === JSON.stringify(filterToAdd));
-    const existingSortFilter = filters.find(filter => filter.facet === 'sortBy' && filter.collection === filterToAdd.collection
-                                            && filter.categoryId === filterToAdd.categoryId);
 
-    console.log(existingSortFilter)
-    if (filterToAdd.facet === 'sortBy' && existingSortFilter) {
+    if (existingSortFilter && filterToAdd.facet === 'sortBy') {
         let removedFilter = filters.filter(filter => filter.facet !== 'sortBy'); 
-        return [...removedFilter, filterToAdd ];
+        return [filterToAdd, ...removedFilter];
     }
 
     if (!existingFilter) {   
         return [ ...filters, filterToAdd ];
     }
-
+    
     return filters.filter(item => JSON.stringify(item) !== JSON.stringify(filterToAdd));
 };

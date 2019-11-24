@@ -4,9 +4,8 @@ import FilterDropdown from '../filter-dropdown/filter-dropdown.component';
 
 import './filter-bar.styles.scss';
 
-const FilterBar = ({ facets, filters }) => {
+const FilterBar = ({ facets, filters, categoryId, collectionName }) => {
     if (!facets) return null;
-
     return (
         <div className='filter-bar'>
             <div className='filter-tabs'>
@@ -20,6 +19,8 @@ const FilterBar = ({ facets, filters }) => {
                             key={index} 
                             list={list}
                             facet={key}
+                            categoryId={categoryId}
+                            collectionName={collectionName}
                           />
                 })
               }
