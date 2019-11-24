@@ -13,6 +13,7 @@ const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected,
     const labelToDisplay = label.replace('-', ' ');
     let uppercase = letterSizes.includes(label) ? 'uppercase' : '';
     let checkboxColor = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
+    
     const handleClick = () => {
         toggleFilter(item);
     }
@@ -27,7 +28,7 @@ const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected,
                 </div>
                 <span className={`${uppercase} label-text`}>{labelToDisplay}</span>
             </div>
-            <span>{number}</span>
+            <span>{item.count}</span>
         </div>
     )
 }

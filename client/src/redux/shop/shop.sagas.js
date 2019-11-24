@@ -9,8 +9,7 @@ import {
     fetchCategoriesFailure
 } from './shop.actions';
 
-import { SEARCH_ALL, FACETS_MAP } from './shop.data.js';
-import { mapFacetsToState } from './shop.utils.js';
+import { SEARCH_ALL } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 
 export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId }}) {
@@ -22,17 +21,14 @@ export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, cat
                 "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
             }
         });
-
         const responseJson = yield response.json();
-        const facetsMap = mapFacetsToState(responseJson.facets, FACETS_MAP, collectionName, categoryId);
-        console.log(facetsMap)
         const mapJsonToState = {
-            name: collectionName,
+            collectionName,
             categoryId,
             collection: {
                 results: responseJson.results,
                 pagination: responseJson.pagination,
-                facets: facetsMap
+                facets: responseJson.facets
             }
         };
 

@@ -106,8 +106,6 @@ class FilterDropdown extends React.Component {
     isItemSelected = (item) => {
         const { filters } = this.props;
 
-        console.log(item)
-
         if (filters.filter(filter => JSON.stringify(filter) === JSON.stringify(item)).length >= 1) return true;
         
         return false;
@@ -132,8 +130,7 @@ class FilterDropdown extends React.Component {
                         :
                             list.map((item, index) => (
                                 <FilterDropdownItem 
-                                    label={item.name || item.code} 
-                                    number={item.count}
+                                    label={item.name || item.code}
                                     key={index}
                                     type={facet}
                                     item={item}

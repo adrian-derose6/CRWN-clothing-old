@@ -14,12 +14,10 @@ import './collection.styles.scss';
 
 class CollectionList extends React.Component {
     componentDidMount() {
-        const { fetchCollectionsStart, category, collection, categoryId } = this.props;
-        const tagCode = category.tagCodes[0];
-        const collectionName = category.CategoryValue;
+        const { collection, categoryId, category } = this.props;
 
         if (!collection) {
-            fetchCollectionsStart({ collectionName, tagCode, categoryId });
+            this.fetchCollection();
         }
     }
 
@@ -31,8 +29,17 @@ class CollectionList extends React.Component {
         return true;
     }
 
+    fetchCollection = () => {
+        const { fetchCollectionsStart, category, collection, categoryId, filters } = this.props;
+        const tagCode = category.tagCodes[0];
+        const collectionName = category.CategoryValue;
+
+        fetchCollectionsStart({ collectionName, tagCode, categoryId });
+    }
+
     render() {
-        const { category, categoryId, collection, filters } = this.props;
+        const { category, categoryId, collection } = this.props;
+        const { filters } = collection;
         
         if (!this.shouldComponentRender()) return <Spinner />;
 
@@ -60,7 +67,6 @@ const mapStateToProps = (state, ownProps) => {
 
     return ({
         collection: selectCollection(categoryId, category.CategoryValue)(state),
-        filters: selectFilters(categoryId, category.CategoryValue)(state)
     });
 };
 

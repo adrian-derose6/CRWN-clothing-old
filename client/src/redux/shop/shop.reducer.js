@@ -1,12 +1,11 @@
 import ShopActionTypes from './shop.types.js';
-import { toggleFilter } from './shop.utils';
+import { toggleFilter, addCollection } from './shop.utils';
 
 const INITIAL_STATE = {
     collections: {
         guys: null,
         girls: null
     },
-    filters: [],
     categories: null,
     isFetching: false,
     errorMessage: undefined
@@ -15,13 +14,14 @@ const INITIAL_STATE = {
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case ShopActionTypes.FETCH_COLLECTIONS_START:
-        case ShopActionTypes.FETCH_CATEGORIES_START:
+        case ShopActionTypes.FETCH_CATEGORIES_START: {
             return {
                 ...state,
                 isFetching: true
             };
-        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS:
-            let { categoryId, name, collection } = action.payload;
+        }
+        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS: {
+            let { categoryId, collectionName, collection } = action.payload;
 
             return {
                 ...state,
@@ -30,30 +30,46 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                     ...state.collections,
                     [categoryId]: {
                         ...state.collections[categoryId],
-                        [name]: collection
-                    }
+                        [collectionName]: addCollection(action.payload)
+                    } 
                 },
                 errorMessage: null
             };
+        }
         case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
-        case ShopActionTypes.FETCH_CATEGORIES_FAILURE:
+        case ShopActionTypes.FETCH_CATEGORIES_FAILURE: {
             return {
                 ...state,
                 isFetching: false,
                 errorMessage: action.payload
             };
-        case ShopActionTypes.FETCH_CATEGORIES_SUCCESS:
+        }
+        case ShopActionTypes.FETCH_CATEGORIES_SUCCESS: {
             return {
                 ...state,
                 isFetching: false,
                 categories: action.payload,
                 errorMessage: null
             };
-        case ShopActionTypes.TOGGLE_FILTER:
+        }
+        case ShopActionTypes.TOGGLE_FILTER: {
+            const { categoryId, collectionName } = action.payload;
+            const { filters } = state.collections[categoryId][collectionName];
+            
             return {
                 ...state,
-                filters: toggleFilter(state.filters, action.payload)
+                collections: {
+                    ...state.collections,
+                    [categoryId]: {
+                        ...state.collections[categoryId],
+                        [collectionName]: {
+                            ...state.collections[categoryId][collectionName],
+                            filters: toggleFilter(filters, action.payload)
+                        }
+                    }
+                }
             };
+        }
         default:
             return state;
     }
