@@ -4,7 +4,11 @@ export const addCollection = (payload) => {
     const { facets } = payload.collection;
     const facetsMap = mapFacetsToState(facets);
 
-    return { ...payload.collection, filters: [], facets: facetsMap };
+    return { ...payload.collection, filters: [{
+        code: 'stock',
+        name: 'Stock',
+        facet: 'sortBy'
+    }], facets: facetsMap };
 }
 
 export const mapFacetsToState = (facetsArray) => {

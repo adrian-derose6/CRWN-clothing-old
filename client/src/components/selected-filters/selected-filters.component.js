@@ -10,13 +10,13 @@ import './selected-filters.styles.scss';
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
 const SelectedFilters = ({ filters, toggleFilter, categoryId, collectionName }) => {
-    if (!filters || filters.length === 0) return null;
+    if (!filters || filters.length === 0 || filters.length === 1 && filters.find(filter => filter.facet === 'sortBy')) return null;
 
     const handleClick = (filter) => {
         toggleFilter({ item: filter, categoryId, collectionName });
     }
 
-    return (
+    return ( 
         <div className='selected-filters'>
             <span className='label'>Selected Filters:</span>
             {
