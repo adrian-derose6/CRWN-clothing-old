@@ -3,8 +3,8 @@ import { toggleFilter, addCollection } from './shop.utils';
 
 const INITIAL_STATE = {
     collections: {
-        guys: null,
-        girls: null
+        guys: {},
+        girls: {}
     },
     categories: null,
     isFetching: false,

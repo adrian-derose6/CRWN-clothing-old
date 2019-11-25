@@ -48,8 +48,8 @@ export function* fetchCategoriesAsync() {
                 "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
             }
         });
-
         const responseJson = yield response.json();
+
         const reduceJson = (json, categoryType) => {
             return json
                     .filter(category => category.CatName === categoryType)

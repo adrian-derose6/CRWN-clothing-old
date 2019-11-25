@@ -9,8 +9,9 @@ const INITIAL_FILTER = [{
 export const addCollection = (collectionsState, payload) => {
     const { collection, categoryId, collectionName } = payload;
     const { facets } = collection;
-    const nextFilters = collectionsState[categoryId][collectionName] ? 
-                        [...collectionsState[categoryId][collectionName].filters] 
+    console.log(collectionsState)
+    const nextFilters = (typeof collectionsState[categoryId][collectionName] !== 'undefined') ? 
+                            [...collectionsState[categoryId][collectionName].filters] 
                         :   [...INITIAL_FILTER];
 
     const facetsMap = mapFacetsToState(facets);
