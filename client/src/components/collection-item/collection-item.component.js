@@ -13,12 +13,14 @@ const BackgroundImage = styled.div`
     height: 95%;
     background-size: cover;
     background-position: center;
+    position: absolute;
     margin-bottom: 5px;
-    background-image: url(${props => props.logoPicture});
-    transition: background-image 0.3s;
+    opacity: ${props => props.main ? '1;' : '0;'}
+    background-image: url(${props => props.src});
+    transition: opacity 0.3s ease;
 
     &:hover {
-        background-image: url(${props => props.normalPicture});
+        opacity: ${props => props.main ? '0;' : '1;'}
     }
 `
 
@@ -27,10 +29,10 @@ const CollectionItem = ({ item, addItem }) => {
     const logoPicture = item.articles[0].logoPicture[0].url;
     const normalPicture = item.articles[0].images[0].url;
 
-    console.log('rendered')
     return (
         <div className='collection-item'>
-            <BackgroundImage logoPicture={logoPicture} normalPicture={normalPicture}/>
+            <BackgroundImage src={logoPicture} main={true} />
+            <BackgroundImage src={normalPicture} main={false}/>
             <div className='collection-footer'>
                 <span className='name'>{name}</span>
             </div>

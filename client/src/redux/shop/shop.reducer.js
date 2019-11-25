@@ -21,7 +21,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             };
         }
         case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS: {
-            let { categoryId, collectionName, collection } = action.payload;
+            let { categoryId, collectionName } = action.payload;
 
             return {
                 ...state,
