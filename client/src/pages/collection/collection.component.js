@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import equal from 'fast-deep-equal';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { selectCollection, selectFilters } from '../../redux/shop/shop.selectors';
+import { selectCollection, selectFilters, selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -23,9 +23,9 @@ class CollectionList extends React.Component {
     }
 
     shouldComponentRender = () => {
-        const { collection } = this.props;
+        const { collection, isFetching } = this.props;
 
-        if (!collection) return false;
+        if (!collection || isFetching) return false;
 
         return true;
     }
@@ -85,7 +85,8 @@ const mapStateToProps = (state, ownProps) => {
 
     return ({
         collection: selectCollection(categoryId, category.CategoryValue)(state),
-        filters: selectFilters(categoryId, category.CategoryValue)(state)
+        filters: selectFilters(categoryId, category.CategoryValue)(state),
+        isFetching: selectIsCollectionFetching(state)
     });
 };
 

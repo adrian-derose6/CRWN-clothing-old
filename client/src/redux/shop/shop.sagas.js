@@ -13,8 +13,9 @@ import { generateQueryString } from './shop.utils';
 
 export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId, filters }}) {
     try {
-
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
+        const queryString = generateQueryString(filters);
+        console.log(queryString);
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",

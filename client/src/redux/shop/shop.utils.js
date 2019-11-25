@@ -18,7 +18,7 @@ export const addCollection = (collectionsState, payload) => {
     return { ...collection, filters: nextFilters, facets: facetsMap };
 }
 
-export const mapFacetsToState = (facetsArray) => {
+const mapFacetsToState = (facetsArray) => {
     if (!facetsArray) return null;
 
     const filteredFacets = facetsArray.reduce((newArray, facet) => {
@@ -107,3 +107,8 @@ export const toggleFilter = (filters, filterToAdd) => {
     
     return filters.filter(item => JSON.stringify(item) !== JSON.stringify(filterToAdd));
 };
+
+export const generateQueryString = (filters) => {
+    let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`).join('&') : '';
+    return str;
+}
