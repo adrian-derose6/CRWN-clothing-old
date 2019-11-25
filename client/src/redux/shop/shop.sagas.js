@@ -1,7 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 
-import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils';
-
 import {
     fetchCollectionsSuccess,
     fetchCollectionsFailure,
@@ -11,10 +9,12 @@ import {
 
 import { SEARCH_ALL } from './shop.data.js';
 import ShopActionTypes from './shop.types';
+import { generateQueryString } from './shop.utils';
 
-export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId }}) {
+export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId, filters }}) {
     try {
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&sortBy=stock&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
+
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -49,7 +49,6 @@ export function* fetchCategoriesAsync() {
         });
 
         const responseJson = yield response.json();
-
         const reduceJson = (json, categoryType) => {
             return json
                     .filter(category => category.CatName === categoryType)
@@ -66,8 +65,6 @@ export function* fetchCategoriesAsync() {
             guys: SEARCH_ALL.guys.concat(reduceJson(responseJson, 'Men')),
             girls: SEARCH_ALL.girls.concat(reduceJson(responseJson, 'Women'))
         };
-
-        console.log(mapJsonToState)
 
         yield put(fetchCategoriesSuccess(mapJsonToState));
     } catch (error) {

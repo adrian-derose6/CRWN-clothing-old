@@ -1,14 +1,21 @@
 import { FACETS_MAP } from './shop.data';
 
-export const addCollection = (payload) => {
-    const { facets } = payload.collection;
+const INITIAL_FILTER = [{
+    code: 'stock',
+    name: 'Stock',
+    facet: 'sortBy'
+}];
+
+export const addCollection = (collectionsState, payload) => {
+    const { collection, categoryId, collectionName } = payload;
+    const { facets } = collection;
+    const nextFilters = collectionsState[categoryId][collectionName] ? 
+                        [...collectionsState[categoryId][collectionName].filters] 
+                        :   [...INITIAL_FILTER];
+
     const facetsMap = mapFacetsToState(facets);
 
-    return { ...payload.collection, filters: [{
-        code: 'stock',
-        name: 'Stock',
-        facet: 'sortBy'
-    }], facets: facetsMap };
+    return { ...collection, filters: nextFilters, facets: facetsMap };
 }
 
 export const mapFacetsToState = (facetsArray) => {

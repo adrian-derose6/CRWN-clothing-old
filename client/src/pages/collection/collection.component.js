@@ -1,6 +1,7 @@
 import React, { createContext } from 'react';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import equal from 'fast-deep-equal';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import { selectCollection, selectFilters } from '../../redux/shop/shop.selectors';
@@ -14,7 +15,7 @@ import './collection.styles.scss';
 
 class CollectionList extends React.Component {
     componentDidMount() {
-        const { collection, categoryId, category } = this.props;
+        const { collection } = this.props;
 
         if (!collection) {
             this.fetchCollection();
@@ -29,16 +30,22 @@ class CollectionList extends React.Component {
         return true;
     }
 
+    componentDidUpdate(prevProps) {
+        if (!equal(this.props.filters, prevProps.filters)) {
+            this.fetchCollection();
+        }
+    }
+
     fetchCollection = () => {
-        const { fetchCollectionsStart, category, collection, categoryId, filters } = this.props;
+        const { fetchCollectionsStart, category, categoryId, filters } = this.props;
         const tagCode = category.tagCodes[0];
         const collectionName = category.CategoryValue;
 
-        fetchCollectionsStart({ collectionName, tagCode, categoryId });
+        fetchCollectionsStart({ collectionName, tagCode, categoryId, filters });
     }
 
     render() {
-        const { category, categoryId, collection } = this.props;
+        const { category, categoryId, collection, filters } = this.props;
         
         if (!this.shouldComponentRender()) return <Spinner />;
 
@@ -78,6 +85,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return ({
         collection: selectCollection(categoryId, category.CategoryValue)(state),
+        filters: selectFilters(categoryId, category.CategoryValue)(state)
     });
 };
 

@@ -30,7 +30,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                     ...state.collections,
                     [categoryId]: {
                         ...state.collections[categoryId],
-                        [collectionName]: addCollection(action.payload)
+                        [collectionName]: addCollection(state.collections, action.payload)
                     } 
                 },
                 errorMessage: null

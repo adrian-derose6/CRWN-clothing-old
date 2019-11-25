@@ -20,15 +20,16 @@ const SelectedFilters = ({ filters, toggleFilter, categoryId, collectionName }) 
         <div className='selected-filters'>
             <span className='label'>Selected Filters:</span>
             {
-                filters.map(filter => {
+                filters.map((filter, index) => {
                     if (filter.facet === 'sortBy') return null;
                     
                     const nameClass = letterSizes.includes(filter.name)  ? 'uppercase' : 'capitalize';
+                    const displayName = filter.name.replace('-', ' ');
 
                     return (
-                        <div className='filter-box'>
+                        <div className='filter-box' key={index}>
                             <div className='inner-box'>
-                                <span className={`${nameClass}`}>{filter.name}</span>
+                                <span className={`${nameClass}`}>{displayName}</span>
                             </div>
                             <div className='cancel-box inner-box' onClick={() => handleClick(filter)}>
                                 <img src={deleteIcon} className='delete-icon'/>
