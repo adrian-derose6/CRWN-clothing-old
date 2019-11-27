@@ -1,17 +1,59 @@
 .collection-item {
-    width: 22vw;
-    display: flex;
-    flex-direction: column;
-    height: 350px;
-    align-items: center;
     position: relative;
+    cursor: pointer;
+    padding-bottom: 180%;
+    overflow: hidden;
   
-    .image {
+    .image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 95%;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 5px;
+      height: 75%;
+
+      .heart-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 10px;
+        z-index: 1500;
+      }
+    }
+
+    .item-details {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 25%;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-gap: 6px;
+
+      .product-name {
+        font-size: 15px;
+        font-family: 'Sharp Sans No1 Bold';
+        letter-spacing: 1px;
+        margin-top: 10px;
+      }
+
+      .price {
+        font-size: 15px;
+        font-family: 'Sharp Sans No1 Bold';
+        color: #9c2224;
+      }
+
+      .colors-row {
+        display: flex;
+        flex-direction: row;
+
+        .color-circle {
+          height: 8px;
+          width: 8px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+
     }
 
     .custom-button {
@@ -21,33 +63,12 @@
       top: 255px;
       display: none;
     }
-
-    &:hover {
-      .image {
-        opacity: 0.8;
-      }
       
+    &:hover {
       .custom-button {
         opacity: 0.85;
         display: flex;
         align-items: center;
-      }
-    }
-  
-    .collection-footer {
-      width: 100%;
-      height: 5%;
-      display: flex;
-      justify-content: space-between;
-      font-size: 18px;
-  
-      .name {
-        width: 90%;
-        margin-bottom: 15px;
-      }
-  
-      .price {
-        width: 10%;
       }
     }
   }

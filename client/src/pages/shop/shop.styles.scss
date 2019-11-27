@@ -1,4 +1,19 @@
 .shop-page {
-    margin-top: 70px;
-    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    position: relative;
+
+    .left-panel {
+        width: 225px;
+        padding: 22px;
+        height: 100%;
+        position: sticky;
+        position: -webkit-sticky;
+        top: 70px;
+
+        @media screen and (max-width: 900px) {
+            display: none;
+        }
+    }
 }

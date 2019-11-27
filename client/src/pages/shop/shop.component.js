@@ -1,49 +1,74 @@
-import React, { lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { 
+    Switch,
+    Route,
+    Link,
+} from 'react-router-dom';
 
 import Spinner from '../../components/spinner/spinner.component';
+import CategorySelection from '../../components/category-selection/category-selection.component';
 
-import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
+import { selectCategoriesByGender} from '../../redux/shop/shop.selectors';
+import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
 
-const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
-const CollectionPageContainer = lazy(() => import('../collection/collection.container'));
+const CollectionList = lazy(() => import('../collection/collection.component'));
 
 class ShopPage extends React.Component {
     componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
-        
-        fetchCollectionsStart();
+        const { fetchCategoriesStart, categories } = this.props;
+
+        if (!categories) {
+            fetchCategoriesStart();
+        }
+    }
+
+    shouldComponentRender = () => {
+        const { categories } = this.props;
+
+        if (!categories) return false;
+
+        return true;
     }
 
     render() {
-        const { match } = this.props;
+        const { path, params } = this.props.match;
+        const { categories } = this.props;
+
+        if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
-            <div className='shop-page'>
-                <Suspense fallback={<Spinner/>}>
-                    <Route 
-                        exact 
-                        path={`${match.path}`} 
-                        component={CollectionsOverviewContainer}      
-                    />
-                    <Route 
-                        path={`${match.path}/:collectionId`} 
-                        component={CollectionPageContainer} 
-                    />
+            <div className='shop-page'>  
+                <Suspense fallback={<Spinner />}>          
+                    <div className='left-panel'>
+                        <CategorySelection categories={categories}/>
+                    </div>
+                    <Switch>
+                        {
+                            categories.map((category, index) => (
+                                <Route exact key={index} path={`${path}/${category.CategoryValue}`}>
+                                    <CollectionList category={category} categoryId={params.categoryId}/>
+                                </Route>
+                            ))
+                        }
+                    </Switch>
                 </Suspense>
             </div>
-        )
+        );
     }
 };
 
+const mapStateToProps = (state, ownProps) => ({
+    categories: selectCategoriesByGender(ownProps.match.params.categoryId)(state)
+});
+
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStart: collectionsMap => dispatch(fetchCollectionsStart(collectionsMap))
+    fetchCategoriesStart: () => dispatch(fetchCategoriesStart())
 });
 
 export default connect(
-    null,
+    mapStateToProps, 
     mapDispatchToProps
 )(ShopPage);

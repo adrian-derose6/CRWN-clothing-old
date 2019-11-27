@@ -1,7 +1,12 @@
 import ShopActionTypes from './shop.types.js';
+import { toggleFilter, addCollection } from './shop.utils';
 
 const INITIAL_STATE = {
-    collections: null,
+    collections: {
+        guys: {},
+        girls: {}
+    },
+    categories: null,
     isFetching: false,
     errorMessage: undefined
 };
@@ -9,22 +14,62 @@ const INITIAL_STATE = {
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case ShopActionTypes.FETCH_COLLECTIONS_START:
+        case ShopActionTypes.FETCH_CATEGORIES_START: {
             return {
                 ...state,
                 isFetching: true
             };
-        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS:
+        }
+        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS: {
+            let { categoryId, collectionName } = action.payload;
+
             return {
                 ...state,
                 isFetching: false,
-                collections: action.payload
+                collections: {
+                    ...state.collections,
+                    [categoryId]: {
+                        ...state.collections[categoryId],
+                        [collectionName]: addCollection(state.collections, action.payload)
+                    } 
+                },
+                errorMessage: null
             };
+        }
         case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
+        case ShopActionTypes.FETCH_CATEGORIES_FAILURE: {
             return {
                 ...state,
-                isFetching: true,
+                isFetching: false,
                 errorMessage: action.payload
             };
+        }
+        case ShopActionTypes.FETCH_CATEGORIES_SUCCESS: {
+            return {
+                ...state,
+                isFetching: false,
+                categories: action.payload,
+                errorMessage: null
+            };
+        }
+        case ShopActionTypes.TOGGLE_FILTER: {
+            const { categoryId, collectionName, item } = action.payload;
+            const { filters } = state.collections[categoryId][collectionName];
+
+            return {
+                ...state,
+                collections: {
+                    ...state.collections,
+                    [categoryId]: {
+                        ...state.collections[categoryId],
+                        [collectionName]: {
+                            ...state.collections[categoryId][collectionName],
+                            filters: toggleFilter(filters, item)
+                        }
+                    }
+                }
+            };
+        }
         default:
             return state;
     }

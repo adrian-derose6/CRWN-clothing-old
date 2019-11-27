@@ -10,7 +10,6 @@ import Spinner from './components/spinner/spinner.component.js';
 import ErrorBoundary from './components/error-boundary/error-boundary.component.js';
 
 import { checkUserSession } from './redux/user/user.actions.js';
-
 import { selectCurrentUser } from './redux/user/user.selectors.js';
 import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
@@ -21,7 +20,7 @@ const ShopPage = lazy(() => import('./pages/shop/shop.component.js'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component.js'));
 const SignInAndSignUp = lazy(() => import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'));
 
-const App = ({ checkUserSession, currentUser }) => {
+const App = ({ checkUserSession, user, clearCart }) => {
   useEffect(() => {
     checkUserSession()
   }, [checkUserSession]);
@@ -35,12 +34,12 @@ const App = ({ checkUserSession, currentUser }) => {
           <ErrorBoundary>
             <Suspense fallback={<Spinner />}>
               <Route exact path='/' component={HomePage} />
-              <Route path='/shop' component={ShopPage} />
+              <Route path='/:categoryId(guys|girls)' component={ShopPage} />
               <Route exact path='/checkout' component={CheckoutPage} />
               <Route 
                 exact 
                 path='/signin' 
-                render={() => currentUser ? <Redirect to='/' /> : <SignInAndSignUp />} 
+                render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
               />
             </Suspense>
           </ErrorBoundary>

@@ -1,16 +1,59 @@
 .collection-page {
   display: flex;
   flex-direction: column;
+  padding: 22px;
+  padding-top: 0px;
+  width: 100%;
+  position: relative;
+
+  @media screen and (max-width: 800px) {
+    min-width: 100%;
+  }
 
   .title {
-    font-size: 38px;
-    margin: 0 auto 30px;
+    font-size: 40px;
+    height: 48px;
+    margin: 22px;
+    margin-left: 0;
+    text-transform: uppercase;
+    text-align: left;
+    font-family: "Sharp Sans No1 Semibold";
+
+    @media screen and (max-width: 800px) {
+      font-size: 30px;
+      height: 30px;
+    }
+  }
+
+  .description {
+    font-size: 14px;
+    padding-right: 100px;
+    font-family: "Sharp Sans No1 Semibold";
+    margin-bottom: 10px;
   }
 
   .items {
     display: grid;
+    margin-top: 22px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 4px;
+
+    @media screen and (max-width: 1000px) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media screen and (max-width: 800px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &.large-items {
+      grid-template-columns: 1fr 1fr;
+
+      @media screen and (max-width: 800px) {
+        grid-template-columns: 1fr;
+      }
+
+    }
 
     & .collection-item {
       margin-bottom: 30px;

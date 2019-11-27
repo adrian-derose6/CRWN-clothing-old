@@ -1,0 +1,22 @@
+.category-selection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+
+    .label {
+        font-size: 16px;
+        font-family: "Sharp Sans No1 Bold";
+        margin-bottom: 20px;
+    }
+
+    .category {
+        font-size: 13px;
+        font-family: 'Sharp Sans No1 Semibold';
+        color: #494d59;
+    }
+
+    .bolded {
+        font-family: 'Sharp Sans No1 Bold'
+    }
+}

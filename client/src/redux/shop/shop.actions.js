@@ -1,8 +1,8 @@
 import ShopActionTypes from './shop.types.js';
-import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils.js';
 
-export const fetchCollectionsStart = () => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_START,  
+export const fetchCollectionsStart = (queryParams) => ({
+    type: ShopActionTypes.FETCH_COLLECTIONS_START,
+    payload: queryParams  
 });
 
 export const fetchCollectionsSuccess = (collectionsMap) => ({
@@ -10,19 +10,26 @@ export const fetchCollectionsSuccess = (collectionsMap) => ({
     payload: collectionsMap
 });
 
-export const fetchCollectionsFailure= (error) => ({
+export const fetchCollectionsFailure = (error) => ({
     type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE, 
     payload: error
 });
 
-export const fetchCollections = () => {
-    return async dispatch => {
-        const collectionRef = await firestore.collection('collections');
+export const fetchCategoriesStart = () => ({
+    type: ShopActionTypes.FETCH_CATEGORIES_START
+});
 
-        collectionRef.get().then( async snapshot => {
-            const collectionsMap = await convertCollectionsSnapshotToMap(snapshot);
-            
-            dispatch(fetchCollectionsSuccess(collectionsMap));
-        }).catch(error => dispatch(fetchCollectionsFailure(error)))
-    }
-}
+export const fetchCategoriesSuccess = (categoriesList) => ({
+    type: ShopActionTypes.FETCH_CATEGORIES_SUCCESS,
+    payload: categoriesList
+});
+
+export const fetchCategoriesFailure = (error) => ({
+    type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE,
+    payload: error
+});
+
+export const toggleFilter = (filterParams) => ({
+    type: ShopActionTypes.TOGGLE_FILTER,
+    payload: filterParams
+});

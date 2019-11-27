@@ -1,0 +1,60 @@
+.selected-filters {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    .label {
+        font-size: 13px;
+        font-family: 'Sharp Sans No1 Bold';
+        letter-spacing: 1px;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+
+    .filter-box {
+        margin-right: 20px;
+        margin: 10px;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+
+        .delete-icon {
+            width: 17px;
+            height: 17px;
+        }
+
+        .inner-box {
+            height: 100%;
+            min-width: 40px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+
+        }
+
+        .cancel-box {
+            max-height: 40px;
+            width: 40px;
+            cursor: pointer;
+            background: #292a33;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .capitalize {
+            text-transform: capitalize;
+            font-size: 13px;
+            
+        }
+    }
+}
