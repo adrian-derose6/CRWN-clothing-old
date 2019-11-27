@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import CustomButton from '../custom-button/custom-button.component';
 
 import { addItem } from '../../redux/cart/cart.actions.js';
+
+import HeartIcon from '../../assets/heart-icon.js';
 
 import './collection-item.styles.scss';
 
@@ -15,29 +17,48 @@ const BackgroundImage = styled.img`
     object-position: center;
     position: absolute;
     margin-bottom: 5px;
-    opacity: ${props => props.main ? '1;' : '0;'}
+    opacity: ${props => props.main ? '1' : '1'};
+    z-index: ${props => props.main ? '1000' : '500'};
     transition: opacity 0.3s ease;
 
     &:hover {
-        opacity: ${props => props.main ? '0;' : '1;'}
+        opacity: ${props => props.main ? '0' : '1'};
     }
 `
 
-const CollectionItem = ({ item, addItem }) => {
-    const { name } = item;
+const CollectionItem = ({ item, addItem, imageType }) => {
+    const [favorited, setFavorited] = useState(false);
+    const { name, rgbColors, price } = item;
     const logoPicture = item.articles[0].logoPicture[0].url;
     const normalPicture = item.articles[0].images[0].url;
+    console.log(item)
+    console.log(favorited)
+
+    console.log(imageType)
+
+    const toggleFavorited = () => {
+        setFavorited(!favorited);
+    }
 
     return (
         <div className='collection-item'>
             <div className='image-container'>
-                <BackgroundImage src={logoPicture} main={true} />
-                <BackgroundImage src={normalPicture} main={false}/>
+                <BackgroundImage src={logoPicture} main={imageType === 'model'} />
+                <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
+                <HeartIcon className='heart-icon' selected={favorited} onClick={toggleFavorited}/>
             </div>
             <div className='item-details'>
                 <span className='product-name'>{name}</span>
-                <span className='price'>$15</span>
-                <span></span>
+                <span className='price'>{`$${price.value}`}</span>
+                <div className='colors-row'>
+                    {
+                        rgbColors.map(color => {
+                            return (
+                                <div className='color-circle' style={{ background: color }}/>
+                            )
+                        })
+                    }
+                </div>
             </div>
         </div>
     );

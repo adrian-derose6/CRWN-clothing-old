@@ -18,6 +18,11 @@
     text-transform: uppercase;
     text-align: left;
     font-family: "Sharp Sans No1 Semibold";
+
+    @media screen and (max-width: 800px) {
+      font-size: 30px;
+      height: 30px;
+    }
   }
 
   .description {
@@ -39,6 +44,15 @@
 
     @media screen and (max-width: 800px) {
       grid-template-columns: 1fr 1fr;
+    }
+
+    &.large-items {
+      grid-template-columns: 1fr 1fr;
+
+      @media screen and (max-width: 800px) {
+        grid-template-columns: 1fr;
+      }
+
     }
 
     & .collection-item {

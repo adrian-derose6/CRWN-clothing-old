@@ -42,6 +42,10 @@ option {
 
     .label {
         margin-right: 10px;
+
+        &.highlight {
+            color: #9c2224;
+        }
     }
 
     .arrow {

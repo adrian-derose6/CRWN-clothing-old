@@ -97,6 +97,7 @@ class CollectionList extends React.Component {
                                     <CollectionItem 
                                         item={item} 
                                         key={index}
+                                        imageType={imageType}
                                     />
                             )
                         })

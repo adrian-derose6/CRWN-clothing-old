@@ -1,0 +1,13 @@
+.heart-icon-svg {
+    fill: #faf9f8;
+
+    &:hover {
+        fill: #9c2224;
+        stroke: none;
+    }
+
+    &.selected {
+        fill: #9c2224;
+        stroke: none;
+    }
+}

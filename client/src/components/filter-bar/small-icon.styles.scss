@@ -15,7 +15,7 @@
 
     &.selected {
         .inner-box {
-            background: #292a33;
+            border-color: #9c2224;
         }
     }
 }
@@ -29,6 +29,6 @@
     cursor: pointer;
 
     &.selected {
-        border-width: 2px;
+        border-color: #9c2224;
     }
 }

@@ -122,7 +122,7 @@ class FilterDropdown extends React.Component {
         return (
             <div className='filter-dropdown' ref={this.setWrapperRef}>
                 <button className='filter-tab' onClick={() => this.toggleList()}>
-                    <span className='label'>{label}</span>
+                    <span className={`${listOpen ? 'highlight' : ''} label`}>{label}</span>
                     <img className='arrow' src={listOpen ? collapseIcon : expandIcon} />
                 </button>
                 <div className={`${listOpen ? 'open' : 'closed'} dropdown-container`} >
