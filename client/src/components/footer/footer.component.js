@@ -43,20 +43,6 @@ const Footer = () => {
                     <span className='misc'>M - F 6:00am - 8:00pm PST<br/>Sat & Sun 9:30am - 6:00pm PST</span>
                 </div>
             </div>
-            <div className='bottom-widgets'>
-                <div className='widget'>
-                    <span style={{ marginBottom: 10 }} className='label'>Store Locator</span>
-                    <span style={{ marginBottom: 10 }} className='sublabel'>Find a CRWN store near you</span>
-                    <CustomButton>FIND A STORE</CustomButton>
-                </div>
-                <div className='widget'>
-                    <span className='label'>Follow CRWN</span>
-                </div>
-                <div className='widget'>
-                    <span className='label'>Subscribe</span>                   
-
-                </div>
-            </div>
         </div>
     );
 };

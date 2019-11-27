@@ -4,7 +4,7 @@
     height: 650px;
     padding-left: 40px;
     padding-right: 40px;
-    padding-top: 30px;
+    padding-top: 50px;
     border-top: 50px solid #292a33;
     flex-direction: column;
 
@@ -15,6 +15,8 @@
         flex-direction: row;
         justify-content: space-around;
         margin-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
     
     
         .link-list { 
@@ -27,21 +29,21 @@
 
     .label {
         color: white;
-        font-size: 20px;
+        font-size: 16px;
         font-family: Sharp Sans No1 Semibold;
-        margin-bottom: 5px;
+        margin-bottom: 20px;
     }
 
     .sublabel {
         color: white;
         font-size: 13px;
-        margin-bottom: 5px;
+        margin-bottom: 15px;
     }
 
     .link {
         font-size: 13px;
         color: lightgray;
-        margin-bottom: 5px;
+        margin-bottom: 14px;
         cursor: pointer;
 
         &:hover {
