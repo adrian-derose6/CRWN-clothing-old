@@ -8,15 +8,14 @@ import { addItem } from '../../redux/cart/cart.actions.js';
 
 import './collection-item.styles.scss';
 
-const BackgroundImage = styled.div`
+const BackgroundImage = styled.img`
     width: 100%;
-    height: 95%;
-    background-size: cover;
-    background-position: center;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     position: absolute;
     margin-bottom: 5px;
     opacity: ${props => props.main ? '1;' : '0;'}
-    background-image: url(${props => props.src});
     transition: opacity 0.3s ease;
 
     &:hover {
@@ -31,14 +30,15 @@ const CollectionItem = ({ item, addItem }) => {
 
     return (
         <div className='collection-item'>
-            <BackgroundImage src={logoPicture} main={true} />
-            <BackgroundImage src={normalPicture} main={false}/>
-            <div className='collection-footer'>
-                <span className='name'>{name}</span>
+            <div className='image-container'>
+                <BackgroundImage src={logoPicture} main={true} />
+                <BackgroundImage src={normalPicture} main={false}/>
             </div>
-            <CustomButton onClick={() => addItem(item)} inverted>
-                ADD TO CART 
-            </CustomButton>
+            <div className='item-details'>
+                <span className='product-name'>{name}</span>
+                <span className='price'>$15</span>
+                <span></span>
+            </div>
         </div>
     );
 }

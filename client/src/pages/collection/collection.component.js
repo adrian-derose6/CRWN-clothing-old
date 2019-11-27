@@ -14,6 +14,11 @@ import SelectedFilters from '../../components/selected-filters/selected-filters.
 import './collection.styles.scss';
 
 class CollectionList extends React.Component {
+    state = {
+        imageType: 'model',
+        imageSize: 'small'
+    };
+
     componentDidMount() {
         const { collection } = this.props;
 
@@ -44,33 +49,55 @@ class CollectionList extends React.Component {
         fetchCollectionsStart({ collectionName, tagCode, categoryId, filters });
     }
 
+    setImageSize = (imageSize) => {
+        if (this.state.imageSize !== imageSize) {
+            this.setState({ imageSize });
+        }
+    }
+
+    setImageType = (imageType) => {
+        if (this.state.imageType !== imageType) {
+            this.setState({ imageType });
+        }
+    }
+
     render() {
+        const { imageSize, imageType } = this.state;
         const { category, categoryId, collection, filters } = this.props;
+        const { CategoryValue, CatName } = category;
+        const displayName = (CategoryValue === 'all-guys' || CategoryValue === 'all-girls') ? CatName : `${categoryId} ${CatName}`;
         
         if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
             <div className='collection-page'> 
-                <h2 className='title'>{categoryId} {category.CatName}</h2>
+                <h2 className='title'>{displayName}</h2>
+                {(category.description) ? <span className='description'>{category.description}</span> : null}
                 <FilterBar 
                     facets={collection.facets} 
                     filters={collection.filters} 
                     categoryId={categoryId} 
                     collectionName={category.CategoryValue}
+                    setImageSize={(imageSize) => this.setImageSize(imageSize)}
+                    setImageType={(imageType) => this.setImageType(imageType)}
+                    imageType={imageType}
+                    imageSize={imageSize}
+                    numberOfItems={collection.pagination.totalNumberOfResults}
                 />
                 <SelectedFilters 
                     filters={collection.filters} 
                     categoryId={categoryId} 
                     collectionName={category.CategoryValue}
                 />
-                <div className='items'>
+                <div className={`${imageSize === 'large' ? 'large-items' : ''} items`}>
                     {
                         collection.results.map((item, index) => {
                             return (
-                                <CollectionItem 
-                                    item={item} 
-                                    key={index}
-                                />
+
+                                    <CollectionItem 
+                                        item={item} 
+                                        key={index}
+                                    />
                             )
                         })
                     }

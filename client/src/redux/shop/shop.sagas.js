@@ -7,14 +7,13 @@ import {
     fetchCategoriesFailure
 } from './shop.actions';
 
-import { SEARCH_ALL } from './shop.data.js';
+import { SEARCH_ALL, CATEGORY_DESCRIPTIONS } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 import { generateQueryString } from './shop.utils';
 
 export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId, filters }}) {
     try {
         const queryString = generateQueryString(filters);
-        console.log(queryString);
         const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
@@ -51,7 +50,7 @@ export function* fetchCategoriesAsync() {
         const responseJson = yield response.json();
 
         const reduceJson = (json, categoryType) => {
-            return json
+            const filteredResponse  = json
                     .filter(category => category.CatName === categoryType)
                     .map(category => {
                         return category.CategoriesArray
@@ -60,6 +59,16 @@ export function* fetchCategoriesAsync() {
                                 .filter(concept => concept.CatName === 'Divided')[0]
                                 .CategoriesArray      
                     })[0];
+
+            const categoriesWithDescriptions = filteredResponse.map(item => {
+                if (item.tagCodes[0] in CATEGORY_DESCRIPTIONS) {
+                    return { ...item, description: CATEGORY_DESCRIPTIONS[item.tagCodes[0]]}
+                }
+                
+                return { ...item };
+            });
+            
+            return categoriesWithDescriptions;
         };
 
         const mapJsonToState = {

@@ -16,20 +16,6 @@ import './shop.styles.scss';
 
 const CollectionList = lazy(() => import('../collection/collection.component'));
 
-const guysLinks = [
-    { toUrl: 'hat', name: 'Hats' },
-    { toUrl: 'jacket', name: 'Jackets' },
-    { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans'}
-];
-
-const girlsLinks = [
-    { toUrl: 'dresses', name: 'Dresses' },
-    { toUrl: 'bags', name: 'Bags' },
-    { toUrl: 'skirts', name: 'Skirts' },
-    { toUrl: 'jeans', name: 'Jeans' },
-    { toUrl: 'jeans/skinny-jeans', name: 'Skinny Jeans' }
-];
-
 class ShopPage extends React.Component {
     componentDidMount() {
         const { fetchCategoriesStart, categories } = this.props;
