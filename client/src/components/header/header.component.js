@@ -8,6 +8,7 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { ReactComponent as MenuIcon } from '../../assets/menu-icon.svg';
 import { ReactComponent as UserIcon } from '../../assets/user.svg';
 
+import CustomerIcon from '../customer-icon/customer-icon.component';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHidden } from '../../redux/cart/cart.selectors.js';
@@ -35,11 +36,21 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                 </Link>
                 <div className='options left'>
                     <Link className='option' to='/guys/all-guys'>
-                        GUYS
+                        Guys
                     </Link>
                     <Link className='option' to='/girls/all-girls'>
-                        GIRLS
+                        Girls
                     </Link>
+                    <Link className='option' to='/girls/all-girls'>
+                        Kids
+                    </Link>
+                    <Link className='option' to='/girls/all-girls'>
+                        Bottoms
+                    </Link>
+                    <Link className='option' to='/girls/all-girls'>
+                        Jackets
+                    </Link>
+  
                 </div>
                 <div className='options'>
                     {
@@ -50,6 +61,7 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                                 <UserIcon />
                             </Link>
                     }
+                    <CustomerIcon />
                     <CartIcon />
                 </div>
                 { hidden ? null : <CartDropdown />}
