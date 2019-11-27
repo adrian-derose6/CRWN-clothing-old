@@ -32,9 +32,6 @@ const CollectionItem = ({ item, addItem, imageType }) => {
     const logoPicture = item.articles[0].logoPicture[0].url;
     const normalPicture = item.articles[0].images[0].url;
     console.log(item)
-    console.log(favorited)
-
-    console.log(imageType)
 
     const toggleFavorited = () => {
         setFavorited(!favorited);
