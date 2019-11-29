@@ -8,12 +8,16 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { ReactComponent as MenuIcon } from '../../assets/menu-icon.svg';
 import { ReactComponent as UserIcon } from '../../assets/user.svg';
 
+import NavPopover from '../nav-popover/nav-popover.component';
 import CustomerIcon from '../customer-icon/customer-icon.component';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHidden } from '../../redux/cart/cart.selectors.js';
 import { selectCurrentUser } from '../../redux/user/user.selectors.js';
 import { signOutStart } from '../../redux/user/user.actions';
+
+import guysNavImage from '../../assets/nav-dropdowns/guys-nav-image.jpg';
+import girlsNavImage from '../../assets/nav-dropdowns/girls-nav-image.jpg';
 
 import './header.styles.scss';
 
@@ -35,22 +39,11 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <Link className='option' to='/guys/all-guys'>
-                        Guys
-                    </Link>
-                    <Link className='option' to='/girls/all-girls'>
-                        Girls
-                    </Link>
-                    <Link className='option' to='/girls/all-girls'>
-                        Kids
-                    </Link>
-                    <Link className='option' to='/girls/all-girls'>
-                        Bottoms
-                    </Link>
-                    <Link className='option' to='/girls/all-girls'>
-                        Jackets
-                    </Link>
-  
+                    <NavPopover label='Guys' link='/guys/all-guys' image={guysNavImage}/>
+                    <NavPopover label='Girls' link='/girls/all-girls' image={girlsNavImage} />
+                    <NavPopover label='Kids' />
+                    <NavPopover label='Bottoms' />
+                    <NavPopover label='Jackets' />
                 </div>
                 <div className='options'>
                     {

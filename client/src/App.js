@@ -30,22 +30,21 @@ const App = ({ checkUserSession, user, clearCart }) => {
       <div>
         <TopBanner />
         <Header />
-        <Switch>
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner />}>
-              <Route exact path='/' component={HomePage} />
-              <Route path='/:categoryId(guys|girls)' component={ShopPage} />
-              <Route exact path='/checkout' component={CheckoutPage} />
-              <Route 
-                exact 
-                path='/signin' 
-                render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
-              />
-            </Suspense>
-          </ErrorBoundary>
-        </Switch>
+          <Switch>
+            <ErrorBoundary> 
+              <Suspense fallback={<Spinner />}>
+                  <Route exact path='/' component={HomePage} />
+                  <Route path='/:categoryId(guys|girls)' component={ShopPage} />
+                  <Route exact path='/checkout' component={CheckoutPage} />
+                  <Route 
+                    exact 
+                    path='/signin' 
+                    render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
+                  />
+              </Suspense>
+            </ErrorBoundary>
+          </Switch>
       </div>
-      <Footer />
     </div>
   );
 }
