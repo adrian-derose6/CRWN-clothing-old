@@ -18,6 +18,7 @@ import { signOutStart } from '../../redux/user/user.actions';
 
 import guysNavImage from '../../assets/nav-dropdowns/guys-nav-image.jpg';
 import girlsNavImage from '../../assets/nav-dropdowns/girls-nav-image.jpg';
+import bottomsNavImage from '../../assets/nav-dropdowns/bottoms-nav-image.jpg';
 
 import './header.styles.scss';
 
@@ -39,11 +40,11 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <NavPopover label='Guys' link='/guys/all-guys' image={guysNavImage}/>
-                    <NavPopover label='Girls' link='/girls/all-girls' image={girlsNavImage} />
-                    <NavPopover label='Kids' />
-                    <NavPopover label='Bottoms' />
-                    <NavPopover label='Jackets' />
+                    <NavPopover label='Guys' value='guys' link='/guys/all-guys' image={guysNavImage}/>
+                    <NavPopover label='Girls' value='girls' link='/girls/all-girls' image={girlsNavImage} />
+                    <NavPopover label='Kids' value='guys'/>
+                    <NavPopover label='Bottoms' value='guys' image={bottomsNavImage} />
+                    <NavPopover label='Jackets' value='girls' />
                 </div>
                 <div className='options'>
                     {

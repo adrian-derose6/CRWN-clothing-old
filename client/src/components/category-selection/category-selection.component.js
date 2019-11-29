@@ -3,22 +3,22 @@ import { Link, withRouter } from 'react-router-dom';
 
 import './category-selection.styles.scss';
 
-const CategorySelection = ({ categories, match, history, location }) => {
+const CategorySelection = ({ categories, match, history, location, large, label, categoryId}) => {
     const { url } = match;
-    
     return (
         <div className='category-selection'>
-            <span className='label'>Shop By Product</span>
+            <span className={`${large ? 'large-label' : '' } label`}>{label || 'Shop By Category'}</span>
             {
                 categories.map((category, index) => {
-
+                    const urlToLinkTo = `${url === '/' ? url : url + '/'}${categoryId ? categoryId + '/' : ''}${category.CategoryValue || ''}`
+                    
                     return (
                         <Link 
-                            style={{ marginBottom: 16 }} 
+                            style={{ marginBottom: (large) ? 22 : 16 }} 
                             key={index}
-                            to={`${url}/${category.CategoryValue}`}
+                            to={urlToLinkTo}
                         >
-                            <span className={`category`}>
+                            <span className={`${large ? 'large-category' : ''} category`}>
                                 {category.CatName}
                             </span>
                         </Link>

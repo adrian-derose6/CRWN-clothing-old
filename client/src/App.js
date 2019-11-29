@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense} from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
 import Header from './components/header/header.component.js';
@@ -11,6 +11,7 @@ import ErrorBoundary from './components/error-boundary/error-boundary.component.
 
 import { checkUserSession } from './redux/user/user.actions.js';
 import { selectCurrentUser } from './redux/user/user.selectors.js';
+import { fetchCategoriesStart } from './redux/shop/shop.actions';
 import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 import './App.scss';
@@ -20,9 +21,10 @@ const ShopPage = lazy(() => import('./pages/shop/shop.component.js'));
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component.js'));
 const SignInAndSignUp = lazy(() => import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'));
 
-const App = ({ checkUserSession, user, clearCart }) => {
+const App = ({ checkUserSession, user, clearCart, fetchCategoriesStart}) => {
   useEffect(() => {
-    checkUserSession()
+    checkUserSession();
+    fetchCategoriesStart();
   }, [checkUserSession]);
 
   return (
@@ -55,7 +57,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkUserSession: () => dispatch(checkUserSession())
+  checkUserSession: () => dispatch(checkUserSession()),
+  fetchCategoriesStart: () => dispatch(fetchCategoriesStart())
 });
 
 export default connect(
