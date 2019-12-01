@@ -47,6 +47,7 @@ const App = ({ checkUserSession, user, clearCart, fetchCategoriesStart}) => {
             </ErrorBoundary>
           </Switch>
       </div>
+      <Footer />
     </div>
   );
 }
