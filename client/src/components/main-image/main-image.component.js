@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 
 import CustomButton from '../custom-button/custom-button.component';
@@ -32,11 +33,16 @@ const MainImage = () => {
             <div className='shadow'></div>
             <div className='dyno-box'>
                 <img src={copyImage} className='copy-image'/>
+                
                 <span className='copy-details'>Exclusions apply. <span className='details-link'>Details</span>
                 </span>
                 <div className='call-to-action'>
-                    <CustomButton inverted style={buttonStyles}>Shop Girls</CustomButton>
-                    <CustomButton inverted style={buttonStyles}>Shop Guys</CustomButton>
+                    <Link to='/girls/all-girls'>
+                        <CustomButton inverted style={buttonStyles}>Shop Girls</CustomButton>
+                    </Link>
+                    <Link to='/guys/all-guys'>
+                        <CustomButton inverted style={buttonStyles}>Shop Guys</CustomButton>
+                    </Link>
                 </div>
             </div>
         </div>  

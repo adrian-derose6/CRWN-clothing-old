@@ -24,6 +24,7 @@ const NavPopover = ({ label, image, link, value, categories }) => {
     return (
         <div className='nav-popover-container' ref={dropdown}>
             <Link className='nav-link' to={link}>{label}</Link>
+            <div className={`${isHovered ? 'open' : 'closed'} arrow-up`} />
             <div className={`${isHovered ? 'open' : 'closed'} nav-popover`}>
                 <div className='links-container'>
                     <CategorySelection categories={categories} large categoryId={value}/>
