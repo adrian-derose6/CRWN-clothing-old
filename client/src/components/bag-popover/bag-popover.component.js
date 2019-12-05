@@ -34,7 +34,10 @@ const BagPopoverContent = ({ cartItems }) => {
                     <span className='bold'>Standard Shipping:</span>
                     <span>$0.00</span>
                 </div>
-                <div className='detail-row' style={{ borderTop: '2px solid lightgray' }}>
+                <div style={{width: '100%', padding: '0 22px'}}>
+                    <div className='divider' />
+                </div>
+                <div className='detail-row'>
                     <span className='bold' style={{fontSize: '17px'}}>Total:</span>
                     <span className='bold'>$0.00</span>
                 </div>

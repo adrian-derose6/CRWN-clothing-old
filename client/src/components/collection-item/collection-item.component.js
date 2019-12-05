@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CustomButton from '../custom-button/custom-button.component';
@@ -28,9 +29,10 @@ const BackgroundImage = styled.img`
 
 const CollectionItem = ({ item, addItem, imageType }) => {
     const [favorited, setFavorited] = useState(false);
-    const { name, rgbColors, price } = item;
-    const logoPicture = item.articles[0].logoPicture[0].url;
-    const normalPicture = item.articles[0].images[0].url;
+    const { name, rgbColors, price, articleCodes } = item;
+    const productId = articleCodes[0];
+    const logoPicture = item.defaultArticle.logoPicture[0].url;
+    const normalPicture = item.defaultArticle.images[0].url;
 
     const toggleFavorited = () => {
         setFavorited(!favorited);
@@ -38,11 +40,13 @@ const CollectionItem = ({ item, addItem, imageType }) => {
 
     return (
         <div className='collection-item'>
-            <div className='image-container'>
-                <BackgroundImage src={logoPicture} main={imageType === 'model'} />
-                <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
-                <HeartIcon className='heart-icon' selected={favorited} onClick={toggleFavorited}/>
-            </div>
+            <Link to={`/product-page/${productId}`}>
+                <div className='image-container'>
+                    <BackgroundImage src={logoPicture} main={imageType === 'model'} />
+                    <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
+                    <HeartIcon className='heart-icon' selected={favorited} onClick={toggleFavorited}/>
+                </div>
+            </Link>
             <div className='item-details'>
                 <span className='product-name'>{name}</span>
                 <span className='price'>{`$${price.value}`}</span>
