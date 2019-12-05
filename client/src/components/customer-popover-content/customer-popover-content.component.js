@@ -71,7 +71,7 @@ const CustomerPopoverContent = ({ user, signOutStart }) => {
 
 const buttonStyles = {
     fontFamily: 'Sharp Sans No1 Semibold',
-    margin: '5px',
+    margin: '4px',
     height: '45px'
 }
 
