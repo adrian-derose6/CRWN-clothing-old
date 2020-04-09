@@ -36,7 +36,7 @@ class CollectionList extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (!equal(this.props.filters, prevProps.filters)) {
+        if (!equal(this.props.filters, prevProps.filters) && prevProps.filters !== null) {
             this.fetchCollection();
         }
     }

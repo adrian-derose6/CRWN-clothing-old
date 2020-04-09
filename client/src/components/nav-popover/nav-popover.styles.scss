@@ -1,0 +1,90 @@
+.nav-popover-container {
+    background: none;
+    z-index: 7000;
+    display: flex;
+    justify-content: center;
+
+    .nav-link {
+        font-size: 14px;
+        cursor: pointer;
+        color: white;
+        padding: 10px 10px;
+        text-transform: uppercase;
+    }
+
+    .arrow-up {
+        width: 0; 
+        height: 0; 
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #faf9f8;
+        position: absolute;
+        bottom: 0;
+
+        opacity: 0;
+        -webkit-transition: opacity .4s ease-out;
+        transition: opacity .4s ease-out;
+
+        &.open {
+            opacity: 1;
+            visibility: visible;
+            overflow: auto;
+            z-index: 2000
+        }
+ 
+         &.closed {
+            max-height: 0px;
+            visibility: hidden;
+        }
+    }
+
+    .nav-popover {
+        width: 1000px;
+        margin-top: 54px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        background: #faf9f8;
+        z-index: 0;
+        opacity: 0;
+        -webkit-transition: opacity .4s ease-out;
+        transition: opacity .4s ease-out;
+        display: flex;
+        flex-direction: row;
+
+        &.open {
+            opacity: 1;
+            visibility: visible;
+            overflow: auto;
+            z-index: 2000
+        }
+ 
+         &.closed {
+            max-height: 0px;
+            visibility: hidden;
+        }
+
+        .links-container {
+            height: 100%;
+            width: 50%;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .image-container {
+            height: 100%;
+            width: 50%;
+            flex-direction: row;
+            justify-content: flex-end;
+
+            .popover-image {
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+}
