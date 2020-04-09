@@ -6,7 +6,6 @@ const INITIAL_STATE = {
         guys: {},
         girls: {}
     },
-    productDetails: {},
     categories: null,
     isFetching: false,
     errorMessage: undefined
@@ -52,17 +51,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                 categories: action.payload,
                 errorMessage: null
             };
-        }
-        case ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS: {
-            const { productId, productDetails } = action.payload;
-            console.log(action.payload)
-            return { 
-                ...state,
-                productDetails: {
-                    ...state.productDetails,
-                    [productId]: productDetails
-                }
-            }
         }
         case ShopActionTypes.TOGGLE_FILTER: {
             const { categoryId, collectionName, item } = action.payload;

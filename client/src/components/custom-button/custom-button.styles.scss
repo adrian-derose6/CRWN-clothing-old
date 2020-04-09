@@ -2,10 +2,10 @@
     min-width: 165px;
     width: auto;
     height: 50px;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     padding: 0 35px 0 35px;
     font-size: 15px;
-    background-color: #292a33;
+    background-color: black;
     color: white;
     text-transform: uppercase;
     font-family: "Sharp Sans No1 Semibold";
@@ -16,21 +16,20 @@
     text-align: center;
     align-content: center;
     justify-content: center;
-    transition: background-color .2s ease-out;
   
     &:hover {
       background-color: white;
-      color: #292a33;
-      border: 1px solid #292a33;
+      color: black;
+      border: 1px solid black;
     }
 
     &.inverted {
       background-color: white;
-      color: #292a33;
-      border: 1px solid #292a33;
+      color: black;
+      border: 1px solid black;
 
       &:hover {
-        background-color: #292a33;
+        background-color: black;
         color: white;
         border: none;
       }
