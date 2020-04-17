@@ -15,9 +15,9 @@ const LinkList = ({ list, match, label, value }) => {
                     const urlToLinkTo = `${url + '/'}${value || ''}/${item.CategoryValue}`
                     return (
                         <Link
-                            style={{ marginBottom: 16 }}
-                            key={{index}}
+                            key={index}
                             to={urlToLinkTo}
+                            style={{marginBottom: 12}}
                         >
                             <span className='link'>
                                 {item.CatName}
