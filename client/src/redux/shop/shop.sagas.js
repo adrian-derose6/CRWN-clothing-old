@@ -51,34 +51,7 @@ function* fetchCategoriesAsync() {
         });
         const responseJson = yield response.json();
 
-        const reduceJson = (json, categoryType) => {
-            const filteredResponse  = json
-                    .filter(category => category.CatName === categoryType)
-                    .map(category => {
-                        return category.CategoriesArray
-                                .filter(subcategory => subcategory.CatName === 'Shop by Concept')[0]
-                                .CategoriesArray
-                                .filter(concept => concept.CatName === 'Divided')[0]
-                                .CategoriesArray      
-                    })[0];
-
-            const categoriesWithDescriptions = filteredResponse.map(item => {
-                if (item.tagCodes[0] in CATEGORY_DESCRIPTIONS) {
-                    return { ...item, description: CATEGORY_DESCRIPTIONS[item.tagCodes[0]]}
-                }
-                
-                return { ...item };
-            });
-            
-            return categoriesWithDescriptions;
-        };
-
-        const mapJsonToState = {
-            guys: SEARCH_ALL.guys.concat(reduceJson(responseJson, 'Men')),
-            girls: SEARCH_ALL.girls.concat(reduceJson(responseJson, 'Women'))
-        };
-
-        yield put(fetchCategoriesSuccess(mapJsonToState));
+        yield put(fetchCategoriesSuccess(responseJson));
     } catch (error) {
         yield put(fetchCategoriesFailure(error.message));
     }

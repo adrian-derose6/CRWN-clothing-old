@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { 
     Switch,
@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 
 import Spinner from '../../components/spinner/spinner.component';
-import CategorySelection from '../../components/category-selection/category-selection.component';
+import LinkList from '../../components/link-list/link-list.component';
 
-import { selectCategoriesByGender} from '../../redux/shop/shop.selectors';
+import { selectCategoriesByValue } from '../../redux/shop/shop.selectors';
 import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
@@ -36,16 +36,27 @@ class ShopPage extends React.Component {
     render() {
         const { path, params } = this.props.match;
         const { categories } = this.props;
-
+        console.log(categories);
+        console.log(path)
         if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
             <div className='shop-page'>  
                 <Suspense fallback={<Spinner />}>          
                     <div className='left-panel'>
-                        <CategorySelection categories={categories}/>
+                        {categories.map((item, index) => {
+                            if (Object.keys(item).includes('CategoriesArray')) {
+                                return <LinkList 
+                                            label={item.CatName} 
+                                            value={item.CategoryValue} 
+                                            list={item.CategoriesArray}
+                                            match={this.props.match} 
+                                            key={index}
+                                        />
+                            }
+                        })}
                     </div>
-                    <Switch>
+                    {/*<Switch>
                         {
                             categories.map((category, index) => (
                                 <Route exact key={index} path={`${path}/${category.CategoryValue}`}>
@@ -53,7 +64,7 @@ class ShopPage extends React.Component {
                                 </Route>
                             ))
                         }
-                    </Switch>
+                    </Switch>*/}
                 </Suspense>
             </div>
         );
@@ -61,7 +72,7 @@ class ShopPage extends React.Component {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    categories: selectCategoriesByGender(ownProps.match.params.categoryId)(state)
+    categories: selectCategoriesByValue(ownProps.match.params.categoryId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import CategorySelection from '../category-selection/category-selection.component';
+import LinkList from '../link-list/link-list.component';
 
 import { selectCategoriesByGender } from '../../redux/shop/shop.selectors';
 import { useHover } from '../../utils/useHover.js';
@@ -27,8 +27,7 @@ const NavPopover = ({ label, image, link, value, categories }) => {
             <div className={`${isHovered ? 'open' : 'closed'} arrow-up`} />
             <div className={`${isHovered ? 'open' : 'closed'} nav-popover`}>
                 <div className='links-container'>
-                    <CategorySelection categories={categories} large categoryId={value}/>
-                    <CategorySelection categories={MOCK_LINKS} large label='Collections'/>
+
                 </div>
                 <div className='image-container'>
                     <BackgroundImage src={image} visible={isHovered}/>
@@ -60,7 +59,7 @@ const MOCK_LINKS = [
 ];
 
 const mapStateToProps = (state, ownProps) => ({
-    categories: state.shop.categories[ownProps.value]
+    categories: state.shop.categories
 });
 
 export default connect(

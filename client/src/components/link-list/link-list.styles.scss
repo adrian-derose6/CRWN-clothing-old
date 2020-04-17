@@ -1,4 +1,4 @@
-.category-selection {
+.link-selection {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -14,12 +14,12 @@
         }
     }
 
-    .category {
+    .link {
         font-size: 13px;
         font-family: 'Sharp Sans No1 Semibold';
         color: #494d59;
 
-        &.large-category {
+        &.large-link {
             font-size: 15px;
         }
     }

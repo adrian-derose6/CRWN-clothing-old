@@ -12,10 +12,10 @@ export const selectCategories = createSelector(
     shop => shop.categories
 )
 
-export const selectCategoriesByGender = categoryUrlParam => 
+export const selectCategoriesByValue = categoryUrlParam => 
     createSelector(
         [selectCategories],
-        categories => (categories ? categories[categoryUrlParam] : null)
+        categories => (categories ? categories[categoryUrlParam].CategoriesArray : null)
     );
 
 export const selectCollectionsForPreview = createSelector(

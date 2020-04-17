@@ -1,5 +1,5 @@
 import ShopActionTypes from './shop.types.js';
-import { toggleFilter, addCollection } from './shop.utils';
+import { toggleFilter, addCollection, addCategories } from './shop.utils';
 
 const INITIAL_STATE = {
     collections: {
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
         girls: {}
     },
     productDetails: {},
-    categories: null,
+    categories: {},
     isFetching: false,
     errorMessage: undefined
 };
@@ -49,7 +49,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                categories: action.payload,
+                categories: addCategories(action.payload),
                 errorMessage: null
             };
         }

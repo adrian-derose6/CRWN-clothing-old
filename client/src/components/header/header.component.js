@@ -50,11 +50,11 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <NavPopover label='Guys' value='guys' link='/guys/all-guys' image={guysNavImage}/>
-                    <NavPopover label='Girls' value='girls' link='/girls/all-girls' image={girlsNavImage} />
+                    <NavPopover label='Guys' value='men' link='/men' image={guysNavImage}/>
+                    <NavPopover label='Women' value='ladies' link='/ladies' image={girlsNavImage} />
                     <NavPopover label='Kids' value='guys'/>
-                    <NavPopover label='Bottoms' value='guys' image={bottomsNavImage} />
-                    <NavPopover label='Jackets' value='girls' />
+                    <NavPopover label='Bottoms' value='men' image={bottomsNavImage} />
+                    <NavPopover label='Jackets' value='ladies' />
                 </div>
                 <div className='options'>                 
                     <RightPopover icon={<CustomerIcon />}>

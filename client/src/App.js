@@ -25,9 +25,7 @@ const ProductPage = lazy(() => import('./pages/product-page/product-page.compone
 const App = ({ categories, checkUserSession, user, clearCart, fetchCategoriesStart}) => {
   useEffect(() => {
     checkUserSession();
-    if (!categories) {
-      fetchCategoriesStart();
-    }
+    fetchCategoriesStart();
   }, [checkUserSession]);
 
   return (
@@ -39,7 +37,7 @@ const App = ({ categories, checkUserSession, user, clearCart, fetchCategoriesSta
             <ErrorBoundary> 
               <Suspense fallback={<Spinner />}>
                   <Route exact path='/' component={HomePage} />
-                  <Route path='/:categoryId(guys|girls)' component={ShopPage} />
+                  <Route path='/:categoryId(men|ladies)' component={ShopPage} />
                   <Route exact path='/checkout' component={CheckoutPage} />
                   <Route exact path='/product-page/:productId' component={ProductPage} />
                   <Route 

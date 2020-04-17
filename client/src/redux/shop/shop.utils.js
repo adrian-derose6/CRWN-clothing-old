@@ -113,3 +113,16 @@ export const generateQueryString = (filters) => {
     let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`).join('&') : '';
     return str;
 }
+
+export const addCategories = (categoriesToAdd) => {
+    const CATEGORY_VALUES = ['men', 'ladies', 'kids'];
+    let nextState = {};
+
+    categoriesToAdd.forEach(item => {
+        if (CATEGORY_VALUES.includes(item.CategoryValue)) {
+            nextState[item.CategoryValue] = item;
+        }
+    });
+
+    return nextState;
+}
