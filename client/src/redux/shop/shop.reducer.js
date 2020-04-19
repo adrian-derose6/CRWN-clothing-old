@@ -1,12 +1,13 @@
 import ShopActionTypes from './shop.types.js';
-import { toggleFilter, addCollection, addCategories } from './shop.utils';
+import { toggleFilter, addProductsList, addCategories } from './shop.utils';
 
 const INITIAL_STATE = {
-    collections: {
-        guys: {},
-        girls: {}
+    products: {
+        list: {},
+        pagination: {},
+        facets: {},
+        collections: {}
     },
-    productDetails: {},
     categories: {},
     isFetching: false,
     errorMessage: undefined
@@ -14,30 +15,22 @@ const INITIAL_STATE = {
 
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case ShopActionTypes.FETCH_COLLECTIONS_START:
+        case ShopActionTypes.FETCH_PRODUCTS_LIST_START:
         case ShopActionTypes.FETCH_CATEGORIES_START: {
             return {
                 ...state,
                 isFetching: true
             };
         }
-        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS: {
-            let { categoryId, collectionName } = action.payload;
-
+        case ShopActionTypes.FETCH_PRODUCTS_LIST_SUCCESS: {
             return {
                 ...state,
                 isFetching: false,
-                collections: {
-                    ...state.collections,
-                    [categoryId]: {
-                        ...state.collections[categoryId],
-                        [collectionName]: addCollection(state.collections, action.payload)
-                    } 
-                },
+                products: addProductsList(state.products, action.payload),
                 errorMessage: null
             };
         }
-        case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
+        case ShopActionTypes.FETCH_PRODUCTS_LIST_FAILURE:
         case ShopActionTypes.FETCH_CATEGORIES_FAILURE: {
             return {
                 ...state,
@@ -55,7 +48,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         }
         case ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS: {
             const { productId, productDetails } = action.payload;
-            console.log(action.payload)
+
             return { 
                 ...state,
                 productDetails: {
@@ -63,24 +56,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                     [productId]: productDetails
                 }
             }
-        }
-        case ShopActionTypes.TOGGLE_FILTER: {
-            const { categoryId, collectionName, item } = action.payload;
-            const { filters } = state.collections[categoryId][collectionName];
-
-            return {
-                ...state,
-                collections: {
-                    ...state.collections,
-                    [categoryId]: {
-                        ...state.collections[categoryId],
-                        [collectionName]: {
-                            ...state.collections[categoryId][collectionName],
-                            filters: toggleFilter(filters, item)
-                        }
-                    }
-                }
-            };
         }
         default:
             return state;

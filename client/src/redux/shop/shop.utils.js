@@ -6,17 +6,25 @@ const INITIAL_FILTER = [{
     facet: 'sortBy'
 }];
 
-export const addCollection = (collectionsState, payload) => {
-    const { collection, categoryId, collectionName } = payload;
-    const { facets } = collection;
-    console.log(collectionsState)
-    const nextFilters = (typeof collectionsState[categoryId][collectionName] !== 'undefined') ? 
-                            [...collectionsState[categoryId][collectionName].filters] 
-                        :   [...INITIAL_FILTER];
+export const addProductsList = (productsState, productsToAdd) => {
+    const newState = { ...productsState };
+    const { categoryCode, facets, pagination } = productsToAdd;
+    let collectionsRefMap = productsState.collections;
 
-    const facetsMap = mapFacetsToState(facets);
+    if (!Object.keys(collectionsRefMap).includes(categoryCode)) {
+        newState.collections[categoryCode] = [];
+    }
+    
+    productsToAdd.results.forEach(item => {
+        if (item.code && !newState.collections[categoryCode].includes(item.code)) {
+            newState.list[item.code] = item;
+            newState.collections[categoryCode].push(item.code);
+        }
+    });
+    newState.pagination[categoryCode] = pagination;
+    newState.facets[categoryCode] = facets;
 
-    return { ...collection, filters: nextFilters, facets: facetsMap };
+    return newState;
 }
 
 const mapFacetsToState = (facetsArray) => {
@@ -28,7 +36,7 @@ const mapFacetsToState = (facetsArray) => {
 
         if (facetKeys.includes(code)) {
             const name = FACETS_MAP[code].name;
-            newArray.push({ ...facet, name: name });
+            newArray.push({ ...facet, name });
         }
 
         return newArray;

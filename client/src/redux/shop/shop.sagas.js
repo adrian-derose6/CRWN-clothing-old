@@ -1,8 +1,8 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 
 import {
-    fetchCollectionsSuccess,
-    fetchCollectionsFailure,
+    fetchProductsListSuccess,
+    fetchProductsListFailure,
     fetchCategoriesSuccess,
     fetchCategoriesFailure,
     fetchProductDetailsSuccess,
@@ -13,10 +13,11 @@ import { SEARCH_ALL, CATEGORY_DESCRIPTIONS } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 import { generateQueryString } from './shop.utils';
 
-function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId, filters }}) {
+function* fetchProductsListAsync({ payload: { tagCode }}) {
     try {
-        const queryString = generateQueryString(filters);
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
+        console.log(tagCode)
+        //const queryString = generateQueryString(filters);
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&descriptiveLengths=long+sleeve&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -24,19 +25,11 @@ function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId
             }
         });
         const responseJson = yield response.json();
-        const mapJsonToState = {
-            collectionName,
-            categoryId,
-            collection: {
-                results: responseJson.results,
-                pagination: responseJson.pagination,
-                facets: responseJson.facets
-            }
-        };
+        console.log(responseJson)
 
-        yield put(fetchCollectionsSuccess(mapJsonToState));
+        yield put(fetchProductsListSuccess(responseJson));
     } catch (error) {
-        yield put(fetchCollectionsFailure(error.message))
+        yield put(fetchProductsListFailure(error.message))
     }
 }
 
@@ -75,10 +68,10 @@ function* fetchProductDetailsAsync({ payload: { productId }}) {
     }
 }
 
-function* onFetchCollectionsStart() {
+function* onFetchProductsListStart() {
     yield takeLatest(
-        ShopActionTypes.FETCH_COLLECTIONS_START, 
-        fetchCollectionsAsync
+        ShopActionTypes.FETCH_PRODUCTS_LIST_START, 
+        fetchProductsListAsync
     );
 }
 
@@ -98,7 +91,7 @@ function* onFetchProductDetailsStart() {
 
 export function* shopSagas() {
     yield all([
-        call(onFetchCollectionsStart),
+        call(onFetchProductsListStart),
         call(onFetchCategoriesStart),
         call(onFetchProductDetailsStart)
     ]);

@@ -33,13 +33,32 @@ class ShopPage extends React.Component {
         return true;
     }
 
-    render() {
-        const { path, params } = this.props.match;
+    renderCategoryRoutes = () => {
         const { categories } = this.props;
-        console.log(categories);
-        console.log(path)
-        if (!this.shouldComponentRender()) return <Spinner />;
+        const { path, params, url } = this.props.match;
+        return categories.map((category, index) => {
+            if (category.CategoriesArray) {
+                category.CategoriesArray.map((subcategory, i) => (
+                    <Route exact key={index} path={`${url}/${category.CategoryValue}/:subcategoryId`}>
+                        <CollectionList subcategory={subcategory}/>
+                    </Route>
+                ))
+            }
+            else { 
+                return (
+                    <Route exact key={index} path={`${url}/${category.CategoryValue}`}>
+                        <CollectionList category={category} />
+                    </Route>
+                )
+            }
+        })
+    }
 
+    render() {
+        const { categories } = this.props;
+        const { path, params, url } = this.props.match;
+
+        if (!this.shouldComponentRender()) return <Spinner />;
         return (
             <div className='shop-page'>  
                 <Suspense fallback={<Spinner />}>          
@@ -50,21 +69,26 @@ class ShopPage extends React.Component {
                                             label={item.CatName} 
                                             value={item.CategoryValue} 
                                             list={item.CategoriesArray}
-                                            match={this.props.match} 
                                             key={index}
                                         />
                             }
                         })}
                     </div>
-                    {/*<Switch>
+                    <Switch>
                         {
-                            categories.map((category, index) => (
-                                <Route exact key={index} path={`${path}/${category.CategoryValue}`}>
-                                    <CollectionList category={category} categoryId={params.categoryId}/>
-                                </Route>
-                            ))
+                            categories.map((category, index) => {  
+                                if (category.CategoriesArray) {
+                                    return category.CategoriesArray.map((subcategory, i) => {
+                                        return (
+                                            <Route exact key={index + i} path={`${url}/${category.CategoryValue}/:subcategoryId`}>
+                                                <CollectionList category={category} subcategory={subcategory} />
+                                            </Route>
+                                        )
+                                    })
+                                }
+                            })
                         }
-                    </Switch>*/}
+                    </Switch>
                 </Suspense>
             </div>
         );

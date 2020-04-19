@@ -10,9 +10,7 @@ const LinkList = ({ list, match, label, value }) => {
             <span className='label'>{label}</span>
             {
                 list.map((item, index) => {
-                    console.log(item)
-                    console.log(url)
-                    const urlToLinkTo = `${url + '/'}${value || ''}/${item.CategoryValue}`
+                    const urlToLinkTo = `/${params.categoryId}/${value}/${item.CategoryValue}`
                     return (
                         <Link
                             key={index}

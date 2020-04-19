@@ -1,17 +1,17 @@
 import ShopActionTypes from './shop.types.js';
 
-export const fetchCollectionsStart = (queryParams) => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_START,
-    payload: queryParams  
+export const fetchProductsListStart = (queryParams = {}) => ({
+    type: ShopActionTypes.FETCH_PRODUCTS_LIST_START,
+    payload: queryParams
 });
 
-export const fetchCollectionsSuccess = (collectionsMap) => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_SUCCESS,  
-    payload: collectionsMap
+export const fetchProductsListSuccess = (productsMap) => ({
+    type: ShopActionTypes.FETCH_PRODUCTS_LIST_SUCCESS,  
+    payload: productsMap
 });
 
-export const fetchCollectionsFailure = (error) => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE, 
+export const fetchProductsListFailure = (error) => ({
+    type: ShopActionTypes.FETCH_PRODUCTS_LIST_FAILURE, 
     payload: error
 });
 
