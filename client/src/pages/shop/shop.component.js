@@ -56,7 +56,7 @@ class ShopPage extends React.Component {
 
     render() {
         const { categories } = this.props;
-        const { path, params, url } = this.props.match;
+        const { url } = this.props.match;
 
         if (!this.shouldComponentRender()) return <Spinner />;
         return (
@@ -80,7 +80,7 @@ class ShopPage extends React.Component {
                                 if (category.CategoriesArray) {
                                     return category.CategoriesArray.map((subcategory, i) => {
                                         return (
-                                            <Route exact key={index + i} path={`${url}/${category.CategoryValue}/:subcategoryId`}>
+                                            <Route exact key={index + i} path={`${url}/${category.CategoryValue}/${subcategory.CategoryValue}`}>
                                                 <CollectionList category={category} subcategory={subcategory} />
                                             </Route>
                                         )

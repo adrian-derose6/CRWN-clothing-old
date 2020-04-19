@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import equal from 'fast-deep-equal';
 
 import { fetchProductsListStart } from '../../redux/shop/shop.actions';
-import { selectCollection, selectFilters, selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import { selectProductsListByCollection } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -20,8 +20,7 @@ class CollectionList extends React.Component {
     };
 
     componentDidMount() {
-        const { productsList } = this.props;
-
+        const { productsList, isFetching } = this.props;
         this.fetchProductsList();
     }
 
@@ -29,7 +28,6 @@ class CollectionList extends React.Component {
         const { productsList, isFetching } = this.props;
 
         if (!productsList || isFetching) return false;
-
         return true;
     }
 
@@ -40,9 +38,8 @@ class CollectionList extends React.Component {
     }*/
 
     fetchProductsList = () => {
-        const { productsList, subcategory } = this.props;
+        const { subcategory } = this.props;
         const tagCode = subcategory.tagCodes[0];
-        console.log(tagCode)
 
         this.props.fetchProductsListStart({ tagCode });
     }
@@ -62,12 +59,13 @@ class CollectionList extends React.Component {
     render() {
         const { imageSize, imageType } = this.state;
         const { productsList, category, subcategory } = this.props;
+        console.log(productsList);
         
-        //if (!this.shouldComponentRender()) return <Spinner />;
+        if (!this.shouldComponentRender()) return <Spinner />;
 
         return (
             <div className='collection-page'> 
-                <h2 className='title'>Display Name</h2>
+                <h2 className='title'>{subcategory.CatName}</h2>
                 <span className='description'>This is the description</span>
                 {/*<FilterBar 
                     facets={collection.facets} 
@@ -87,7 +85,7 @@ class CollectionList extends React.Component {
                 />*/}
                 <div className={`${imageSize === 'large' ? 'large-items' : ''} items`}>
                     {
-                       /* productsList.map((item, index) => {
+                      /* productsList.map((item, index) => {
                             return (
 
                                     <CollectionItem 
@@ -105,8 +103,12 @@ class CollectionList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    const collectionParam = ownProps.subcategory.tagCodes[0];
+    console.log(collectionParam);
+
     return {
-        productsList: state.shop.products
+        productsList: selectProductsListByCollection(collectionParam)(state),
+        isFetching: state.shop.isFetching
     }
 };
 

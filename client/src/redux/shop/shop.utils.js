@@ -9,20 +9,27 @@ const INITIAL_FILTER = [{
 export const addProductsList = (productsState, productsToAdd) => {
     const newState = { ...productsState };
     const { categoryCode, facets, pagination } = productsToAdd;
-    let collectionsRefMap = productsState.collections;
 
-    if (!Object.keys(collectionsRefMap).includes(categoryCode)) {
+    if (!Object.keys(newState.collections).includes(categoryCode)) {
         newState.collections[categoryCode] = [];
     }
-    
-    productsToAdd.results.forEach(item => {
-        if (item.code && !newState.collections[categoryCode].includes(item.code)) {
-            newState.list[item.code] = item;
-            newState.collections[categoryCode].push(item.code);
-        }
-    });
+
     newState.pagination[categoryCode] = pagination;
     newState.facets[categoryCode] = facets;
+    
+    productsToAdd.results.forEach(item => {
+        newState.list[item.code] = item;
+
+        if (!Object.keys(newState.collections).includes(item.mainCategoryCode)) {
+            newState.collections[item.mainCategoryCode] = [];
+        }
+        if (item.code && !newState.collections[categoryCode].includes(item.code)) {
+            newState.collections[categoryCode].push(item.code);
+        }
+        if (item.code && !newState.collections[item.mainCategoryCode].includes(item.code)) {
+            newState.collections[item.mainCategoryCode].push(item.code);
+        }
+    });
 
     return newState;
 }

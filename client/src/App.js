@@ -12,7 +12,7 @@ import ErrorBoundary from './components/error-boundary/error-boundary.component.
 import { checkUserSession } from './redux/user/user.actions.js';
 import { selectCurrentUser } from './redux/user/user.selectors.js';
 import { fetchCategoriesStart } from './redux/shop/shop.actions';
-import { selectCollectionsForPreview, selectCategories } from './redux/shop/shop.selectors';
+import { selectCategories } from './redux/shop/shop.selectors';
 
 import './App.scss';
 
@@ -56,7 +56,6 @@ const App = ({ categories, checkUserSession, user, clearCart, fetchCategoriesSta
 
 const mapStateToProps = createStructuredSelector({
   user: selectCurrentUser,
-  collections: selectCollectionsForPreview,
   categories: selectCategories
 });
 

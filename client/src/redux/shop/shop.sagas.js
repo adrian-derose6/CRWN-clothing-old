@@ -15,7 +15,6 @@ import { generateQueryString } from './shop.utils';
 
 function* fetchProductsListAsync({ payload: { tagCode }}) {
     try {
-        console.log(tagCode)
         //const queryString = generateQueryString(filters);
         const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&descriptiveLengths=long+sleeve&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
@@ -25,7 +24,6 @@ function* fetchProductsListAsync({ payload: { tagCode }}) {
             }
         });
         const responseJson = yield response.json();
-        console.log(responseJson)
 
         yield put(fetchProductsListSuccess(responseJson));
     } catch (error) {
