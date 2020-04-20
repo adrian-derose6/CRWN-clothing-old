@@ -19,7 +19,7 @@ export const CATEGORY_DESCRIPTIONS = {
 };
 
 
-export const FACETS_MAP = {
+export const FETCHABLE_FACETS = {
     sortBy: {
         name: 'Sort By',
         values: [
@@ -56,5 +56,8 @@ export const FACETS_MAP = {
     },
     colorWithNames: {
         name: 'Color'
+    },
+    contexts: {
+        name: 'Context'
     }
 }

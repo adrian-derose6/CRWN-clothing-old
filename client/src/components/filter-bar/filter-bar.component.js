@@ -8,8 +8,6 @@ import './filter-bar.styles.scss';
 const FilterBar = ({ 
   facets, 
   filters, 
-  categoryId, 
-  collectionName, 
   setImageSize, 
   setImageType, 
   imageType, 
@@ -30,8 +28,6 @@ const FilterBar = ({
                             key={index} 
                             list={list}
                             facet={key}
-                            categoryId={categoryId}
-                            collectionName={collectionName}
                           />
                 })
               }

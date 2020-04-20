@@ -16,7 +16,7 @@ import { generateQueryString } from './shop.utils';
 function* fetchProductsListAsync({ payload: { tagCode }}) {
     try {
         //const queryString = generateQueryString(filters);
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&descriptiveLengths=long+sleeve&country=us&lang=en&currentpage=0&pagesize=30`, {
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -24,7 +24,7 @@ function* fetchProductsListAsync({ payload: { tagCode }}) {
             }
         });
         const responseJson = yield response.json();
-
+        
         yield put(fetchProductsListSuccess(responseJson));
     } catch (error) {
         yield put(fetchProductsListFailure(error.message))

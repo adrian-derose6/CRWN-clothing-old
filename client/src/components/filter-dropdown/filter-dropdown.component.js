@@ -66,7 +66,7 @@ class FilterDropdown extends React.Component {
     }
 
     renderCollapsible = () => {
-        const { list, facet, collectionName, categoryId } = this.props;
+        const { list, facet } = this.props;
         const { openedCollapsible } = this.state;
         let collapsibles = {};
 
@@ -93,8 +93,6 @@ class FilterDropdown extends React.Component {
                                         type={facet}
                                         item={item}
                                         selected={this.isItemSelected(item)}
-                                        categoryId={categoryId}
-                                        collectionName={collectionName}
                                     />
                                 ))
                             }
@@ -106,15 +104,16 @@ class FilterDropdown extends React.Component {
     }
 
     isItemSelected = (item) => {
-        const { filters } = this.props;
+        /*const { filters } = this.props;
 
         if (filters.filter(filter => JSON.stringify(filter) === JSON.stringify(item)).length >= 1) return true;
         
+        return false; */
         return false;
     }
 
     render() {
-        const { label, list, facet, categoryId, collectionName } = this.props;
+        const { label, list, facet } = this.props;
         const { listOpen } = this.state;
         
         if (!list) return null;
@@ -137,8 +136,6 @@ class FilterDropdown extends React.Component {
                                     type={facet}
                                     item={item}
                                     selected={this.isItemSelected(item)}
-                                    categoryId={categoryId}
-                                    collectionName={collectionName}
                                 />
                             ))
                     }

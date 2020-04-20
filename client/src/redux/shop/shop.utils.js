@@ -1,4 +1,4 @@
-import { FACETS_MAP } from './shop.data';
+import { FETCHABLE_FACETS } from './shop.data';
 
 const INITIAL_FILTER = [{
     code: 'stock',
@@ -8,16 +8,13 @@ const INITIAL_FILTER = [{
 
 export const addProductsList = (productsState, productsToAdd) => {
     const newState = { ...productsState };
-    const { categoryCode, facets, pagination } = productsToAdd;
+    const { categoryCode, facets, pagination, results } = productsToAdd;
 
     if (!Object.keys(newState.collections).includes(categoryCode)) {
         newState.collections[categoryCode] = [];
     }
-
-    newState.pagination[categoryCode] = pagination;
-    newState.facets[categoryCode] = facets;
     
-    productsToAdd.results.forEach(item => {
+    results.forEach(item => {
         newState.list[item.code] = item;
 
         if (!Object.keys(newState.collections).includes(item.mainCategoryCode)) {
@@ -31,47 +28,55 @@ export const addProductsList = (productsState, productsToAdd) => {
         }
     });
 
+    newState.pagination[categoryCode] = pagination;
+    newState.facets[categoryCode] = mapFacetsToState(facets);
+
     return newState;
 }
 
 const mapFacetsToState = (facetsArray) => {
     if (!facetsArray) return null;
+    const { sortBy } = FETCHABLE_FACETS
 
-    const filteredFacets = facetsArray.reduce((newArray, facet) => {
+    const fetchableFacets = reduceToFetchableFacets(facetsArray);
+    const facetsWithLabeledValues = labelFacetValues(fetchableFacets)
+
+    facetsWithLabeledValues.unshift(sortBy);
+
+    return facetsWithLabeledValues;
+}
+
+const reduceToFetchableFacets = (facetsArray) => {
+    let fetchableFacets = facetsArray.reduce((newArray, facet) => {
         const { code } = facet;
-        const facetKeys = Object.keys(FACETS_MAP);
+        const fetchableFacetKeys = Object.keys(FETCHABLE_FACETS);
 
-        if (facetKeys.includes(code)) {
-            const name = FACETS_MAP[code].name;
+        if (fetchableFacetKeys.includes(code)) {
+            const name = FETCHABLE_FACETS[code].name;
             newArray.push({ ...facet, name });
         }
 
         return newArray;
     }, []);
 
-    const facetsWithLabeledValues = filteredFacets.map(facet => {
-        const newValues = labelValues(facet);
-
-        return { ...facet, values: newValues };
-    });
-
-    const facetsMap = facetsWithLabeledValues.reduce((newObj, facet) => {
-        newObj[facet.code] = { code: facet.code, name: facet.name, values: facet.values };
-        return newObj;
-    }, {});
-
-    return { sortBy: FACETS_MAP.sortBy, ...facetsMap }
+    return fetchableFacets;
 }
 
-const labelValues = (facet) => {
-    const { code } = facet;
+const labelFacetValues = (facetsArray) => {
+    let facetsWithLabeledValues = facetsArray.map(facet => {
+        const { code } = facet;
 
-    return facet.values.map(value => {
-        const categorizedValue = { ...value, facet: code };
-        const namedValue = splitCodeStringToObject(categorizedValue);
+        let labeledValues = facet.values.map(value => {
+            const categorizedValue = { ...value, facet: code };
+            const namedValue = splitCodeStringToObject(categorizedValue);
+    
+            return namedValue;
+        });
 
-        return namedValue;
+        return { ...facet, values: labeledValues };
     });
+
+    return facetsWithLabeledValues;
 }
 
 const splitCodeStringToObject = (facetValue) => {
