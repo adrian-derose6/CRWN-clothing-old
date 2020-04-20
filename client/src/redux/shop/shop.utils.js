@@ -29,7 +29,10 @@ export const addProductsList = (productsState, productsToAdd) => {
     });
 
     newState.pagination[categoryCode] = pagination;
-    newState.facets[categoryCode] = mapFacetsToState(facets);
+
+    if (!newState.facets[categoryCode]) {
+        newState.facets[categoryCode] = mapFacetsToState(facets);
+    }
 
     return newState;
 }

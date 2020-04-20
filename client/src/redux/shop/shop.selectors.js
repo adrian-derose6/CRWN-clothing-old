@@ -39,7 +39,13 @@ export const selectFacetsByCollection = (collectionParam) =>
         [selectProducts],
         products => (products.facets[collectionParam] ? products.facets[collectionParam] : null)
     );
-    
+
+export const selectPaginationByCollection = (collectionParam) => 
+    createSelector(
+        [selectProducts],
+        products => (products.pagination[collectionParam] ? products.pagination[collectionParam] : null)
+    );
+
 export const selectIsCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching
