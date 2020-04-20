@@ -25,16 +25,19 @@ class CollectionList extends React.Component {
     };
 
     componentDidMount() {
-        const { productsList, isFetching } = this.props;
-        this.fetchProductsList();
+        const { subcategory } = this.props;
+        const tagCode = subcategory.tagCodes[0];
+
+        this.fetchProductsList({ tagCode });
     }
 
     componentDidUpdate(prevProps) {
-        const { facets } = this.props;
+        const { facets, subcategory } = this.props;
+        const tagCode = subcategory.tagCodes[0];
         const prevFacets = prevProps.facets;
 
         if (prevFacets !== null && facets !== null && prevFacets !== facets) {
-            this.fetchProductsList();
+            this.fetchProductsList({ tagCode, filters: facets.filters });
         }
     }
 
@@ -45,12 +48,8 @@ class CollectionList extends React.Component {
         return true;
     }
 
-    fetchProductsList = () => {
-        const { subcategory } = this.props;
-        const tagCode = subcategory.tagCodes[0];
-
-        console.log(tagCode)
-        this.props.fetchProductsListStart({ tagCode });
+    fetchProductsList = (queryParams) => {
+        this.props.fetchProductsListStart(queryParams);
     }
 
     setImageSize = (imageSize) => {

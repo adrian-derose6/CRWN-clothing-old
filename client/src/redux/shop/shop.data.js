@@ -24,6 +24,11 @@ export const FETCHABLE_FACETS = {
         name: 'Sort By',
         values: [
             {
+                code: 'stock',
+                name: 'Recommended',
+                facet: 'sortBy'
+            },
+            {
                 code: 'newProduct',
                 name: 'Newest',
                 facet: 'sortBy'
@@ -36,11 +41,6 @@ export const FETCHABLE_FACETS = {
             {
                 code: 'descPrice',
                 name: 'Highest Price',
-                facet: 'sortBy'
-            },
-            {
-                code: 'stock',
-                name: 'Stock',
                 facet: 'sortBy'
             }
         ]

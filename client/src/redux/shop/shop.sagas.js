@@ -13,10 +13,12 @@ import { SEARCH_ALL, CATEGORY_DESCRIPTIONS } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 import { generateQueryString } from './shop.utils';
 
-function* fetchProductsListAsync({ payload: { tagCode }}) {
+function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
     try {
-        //const queryString = generateQueryString(filters);
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&country=us&lang=en&currentpage=0&pagesize=30`, {
+        console.log(filters);
+        const queryString = generateQueryString(filters);
+        console.log(queryString)
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -24,6 +26,7 @@ function* fetchProductsListAsync({ payload: { tagCode }}) {
             }
         });
         const responseJson = yield response.json();
+        console.log(responseJson)
         
         yield put(fetchProductsListSuccess(responseJson));
     } catch (error) {

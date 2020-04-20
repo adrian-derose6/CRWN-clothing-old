@@ -10,21 +10,13 @@ export const addProductsList = (productsState, productsToAdd) => {
     const newState = { ...productsState };
     const { categoryCode, facets, pagination, results } = productsToAdd;
 
-    if (!Object.keys(newState.collections).includes(categoryCode)) {
-        newState.collections[categoryCode] = [];
-    }
-    
+    newState.collections[categoryCode] = [];
+
     results.forEach(item => {
         newState.list[item.code] = item;
 
-        if (!Object.keys(newState.collections).includes(item.mainCategoryCode)) {
-            newState.collections[item.mainCategoryCode] = [];
-        }
         if (item.code && !newState.collections[categoryCode].includes(item.code)) {
             newState.collections[categoryCode].push(item.code);
-        }
-        if (item.code && !newState.collections[item.mainCategoryCode].includes(item.code)) {
-            newState.collections[item.mainCategoryCode].push(item.code);
         }
     });
 
@@ -49,8 +41,8 @@ const mapFacetsToState = (facetsArray) => {
     return {
         total: facetsWithLabeledValues, 
         filters: [{
-            code: 'newProduct',
-            name: 'Newest',
+            code: 'stock',
+            name: 'Recommended',
             facet: 'sortBy'
         }]
     };
@@ -140,7 +132,7 @@ export const toggleFilter = (filters, filterToAdd) => {
 };
 
 export const generateQueryString = (filters) => {
-    let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`).join('&') : '';
+    let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`.replace(' ', '%20')).join('&') : '';
     return str;
 }
 
