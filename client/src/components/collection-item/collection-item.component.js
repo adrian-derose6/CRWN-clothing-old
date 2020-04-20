@@ -27,20 +27,21 @@ const BackgroundImage = styled.img`
     }
 `
 
-const CollectionItem = ({ item, addItem, imageType }) => {
+const CollectionItem = ({ item, imageType }) => {
     const [favorited, setFavorited] = useState(false);
-    const { name, rgbColors, price, articleCodes } = item;
-    const productId = articleCodes[0];
+    const { name, price, articleCodes } = item;
+    const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
+    const productCode = item.code;
     const logoPicture = item.defaultArticle.logoPicture[0].url;
     const normalPicture = item.defaultArticle.images[0].url;
 
     const toggleFavorited = () => {
         setFavorited(!favorited);
     }
-
+    if (!item) return null;
     return (
         <div className='collection-item'>
-            <Link to={`/product-page/${productId}`}>
+            <Link to={`/product-page/${productCode}`}>
                 <div className='image-container'>
                     <BackgroundImage src={logoPicture} main={imageType === 'model'} />
                     <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
@@ -52,9 +53,9 @@ const CollectionItem = ({ item, addItem, imageType }) => {
                 <span className='price'>{`$${price.value}`}</span>
                 <div className='colors-row'>
                     {
-                        rgbColors.map(color => {
+                        rgbColors.map((color, c) => {
                             return (
-                                <div className='color-circle' style={{ background: color }}/>
+                                <div className='color-circle' style={{ background: color }} key={c}/>
                             )
                         })
                     }
@@ -68,7 +69,4 @@ const mapDispatchToProps = dispatch => ({
     addItem: item => dispatch(addItem(item))
 })
 
-export default connect(
-    null, 
-    mapDispatchToProps
-)(CollectionItem);
+export default CollectionItem;

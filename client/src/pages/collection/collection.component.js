@@ -70,7 +70,7 @@ class CollectionList extends React.Component {
         const collectionParam = subcategory.tagCodes[0];
 
         if (!this.shouldComponentRender()) return <Spinner />;
-
+        
         return (
             <div className='collection-page'> 
                 <h2 className='title'>{subcategory.CatName}</h2>
@@ -98,7 +98,7 @@ class CollectionList extends React.Component {
                                     key={index}
                                     imageType={imageType}
                                 />
-                            )
+                            ) 
                         })
                     }
                 </div> 
