@@ -39,15 +39,7 @@ export const selectFacetsByCollection = (collectionParam) =>
         [selectProducts],
         products => (products.facets[collectionParam] ? products.facets[collectionParam] : null)
     );
-
-/* export const selectFilters = (categoryId, collectionUrlParam) => {
-    const collection = selectCollection(categoryId, collectionUrlParam);
-    return createSelector(
-        [collection],
-        collection => collection ? collection.filters : null
-    );
-}*/
-
+    
 export const selectIsCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching

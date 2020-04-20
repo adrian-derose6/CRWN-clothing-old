@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import equal from 'fast-deep-equal';
 
 import { fetchProductsListStart } from '../../redux/shop/shop.actions';
-import { selectProductsListByCollection, selectFacetsByCollection } from '../../redux/shop/shop.selectors';
+import { selectProductsListByCollection, selectFacetsByCollection, selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -60,6 +60,7 @@ class CollectionList extends React.Component {
     render() {
         const { imageSize, imageType } = this.state;
         const { productsList, subcategory, facets } = this.props;
+        const collectionParam = subcategory.tagCodes[0];
         
         if (!this.shouldComponentRender()) return <Spinner />;
 
@@ -72,13 +73,14 @@ class CollectionList extends React.Component {
                     setImageType={(imageType) => this.setImageType(imageType)}
                     imageType={imageType}
                     imageSize={imageSize}
-                    facets={facets}
+                    facets={facets.total}
+                    collectionParam={collectionParam}
+                    filters={facets.filters}
                 />
-                {/* <SelectedFilters 
-                    filters={collection.filters} 
-                    categoryId={categoryId} 
-                    collectionName={subcategory.CategoryValue}
-                /> */}
+                <SelectedFilters 
+                    filters={facets.filters} 
+                    collectionParam={collectionParam}
+                /> 
                 <div className={`${imageSize === 'large' ? 'large-items' : ''} items`}>
                     {
                         productsList.map((item, index) => {
@@ -103,7 +105,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         productsList: selectProductsListByCollection(collectionParam)(state),
         facets: selectFacetsByCollection(collectionParam)(state),
-        isFetching: state.shop.isFetching
+        isFetching: selectIsCollectionFetching(state)
     }
 };
 

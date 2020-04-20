@@ -29,7 +29,7 @@ export const fetchCategoriesFailure = (error) => ({
     payload: error
 });
 
-export const toggleFilter = (filterParams) => ({
+export const toggleFilter= (filterParams) => ({
     type: ShopActionTypes.TOGGLE_FILTER,
     payload: filterParams
 });

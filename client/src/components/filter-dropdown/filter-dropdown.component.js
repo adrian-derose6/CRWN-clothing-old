@@ -66,12 +66,12 @@ class FilterDropdown extends React.Component {
     }
 
     renderCollapsible = () => {
-        const { list, facet } = this.props;
+        const { list, type, collectionParam } = this.props;
         const { openedCollapsible } = this.state;
         let collapsibles = {};
 
         list.forEach(item => {
-            return collapsibles[item.type] ? collapsibles[item.type] = [...collapsibles[item.type], item] : collapsibles[item.type] = [item]
+            collapsibles[item.type] ? collapsibles[item.type] = [...collapsibles[item.type], item] : collapsibles[item.type] = [item]
         });
 
         return (
@@ -90,9 +90,10 @@ class FilterDropdown extends React.Component {
                                         label={item.name} 
                                         number={item.count}
                                         key={index}
-                                        type={facet}
+                                        type={type}
                                         item={item}
                                         selected={this.isItemSelected(item)}
+                                        collectionParam={collectionParam}
                                     />
                                 ))
                             }
@@ -104,16 +105,15 @@ class FilterDropdown extends React.Component {
     }
 
     isItemSelected = (item) => {
-        /*const { filters } = this.props;
+        const { filters } = this.props;
 
         if (filters.filter(filter => JSON.stringify(filter) === JSON.stringify(item)).length >= 1) return true;
         
-        return false; */
-        return false;
+        return false; 
     }
 
     render() {
-        const { label, list, facet } = this.props;
+        const { label, list, type, collectionParam } = this.props;
         const { listOpen } = this.state;
         
         if (!list) return null;
@@ -126,16 +126,17 @@ class FilterDropdown extends React.Component {
                 </button>
                 <div className={`${listOpen ? 'open' : 'closed'} dropdown-container`} >
                     {
-                        (facet === 'sizes') ? 
+                        (label === 'Size') ? 
                             this.renderCollapsible() 
                         :
                             list.map((item, index) => (
                                 <FilterDropdownItem 
                                     label={item.name}
                                     key={index}
-                                    type={facet}
+                                    type={type}
                                     item={item}
                                     selected={this.isItemSelected(item)}
+                                    collectionParam={collectionParam}
                                 />
                             ))
                     }

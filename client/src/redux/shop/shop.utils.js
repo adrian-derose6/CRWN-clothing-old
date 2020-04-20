@@ -43,7 +43,14 @@ const mapFacetsToState = (facetsArray) => {
 
     facetsWithLabeledValues.unshift(sortBy);
 
-    return facetsWithLabeledValues;
+    return {
+        total: facetsWithLabeledValues, 
+        filters: [{
+            code: 'newProduct',
+            name: 'Newest',
+            facet: 'sortBy'
+        }]
+    };
 }
 
 const reduceToFetchableFacets = (facetsArray) => {
@@ -113,7 +120,7 @@ const splitCodeStringToObject = (facetValue) => {
 }
 
 export const toggleFilter = (filters, filterToAdd) => {
-    const existingFilter = filters.find(filter => JSON.stringify(filter) === JSON.stringify(filterToAdd));
+    const existingFilter= filters.find(filter => JSON.stringify(filter) === JSON.stringify(filterToAdd));
     const existingSortFilter = filters.find(filter => filter.facet === 'sortBy');
 
 

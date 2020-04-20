@@ -4,16 +4,19 @@ import { connect } from 'react-redux';
 import checkmarkIcon from '../../assets/checkmark.png';
 
 import './filter-dropdown-item.styles.scss';
+import { toggleFilter } from '../../redux/shop/shop.actions';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const FilterDropdownItem = ({ label, number, type, item, selected }) => {
+const FilterDropdownItem = ({ label, number, type, item, selected, toggleFilter, collectionParam }) => {
     const labelToDisplay = label.replace('-', ' ');
     let uppercase = letterSizes.includes(label) ? 'uppercase' : '';
     let checkboxColor = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
     
     const handleClick = () => {
+        const filterParams = { collectionParam, filter: item };
 
+        toggleFilter(filterParams)
     }
 
     return (
@@ -31,4 +34,10 @@ const FilterDropdownItem = ({ label, number, type, item, selected }) => {
     )
 }
 
-export default connect(null, null)(FilterDropdownItem);
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleFilter: (filterParams) => dispatch(toggleFilter(filterParams))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(FilterDropdownItem);

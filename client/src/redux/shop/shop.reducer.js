@@ -57,6 +57,23 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                 }
             }
         }
+        case ShopActionTypes.TOGGLE_FILTER: {
+            const { collectionParam, filter } = action.payload;
+            
+            return {
+                ...state,
+                products: {
+                    ...state.products,
+                    facets: {
+                        ...state.products.facets,
+                        [collectionParam]: {
+                            ...state.products.facets[collectionParam],
+                            filters: toggleFilter(state.products.facets[collectionParam].filters, filter)
+                        }
+                    }
+                }
+            }
+        }
         default:
             return state;
     }
