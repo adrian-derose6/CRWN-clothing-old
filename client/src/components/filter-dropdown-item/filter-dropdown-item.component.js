@@ -3,19 +3,20 @@ import { connect } from 'react-redux';
 
 import checkmarkIcon from '../../assets/checkmark.png';
 
-import { toggleFilter } from '../../redux/shop/shop.actions';
-
 import './filter-dropdown-item.styles.scss';
+import { toggleFilter } from '../../redux/shop/shop.actions';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected, categoryId, collectionName }) => {
+const FilterDropdownItem = ({ label, number, type, item, selected, toggleFilter, collectionParam }) => {
     const labelToDisplay = label.replace('-', ' ');
     let uppercase = letterSizes.includes(label) ? 'uppercase' : '';
     let checkboxColor = (type === 'colorWithNames') ? { backgroundColor: item.hexCode, border: 'none' } : { backgroundColor: 'none' };
     
     const handleClick = () => {
-        toggleFilter({ item, categoryId, collectionName });
+        const filterParams = { collectionParam, filter: item };
+
+        toggleFilter(filterParams)
     }
 
     return (
@@ -33,8 +34,10 @@ const FilterDropdownItem = ({ label, number, type, item, toggleFilter, selected,
     )
 }
 
-const mapDispatchToProps = dispatch => ({
-    toggleFilter: (params) => dispatch(toggleFilter(params))
-})
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleFilter: (filterParams) => dispatch(toggleFilter(filterParams))
+    }
+}
 
 export default connect(null, mapDispatchToProps)(FilterDropdownItem);

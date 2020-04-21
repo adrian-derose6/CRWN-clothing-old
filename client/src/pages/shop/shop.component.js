@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { 
     Switch,
@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 
 import Spinner from '../../components/spinner/spinner.component';
-import CategorySelection from '../../components/category-selection/category-selection.component';
+import LinkList from '../../components/link-list/link-list.component';
 
-import { selectCategoriesByGender} from '../../redux/shop/shop.selectors';
+import { selectCategoriesByValue } from '../../redux/shop/shop.selectors';
 import { fetchCategoriesStart } from '../../redux/shop/shop.actions';
 
 import './shop.styles.scss';
@@ -33,25 +33,60 @@ class ShopPage extends React.Component {
         return true;
     }
 
-    render() {
-        const { path, params } = this.props.match;
+    renderCategoryRoutes = () => {
         const { categories } = this.props;
+        const { path, params, url } = this.props.match;
+        return categories.map((category, index) => {
+            if (category.CategoriesArray) {
+                category.CategoriesArray.map((subcategory, i) => (
+                    <Route exact key={index} path={`${url}/${category.CategoryValue}/:subcategoryId`}>
+                        <CollectionList subcategory={subcategory}/>
+                    </Route>
+                ))
+            }
+            else { 
+                return (
+                    <Route exact key={index} path={`${url}/${category.CategoryValue}`}>
+                        <CollectionList category={category} />
+                    </Route>
+                )
+            }
+        })
+    }
+
+    render() {
+        const { categories } = this.props;
+        const { url } = this.props.match;
 
         if (!this.shouldComponentRender()) return <Spinner />;
-
         return (
             <div className='shop-page'>  
                 <Suspense fallback={<Spinner />}>          
                     <div className='left-panel'>
-                        <CategorySelection categories={categories}/>
+                        {categories.map((item, index) => {
+                            if (Object.keys(item).includes('CategoriesArray')) {
+                                return <LinkList 
+                                            label={item.CatName} 
+                                            value={item.CategoryValue} 
+                                            list={item.CategoriesArray}
+                                            key={index}
+                                        />
+                            }
+                        })}
                     </div>
                     <Switch>
                         {
-                            categories.map((category, index) => (
-                                <Route exact key={index} path={`${path}/${category.CategoryValue}`}>
-                                    <CollectionList category={category} categoryId={params.categoryId}/>
-                                </Route>
-                            ))
+                            categories.map((category, index) => {  
+                                if (category.CategoriesArray) {
+                                    return category.CategoriesArray.map((subcategory, i) => {
+                                        return (
+                                            <Route exact key={index + i} path={`${url}/${category.CategoryValue}/${subcategory.CategoryValue}`}>
+                                                <CollectionList category={category} subcategory={subcategory} />
+                                            </Route>
+                                        )
+                                    })
+                                }
+                            })
                         }
                     </Switch>
                 </Suspense>
@@ -61,7 +96,7 @@ class ShopPage extends React.Component {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    categories: selectCategoriesByGender(ownProps.match.params.categoryId)(state)
+    categories: selectCategoriesByValue(ownProps.match.params.categoryId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({

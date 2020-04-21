@@ -8,30 +8,29 @@ import './filter-bar.styles.scss';
 const FilterBar = ({ 
   facets, 
   filters, 
-  categoryId, 
-  collectionName, 
   setImageSize, 
   setImageType, 
   imageType, 
   imageSize,
-  numberOfItems
+  numberOfItems,
+  collectionParam
 }) => {
   if (!facets) return null;
     return (
         <div className='filter-bar'>
             <div className='filter-tabs'>
               {
-                Object.keys(facets).map((key, index) => {
-                  const label = facets[key].name;
-                  const list = facets[key].values
+                facets.map((facet, index) => {
+                  const label = facet.name;
+                  const list = facet.values
+                  const type = facet.code;
                   return <FilterDropdown 
                             filters={filters}
                             label={label} 
                             key={index} 
                             list={list}
-                            facet={key}
-                            categoryId={categoryId}
-                            collectionName={collectionName}
+                            type={type}
+                            collectionParam={collectionParam}
                           />
                 })
               }

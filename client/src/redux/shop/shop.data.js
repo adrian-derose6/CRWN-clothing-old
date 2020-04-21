@@ -19,10 +19,15 @@ export const CATEGORY_DESCRIPTIONS = {
 };
 
 
-export const FACETS_MAP = {
+export const FETCHABLE_FACETS = {
     sortBy: {
         name: 'Sort By',
         values: [
+            {
+                code: 'stock',
+                name: 'Recommended',
+                facet: 'sortBy'
+            },
             {
                 code: 'newProduct',
                 name: 'Newest',
@@ -36,11 +41,6 @@ export const FACETS_MAP = {
             {
                 code: 'descPrice',
                 name: 'Highest Price',
-                facet: 'sortBy'
-            },
-            {
-                code: 'stock',
-                name: 'Stock',
                 facet: 'sortBy'
             }
         ]
@@ -56,5 +56,8 @@ export const FACETS_MAP = {
     },
     colorWithNames: {
         name: 'Color'
+    },
+    contexts: {
+        name: 'Context'
     }
 }

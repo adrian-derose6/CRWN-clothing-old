@@ -1,10 +1,15 @@
 import React, { createContext } from 'react';
-import { useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import equal from 'fast-deep-equal';
 
-import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { selectCollection, selectFilters, selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import { fetchProductsListStart } from '../../redux/shop/shop.actions';
+import { 
+    selectProductsListByCollection, 
+    selectFacetsByCollection,
+    selectPaginationByCollection,
+    selectIsCollectionFetching 
+} from '../../redux/shop/shop.selectors';
 
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
@@ -20,33 +25,31 @@ class CollectionList extends React.Component {
     };
 
     componentDidMount() {
-        const { collection } = this.props;
+        const { subcategory } = this.props;
+        const tagCode = subcategory.tagCodes[0];
 
-        if (!collection) {
-            this.fetchCollection();
+        this.fetchProductsList({ tagCode });
+    }
+
+    componentDidUpdate(prevProps) {
+        const { facets, subcategory } = this.props;
+        const tagCode = subcategory.tagCodes[0];
+        const prevFacets = prevProps.facets;
+
+        if (prevFacets !== null && facets !== null && prevFacets !== facets) {
+            this.fetchProductsList({ tagCode, filters: facets.filters });
         }
     }
 
     shouldComponentRender = () => {
-        const { collection, isFetching } = this.props;
+        const { productsList, isFetching } = this.props;
 
-        if (!collection || isFetching) return false;
-
+        if (!productsList || isFetching) return false;
         return true;
     }
 
-    componentDidUpdate(prevProps) {
-        if (!equal(this.props.filters, prevProps.filters)) {
-            this.fetchCollection();
-        }
-    }
-
-    fetchCollection = () => {
-        const { fetchCollectionsStart, category, categoryId, filters } = this.props;
-        const tagCode = category.tagCodes[0];
-        const collectionName = category.CategoryValue;
-
-        fetchCollectionsStart({ collectionName, tagCode, categoryId, filters });
+    fetchProductsList = (queryParams) => {
+        this.props.fetchProductsListStart(queryParams);
     }
 
     setImageSize = (imageSize) => {
@@ -63,43 +66,39 @@ class CollectionList extends React.Component {
 
     render() {
         const { imageSize, imageType } = this.state;
-        const { category, categoryId, collection, filters } = this.props;
-        const { CategoryValue, CatName } = category;
-        const displayName = (CategoryValue === 'all-guys' || CategoryValue === 'all-girls') ? CatName : `${categoryId} ${CatName}`;
-        
-        if (!this.shouldComponentRender()) return <Spinner />;
+        const { productsList, subcategory, facets, pagination } = this.props;
+        const collectionParam = subcategory.tagCodes[0];
 
+        if (!this.shouldComponentRender()) return <Spinner />;
+        
         return (
             <div className='collection-page'> 
-                <h2 className='title'>{displayName}</h2>
-                {(category.description) ? <span className='description'>{category.description}</span> : null}
+                <h2 className='title'>{subcategory.CatName}</h2>
+                <span className='description'>This is the description</span>
                 <FilterBar 
-                    facets={collection.facets} 
-                    filters={collection.filters} 
-                    categoryId={categoryId} 
-                    collectionName={category.CategoryValue}
                     setImageSize={(imageSize) => this.setImageSize(imageSize)}
                     setImageType={(imageType) => this.setImageType(imageType)}
                     imageType={imageType}
                     imageSize={imageSize}
-                    numberOfItems={collection.pagination.totalNumberOfResults}
+                    facets={facets.total}
+                    collectionParam={collectionParam}
+                    filters={facets.filters}
+                    numberOfItems={pagination.totalNumberOfResults}
                 />
                 <SelectedFilters 
-                    filters={collection.filters} 
-                    categoryId={categoryId} 
-                    collectionName={category.CategoryValue}
-                />
+                    filters={facets.filters} 
+                    collectionParam={collectionParam}
+                /> 
                 <div className={`${imageSize === 'large' ? 'large-items' : ''} items`}>
                     {
-                        collection.results.map((item, index) => {
+                        productsList.map((item, index) => {
                             return (
-
-                                    <CollectionItem 
-                                        item={item} 
-                                        key={index}
-                                        imageType={imageType}
-                                    />
-                            )
+                                <CollectionItem 
+                                    item={item} 
+                                    key={index}
+                                    imageType={imageType}
+                                />
+                            ) 
                         })
                     }
                 </div> 
@@ -109,20 +108,21 @@ class CollectionList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { category, categoryId } = ownProps;
+    const collectionParam = ownProps.subcategory.tagCodes[0];
 
-    return ({
-        collection: selectCollection(categoryId, category.CategoryValue)(state),
-        filters: selectFilters(categoryId, category.CategoryValue)(state),
-        isFetching: selectIsCollectionFetching(state)
-    });
+    return {
+        productsList: selectProductsListByCollection(collectionParam)(state),
+        facets: selectFacetsByCollection(collectionParam)(state),
+        isFetching: selectIsCollectionFetching(state),
+        pagination: selectPaginationByCollection(collectionParam)(state)
+    }
 };
 
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStart: queryParams => dispatch(fetchCollectionsStart(queryParams)),
+    fetchProductsListStart: (queryParams) => dispatch(fetchProductsListStart(queryParams)),
 });
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(CollectionList);
+)(CollectionList));
