@@ -33,3 +33,18 @@ export const toggleFilter= (filterParams) => ({
     type: ShopActionTypes.TOGGLE_FILTER,
     payload: filterParams
 });
+
+export const fetchProductDetailsStart = (productId) => ({
+    type: ShopActionTypes.FETCH_PRODUCT_DETAILS_START,
+    payload: { productId }
+});
+
+export const fetchProductDetailsSuccess = (productDetailsObj) => ({
+    type: ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS,
+    payload: productDetailsObj
+});
+
+export const fetchProductDetailsFailure = (error) => ({
+    type: ShopActionTypes.FETCH_PRODUCT_DETAILS_FAILURE,
+    payload: error
+});
