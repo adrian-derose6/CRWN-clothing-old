@@ -4,9 +4,7 @@ import {
     fetchProductsListSuccess,
     fetchProductsListFailure,
     fetchCategoriesSuccess,
-    fetchCategoriesFailure,
-    fetchProductDetailsSuccess,
-    fetchProductDetailsFailure
+    fetchCategoriesFailure
 } from './shop.actions';
 
 import { SEARCH_ALL, CATEGORY_DESCRIPTIONS } from './shop.data.js';
@@ -34,7 +32,7 @@ function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
     }
 }
 
-function* fetchCategoriesAsync() {
+export function* fetchCategoriesAsync() {
     try {
         const response = yield fetch("https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/categories/list?country=us&lang=en", {
             "method": "GET",
@@ -76,17 +74,10 @@ function* onFetchProductsListStart() {
     );
 }
 
-function* onFetchCategoriesStart() {
+export function* onFetchCategoriesStart() {
     yield takeLatest(
         ShopActionTypes.FETCH_CATEGORIES_START,
         fetchCategoriesAsync
-    );
-}
-
-function* onFetchProductDetailsStart() {
-    yield takeLatest(
-        ShopActionTypes.FETCH_PRODUCT_DETAILS_START,
-        fetchProductDetailsAsync
     );
 }
 
