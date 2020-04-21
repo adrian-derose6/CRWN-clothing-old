@@ -1,36 +1,42 @@
 import ShopActionTypes from './shop.types.js';
-import { toggleFilter, addProductsList, addCategories } from './shop.utils';
+import { toggleFilter, addCollection } from './shop.utils';
 
 const INITIAL_STATE = {
-    products: {
-        list: {},
-        pagination: {},
-        facets: {},
-        collections: {}
+    collections: {
+        guys: {},
+        girls: {}
     },
-    categories: {},
+    categories: null,
     isFetching: false,
     errorMessage: undefined
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case ShopActionTypes.FETCH_PRODUCTS_LIST_START:
+        case ShopActionTypes.FETCH_COLLECTIONS_START:
         case ShopActionTypes.FETCH_CATEGORIES_START: {
             return {
                 ...state,
                 isFetching: true
             };
         }
-        case ShopActionTypes.FETCH_PRODUCTS_LIST_SUCCESS: {
+        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS: {
+            let { categoryId, collectionName } = action.payload;
+
             return {
                 ...state,
                 isFetching: false,
-                products: addProductsList(state.products, action.payload),
+                collections: {
+                    ...state.collections,
+                    [categoryId]: {
+                        ...state.collections[categoryId],
+                        [collectionName]: addCollection(state.collections, action.payload)
+                    } 
+                },
                 errorMessage: null
             };
         }
-        case ShopActionTypes.FETCH_PRODUCTS_LIST_FAILURE:
+        case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
         case ShopActionTypes.FETCH_CATEGORIES_FAILURE: {
             return {
                 ...state,
@@ -42,37 +48,27 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                categories: addCategories(action.payload),
+                categories: action.payload,
                 errorMessage: null
             };
         }
-        case ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS: {
-            const { productId, productDetails } = action.payload;
-
-            return { 
-                ...state,
-                productDetails: {
-                    ...state.productDetails,
-                    [productId]: productDetails
-                }
-            }
-        }
         case ShopActionTypes.TOGGLE_FILTER: {
-            const { collectionParam, filter } = action.payload;
-            
+            const { categoryId, collectionName, item } = action.payload;
+            const { filters } = state.collections[categoryId][collectionName];
+
             return {
                 ...state,
-                products: {
-                    ...state.products,
-                    facets: {
-                        ...state.products.facets,
-                        [collectionParam]: {
-                            ...state.products.facets[collectionParam],
-                            filters: toggleFilter(state.products.facets[collectionParam].filters, filter)
+                collections: {
+                    ...state.collections,
+                    [categoryId]: {
+                        ...state.collections[categoryId],
+                        [collectionName]: {
+                            ...state.collections[categoryId][collectionName],
+                            filters: toggleFilter(filters, item)
                         }
                     }
                 }
-            }
+            };
         }
         default:
             return state;

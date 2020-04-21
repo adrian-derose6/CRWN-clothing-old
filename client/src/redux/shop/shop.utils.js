@@ -1,4 +1,4 @@
-import { FETCHABLE_FACETS } from './shop.data';
+import { FACETS_MAP } from './shop.data';
 
 const INITIAL_FILTER = [{
     code: 'stock',
@@ -6,79 +6,57 @@ const INITIAL_FILTER = [{
     facet: 'sortBy'
 }];
 
-export const addProductsList = (productsState, productsToAdd) => {
-    const newState = { ...productsState };
-    const { categoryCode, facets, pagination, results } = productsToAdd;
+export const addCollection = (collectionsState, payload) => {
+    const { collection, categoryId, collectionName } = payload;
+    const { facets } = collection;
+    console.log(collectionsState)
+    const nextFilters = (typeof collectionsState[categoryId][collectionName] !== 'undefined') ? 
+                            [...collectionsState[categoryId][collectionName].filters] 
+                        :   [...INITIAL_FILTER];
 
-    newState.collections[categoryCode] = [];
+    const facetsMap = mapFacetsToState(facets);
 
-    results.forEach(item => {
-        newState.list[item.code] = item;
-
-        if (item.code && !newState.collections[categoryCode].includes(item.code)) {
-            newState.collections[categoryCode].push(item.code);
-        }
-    });
-
-    newState.pagination[categoryCode] = pagination;
-
-    if (!newState.facets[categoryCode]) {
-        newState.facets[categoryCode] = mapFacetsToState(facets);
-    }
-
-    return newState;
+    return { ...collection, filters: nextFilters, facets: facetsMap };
 }
 
 const mapFacetsToState = (facetsArray) => {
     if (!facetsArray) return null;
-    const { sortBy } = FETCHABLE_FACETS
 
-    const fetchableFacets = reduceToFetchableFacets(facetsArray);
-    const facetsWithLabeledValues = labelFacetValues(fetchableFacets)
-
-    facetsWithLabeledValues.unshift(sortBy);
-
-    return {
-        total: facetsWithLabeledValues, 
-        filters: [{
-            code: 'stock',
-            name: 'Recommended',
-            facet: 'sortBy'
-        }]
-    };
-}
-
-const reduceToFetchableFacets = (facetsArray) => {
-    let fetchableFacets = facetsArray.reduce((newArray, facet) => {
+    const filteredFacets = facetsArray.reduce((newArray, facet) => {
         const { code } = facet;
-        const fetchableFacetKeys = Object.keys(FETCHABLE_FACETS);
+        const facetKeys = Object.keys(FACETS_MAP);
 
-        if (fetchableFacetKeys.includes(code)) {
-            const name = FETCHABLE_FACETS[code].name;
-            newArray.push({ ...facet, name });
+        if (facetKeys.includes(code)) {
+            const name = FACETS_MAP[code].name;
+            newArray.push({ ...facet, name: name });
         }
 
         return newArray;
     }, []);
 
-    return fetchableFacets;
-}
+    const facetsWithLabeledValues = filteredFacets.map(facet => {
+        const newValues = labelValues(facet);
 
-const labelFacetValues = (facetsArray) => {
-    let facetsWithLabeledValues = facetsArray.map(facet => {
-        const { code } = facet;
-
-        let labeledValues = facet.values.map(value => {
-            const categorizedValue = { ...value, facet: code };
-            const namedValue = splitCodeStringToObject(categorizedValue);
-    
-            return namedValue;
-        });
-
-        return { ...facet, values: labeledValues };
+        return { ...facet, values: newValues };
     });
 
-    return facetsWithLabeledValues;
+    const facetsMap = facetsWithLabeledValues.reduce((newObj, facet) => {
+        newObj[facet.code] = { code: facet.code, name: facet.name, values: facet.values };
+        return newObj;
+    }, {});
+
+    return { sortBy: FACETS_MAP.sortBy, ...facetsMap }
+}
+
+const labelValues = (facet) => {
+    const { code } = facet;
+
+    return facet.values.map(value => {
+        const categorizedValue = { ...value, facet: code };
+        const namedValue = splitCodeStringToObject(categorizedValue);
+
+        return namedValue;
+    });
 }
 
 const splitCodeStringToObject = (facetValue) => {
@@ -115,7 +93,7 @@ const splitCodeStringToObject = (facetValue) => {
 }
 
 export const toggleFilter = (filters, filterToAdd) => {
-    const existingFilter= filters.find(filter => JSON.stringify(filter) === JSON.stringify(filterToAdd));
+    const existingFilter = filters.find(filter => JSON.stringify(filter) === JSON.stringify(filterToAdd));
     const existingSortFilter = filters.find(filter => filter.facet === 'sortBy');
 
 
@@ -132,19 +110,6 @@ export const toggleFilter = (filters, filterToAdd) => {
 };
 
 export const generateQueryString = (filters) => {
-    let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`.replace(' ', '%20')).join('&') : '';
+    let str = (filters) ? filters.map((filter, index) => `${filter.facet}=${filter.code}`).join('&') : '';
     return str;
-}
-
-export const addCategories = (categoriesToAdd) => {
-    const CATEGORY_VALUES = ['men', 'ladies', 'kids'];
-    let nextState = {};
-
-    categoriesToAdd.forEach(item => {
-        if (CATEGORY_VALUES.includes(item.CategoryValue)) {
-            nextState[item.CategoryValue] = item;
-        }
-    });
-
-    return nextState;
 }
