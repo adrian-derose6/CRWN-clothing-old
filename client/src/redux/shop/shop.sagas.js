@@ -25,10 +25,10 @@ function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
                 "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
             }
         });
-        const responseJson = yield response.json();
-        console.log(responseJson)
+        const responseJSON = yield response.json();
+        console.log(responseJSON)
         
-        yield put(fetchProductsListSuccess(responseJson));
+        yield put(fetchProductsListSuccess(responseJSON));
     } catch (error) {
         yield put(fetchProductsListFailure(error.message))
     }
@@ -43,17 +43,17 @@ function* fetchCategoriesAsync() {
                 "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
             }
         });
-        const responseJson = yield response.json();
+        const responseJSON = yield response.json();
 
-        yield put(fetchCategoriesSuccess(responseJson));
+        yield put(fetchCategoriesSuccess(responseJSON));
     } catch (error) {
         yield put(fetchCategoriesFailure(error.message));
     }
 }
 
-function* fetchProductDetailsAsync({ payload: { productId }}) {
+function* fetchProductDetailsAsync({ payload: { articleCode }}) {
     try {
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail?country=us&lang=en&productcode=${productId}`, {
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail?country=us&lang=en&productcode=${articleCode}`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -61,9 +61,9 @@ function* fetchProductDetailsAsync({ payload: { productId }}) {
             }
         });
 
-        const responseJson = yield response.json();
+        const responseJSON = yield response.json();
 
-        yield put(fetchProductDetailsSuccess({ productDetails: responseJson.product, productId }))
+        yield put(fetchProductDetailsSuccess(responseJSON));
     } catch (error) {
         yield put(fetchProductDetailsFailure(error.message));
     }

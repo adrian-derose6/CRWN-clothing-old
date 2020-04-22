@@ -31,17 +31,18 @@ const CollectionItem = ({ item, imageType }) => {
     const [favorited, setFavorited] = useState(false);
     const { name, price, articleCodes } = item;
     const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
-    const productCode = item.code;
+    const articleCode = item.articles[0].code;
     const logoPicture = item.defaultArticle.logoPicture[0].url;
     const normalPicture = item.defaultArticle.images[0].url;
 
     const toggleFavorited = () => {
         setFavorited(!favorited);
     }
+
     if (!item) return null;
     return (
         <div className='collection-item'>
-            <Link to={`/product-page/${productCode}`}>
+            <Link to={`/product-page/${articleCode}`}>
                 <div className='image-container'>
                     <BackgroundImage src={logoPicture} main={imageType === 'model'} />
                     <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
@@ -66,7 +67,7 @@ const CollectionItem = ({ item, imageType }) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    addItem: item => dispatch(addItem(item))
-})
+    addItem: item => dispatch(addItem(item)),
+});
 
 export default CollectionItem;

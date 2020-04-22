@@ -34,14 +34,14 @@ export const toggleFilter= (filterParams) => ({
     payload: filterParams
 });
 
-export const fetchProductDetailsStart = (productId) => ({
+export const fetchProductDetailsStart = (articleUrlParams) => ({
     type: ShopActionTypes.FETCH_PRODUCT_DETAILS_START,
-    payload: { productId }
+    payload: articleUrlParams
 });
 
-export const fetchProductDetailsSuccess = (productDetailsObj) => ({
+export const fetchProductDetailsSuccess = (productDetails) => ({
     type: ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS,
-    payload: productDetailsObj
+    payload: productDetails
 });
 
 export const fetchProductDetailsFailure = (error) => ({

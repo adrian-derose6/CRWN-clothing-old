@@ -12,13 +12,13 @@ export const selectCategories = createSelector(
     shop => shop.categories
 );
 
-export const selectCategoriesByValue = categoryUrlParam => 
+export const selectCategoriesByValue = (categoryUrlParam) => 
     createSelector(
         [selectCategories],
         categories => (categories ? categories[categoryUrlParam].CategoriesArray : null)
     );
 
-export const selectProductsListByCollection = collectionParam => 
+export const selectProductsListByCollection = (collectionParam) => 
     createSelector(
         [selectProducts],
         products => (products.collections[collectionParam] ? generateProductsList(products, collectionParam) : null)
@@ -33,6 +33,13 @@ export const generateProductsList = (state, collectionParam) => {
 
     return productsList;
 }
+
+export const selectProductDetailsByCode = (articleCode) => createSelector(
+        [selectProducts],
+        products => {
+            return (products.detail[articleCode] ? products.detail[articleCode] : null)
+        }
+    );
 
 export const selectFacetsByCollection = (collectionParam) => 
     createSelector(

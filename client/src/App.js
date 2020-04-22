@@ -39,7 +39,7 @@ const App = ({ categories, checkUserSession, user, clearCart, fetchCategoriesSta
                   <Route exact path='/' component={HomePage} />
                   <Route path='/:categoryId(men|ladies)' component={ShopPage} />
                   <Route exact path='/checkout' component={CheckoutPage} />
-                  <Route exact path='/product-page/:productId' component={ProductPage} />
+                  <Route exact path='/product-page/:articleCode' component={ProductPage} />
                   <Route 
                     exact 
                     path='/signin' 

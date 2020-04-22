@@ -6,7 +6,8 @@ const INITIAL_STATE = {
         list: {},
         pagination: {},
         facets: {},
-        collections: {}
+        collections: {}, 
+        detail: {}
     },
     categories: {},
     isFetching: false,
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
 const shopReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case ShopActionTypes.FETCH_PRODUCTS_LIST_START:
+        case ShopActionTypes.FETCH_PRODUCT_DETAILS_START:
         case ShopActionTypes.FETCH_CATEGORIES_START: {
             return {
                 ...state,
@@ -31,6 +33,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             };
         }
         case ShopActionTypes.FETCH_PRODUCTS_LIST_FAILURE:
+        case ShopActionTypes.FETCH_PRODUCT_DETAILS_FAILURE:
         case ShopActionTypes.FETCH_CATEGORIES_FAILURE: {
             return {
                 ...state,
@@ -47,13 +50,17 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             };
         }
         case ShopActionTypes.FETCH_PRODUCT_DETAILS_SUCCESS: {
-            const { productId, productDetails } = action.payload;
+            const { product } = action.payload;
+            const { code } = product;
 
             return { 
                 ...state,
-                productDetails: {
-                    ...state.productDetails,
-                    [productId]: productDetails
+                products: {
+                    ...state.products,
+                    detail: {
+                        ...state.products.detail,
+                        [code]: product
+                    }
                 }
             }
         }
