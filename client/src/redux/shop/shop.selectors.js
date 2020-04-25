@@ -36,9 +36,7 @@ export const generateProductsList = (state, collectionParam) => {
 
 export const selectProductDetailsByCode = (articleCode) => createSelector(
         [selectProducts],
-        products => {
-            return (products.detail[articleCode] ? products.detail[articleCode] : null)
-        }
+        products => (products.detail[articleCode] ? products.detail[articleCode] : null)
     );
 
 export const selectFacetsByCollection = (collectionParam) => 

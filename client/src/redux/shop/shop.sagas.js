@@ -26,7 +26,6 @@ function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
             }
         });
         const responseJSON = yield response.json();
-        console.log(responseJSON)
         
         yield put(fetchProductsListSuccess(responseJSON));
     } catch (error) {
@@ -53,6 +52,7 @@ function* fetchCategoriesAsync() {
 
 function* fetchProductDetailsAsync({ payload: { articleCode }}) {
     try {
+        console.log(articleCode)
         const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail?country=us&lang=en&productcode=${articleCode}`, {
             "method": "GET",
             "headers": {
@@ -60,7 +60,6 @@ function* fetchProductDetailsAsync({ payload: { articleCode }}) {
                 "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
             }
         });
-
         const responseJSON = yield response.json();
 
         yield put(fetchProductDetailsSuccess(responseJSON));

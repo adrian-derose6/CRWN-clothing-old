@@ -31,7 +31,7 @@ const CollectionItem = ({ item, imageType }) => {
     const [favorited, setFavorited] = useState(false);
     const { name, price, articleCodes } = item;
     const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
-    const articleCode = item.articles[0].code;
+    const articleCode = item.defaultArticle.code;
     const logoPicture = item.defaultArticle.logoPicture[0].url;
     const normalPicture = item.defaultArticle.images[0].url;
 

@@ -25,7 +25,7 @@ export const fetchCategoriesSuccess = (categories) => ({
 });
 
 export const fetchCategoriesFailure = (error) => ({
-    type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE,
+    type: ShopActionTypes.FETCH_CATEGORIES_FAILURE,
     payload: error
 });
 
