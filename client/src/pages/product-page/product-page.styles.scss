@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap');
+
 .product-page {
     width: 100%;
     border: 2px solid purple;
@@ -33,7 +35,7 @@
                 .image-container {
                     position: relative;
                     cursor: pointer;
-                    padding-bottom: 150%;
+                    padding-bottom: 140%;
                     height: auto;
                     overflow: hidden;
                 }
@@ -42,21 +44,73 @@
             .info-box {
                 height: 373px;
                 width: 100%;
-                margin-top: 32px;
-                margin-bottom: 32px;
                 padding-top: 60px;
                 padding-bottom: 60px;
                 background-color: white;
+                margin: 32px auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                @media screen and (max-width: 769px) {
+                    margin: 16px auto;
+                }
 
                 .info-content {
                     max-width: 675px;
                     margin-left: auto;
                     margin-right: auto;
+                    border: 1px solid red;
 
                     .description-text {
                         font-size: 18px;
                         line-height: 22px;
-                        margin: 0 0 32px;
+                        margin-bottom: 42px;
+                        font-family: 'Lora', serif;
+                        font-weight: 500;
+                        color: #222222;
+                        letter-spacing: 1px;
+                    }
+
+                    .description-list {
+                        font-size: 11px;
+                        line-height: 16px;
+                        color: #707070;
+                        font-size: 12px;
+
+                        .description-list-item {
+                            clear: both;
+                            display: block;
+                            margin-bottom: 8px;
+                            min-height: 20px;
+                        }
+
+                        dt {
+                            font-family: "Sharp Sans No1 Bold";
+                            font-size: 13px;
+                            color: #222222;
+                            display: inline;
+                            letter-spacing: 1px;
+                        }
+
+                        dd {
+                            font-family: "Sharp Sans No1 Semibold";
+                            -webkit-margin-start: auto;
+                            margin-inline-start: auto;
+                            display: inline;
+                        }
+
+                        dd::before {
+                            background-color: #707070;
+                            content: '';
+                            display: inline-block;
+                            height: 2px;
+                            margin-left: 5px;
+                            margin-right: 5px;
+                            position: relative;
+                            top: -3px;
+                            width: 15px;
+                        }
                     }
                 }
             }
