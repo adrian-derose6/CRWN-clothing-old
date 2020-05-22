@@ -1,29 +1,19 @@
-.link-selection {
+.category-selection {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 20px;
+    justify-content: space-around;
 
     .label {
         font-size: 16px;
         font-family: "Sharp Sans No1 Bold";
-        margin-bottom: 12px;
-
-        &.large-label {
-            font-size: 18px;
-            margin-bottom: 22px;
-        }
+        margin-bottom: 20px;
     }
 
-    .link {
+    .category {
         font-size: 13px;
         font-family: 'Sharp Sans No1 Semibold';
         color: #494d59;
-        margin-bottom: 13px;
-
-        &.large-link {
-            font-size: 15px;
-        }
     }
 
     .bolded {

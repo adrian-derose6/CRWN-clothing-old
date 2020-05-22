@@ -2,51 +2,55 @@ import { createSelector } from 'reselect';
 
 const selectShop = state => state.shop;
 
-export const selectProducts = createSelector(
+export const selectCollections = createSelector(
     [selectShop],
-    shop => shop.products
+    shop => shop.collections
 );
 
 export const selectCategories = createSelector(
     [selectShop],
     shop => shop.categories
-);
+)
 
-export const selectCategoriesByValue = categoryUrlParam => 
+export const selectCategoriesByGender = categoryUrlParam => 
     createSelector(
         [selectCategories],
-        categories => (categories ? categories[categoryUrlParam].CategoriesArray : null)
+        categories => (categories ? categories[categoryUrlParam] : null)
     );
 
-export const selectProductsListByCollection = collectionParam => 
+export const selectCollectionsForPreview = createSelector(
+    [selectCollections],
+    collections => collections ? Object.keys(collections).map(key => collections[key]) : []
+);
+
+export const selectCollectionsByGender = (categoryId) => 
     createSelector(
-        [selectProducts],
-        products => (products.collections[collectionParam] ? generateProductsList(products, collectionParam) : null)
+        [selectCollections],
+        collections => collections && collections[categoryId] ? collections[categoryId] : null
     );
 
-export const generateProductsList = (state, collectionParam) => {
-    let productsList = [];
-
-    state.collections[collectionParam].forEach((productCode, index) => {
-        productsList.push(state.list[productCode]);
-    });
-
-    return productsList;
+export const selectCollection = (categoryId, collectionUrlParam) => {
+    const collections = selectCollectionsByGender(categoryId);
+    return createSelector(
+        [collections],
+        collections => collections ? collections[collectionUrlParam] : null
+    );
 }
 
-export const selectFacetsByCollection = (collectionParam) => 
-    createSelector(
-        [selectProducts],
-        products => (products.facets[collectionParam] ? products.facets[collectionParam] : null)
+export const selectFilters = (categoryId, collectionUrlParam) => {
+    const collection = selectCollection(categoryId, collectionUrlParam);
+    return createSelector(
+        [collection],
+        collection => collection ? collection.filters : null
     );
-
-export const selectPaginationByCollection = (collectionParam) => 
-    createSelector(
-        [selectProducts],
-        products => (products.pagination[collectionParam] ? products.pagination[collectionParam] : null)
-    );
+}
 
 export const selectIsCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching
+);
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
 );

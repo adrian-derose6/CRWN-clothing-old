@@ -9,13 +9,11 @@ import './selected-filters.styles.scss';
 
 const letterSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl'];
 
-const SelectedFilters = ({ filters, toggleFilter, collectionParam }) => {
+const SelectedFilters = ({ filters, toggleFilter, categoryId, collectionName }) => {
     if (!filters || filters.length === 0 || filters.length === 1 && filters.find(filter => filter.facet === 'sortBy')) return null;
 
     const handleClick = (filter) => {
-        const filterParams = { collectionParam, filter };
-
-        toggleFilter(filterParams);
+        toggleFilter({ item: filter, categoryId, collectionName });
     }
 
     return ( 
@@ -45,7 +43,7 @@ const SelectedFilters = ({ filters, toggleFilter, collectionParam }) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    toggleFilter: (filterParams) => dispatch(toggleFilter(filterParams))
+    toggleFilter: (filter) => dispatch(toggleFilter(filter))
 });
 
 export default connect(null, mapDispatchToProps)(SelectedFilters);

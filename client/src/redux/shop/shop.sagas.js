@@ -1,8 +1,8 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 
 import {
-    fetchProductsListSuccess,
-    fetchProductsListFailure,
+    fetchCollectionsSuccess,
+    fetchCollectionsFailure,
     fetchCategoriesSuccess,
     fetchCategoriesFailure,
     fetchProductDetailsSuccess,
@@ -13,12 +13,10 @@ import { SEARCH_ALL, CATEGORY_DESCRIPTIONS } from './shop.data.js';
 import ShopActionTypes from './shop.types';
 import { generateQueryString } from './shop.utils';
 
-function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
+export function* fetchCollectionsAsync({ payload: { tagCode, collectionName, categoryId, filters }}) {
     try {
-        console.log(filters);
         const queryString = generateQueryString(filters);
-        console.log(queryString)
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&country=us&lang=en&currentpage=0&pagesize=30`, {
+        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list?categories=${tagCode}&${queryString}&concepts=DIVIDED&country=us&lang=en&currentpage=0&pagesize=30`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
@@ -26,11 +24,19 @@ function* fetchProductsListAsync({ payload: { tagCode, filters }}) {
             }
         });
         const responseJson = yield response.json();
-        console.log(responseJson)
-        
-        yield put(fetchProductsListSuccess(responseJson));
+        const mapJsonToState = {
+            collectionName,
+            categoryId,
+            collection: {
+                results: responseJson.results,
+                pagination: responseJson.pagination,
+                facets: responseJson.facets
+            }
+        };
+
+        yield put(fetchCollectionsSuccess(mapJsonToState));
     } catch (error) {
-        yield put(fetchProductsListFailure(error.message))
+        yield put(fetchCollectionsFailure(error.message))
     }
 }
 
@@ -45,34 +51,43 @@ function* fetchCategoriesAsync() {
         });
         const responseJson = yield response.json();
 
-        yield put(fetchCategoriesSuccess(responseJson));
+        const reduceJson = (json, categoryType) => {
+            const filteredResponse  = json
+                    .filter(category => category.CatName === categoryType)
+                    .map(category => {
+                        return category.CategoriesArray
+                                .filter(subcategory => subcategory.CatName === 'Shop by Concept')[0]
+                                .CategoriesArray
+                                .filter(concept => concept.CatName === 'Divided')[0]
+                                .CategoriesArray      
+                    })[0];
+
+            const categoriesWithDescriptions = filteredResponse.map(item => {
+                if (item.tagCodes[0] in CATEGORY_DESCRIPTIONS) {
+                    return { ...item, description: CATEGORY_DESCRIPTIONS[item.tagCodes[0]]}
+                }
+                
+                return { ...item };
+            });
+            
+            return categoriesWithDescriptions;
+        };
+
+        const mapJsonToState = {
+            guys: SEARCH_ALL.guys.concat(reduceJson(responseJson, 'Men')),
+            girls: SEARCH_ALL.girls.concat(reduceJson(responseJson, 'Women'))
+        };
+
+        yield put(fetchCategoriesSuccess(mapJsonToState));
     } catch (error) {
         yield put(fetchCategoriesFailure(error.message));
     }
 }
 
-function* fetchProductDetailsAsync({ payload: { productId }}) {
-    try {
-        const response = yield fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail?country=us&lang=en&productcode=${productId}`, {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
-                "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380"
-            }
-        });
-
-        const responseJson = yield response.json();
-
-        yield put(fetchProductDetailsSuccess({ productDetails: responseJson.product, productId }))
-    } catch (error) {
-        yield put(fetchProductDetailsFailure(error.message));
-    }
-}
-
-function* onFetchProductsListStart() {
+export function* onFetchCollectionsStart() {
     yield takeLatest(
-        ShopActionTypes.FETCH_PRODUCTS_LIST_START, 
-        fetchProductsListAsync
+        ShopActionTypes.FETCH_COLLECTIONS_START, 
+        fetchCollectionsAsync
     );
 }
 
@@ -92,8 +107,7 @@ function* onFetchProductDetailsStart() {
 
 export function* shopSagas() {
     yield all([
-        call(onFetchProductsListStart),
-        call(onFetchCategoriesStart),
-        call(onFetchProductDetailsStart)
+        call(onFetchCollectionsStart),
+        call(onFetchCategoriesStart)
     ]);
 }

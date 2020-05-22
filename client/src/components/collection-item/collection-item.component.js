@@ -27,35 +27,32 @@ const BackgroundImage = styled.img`
     }
 `
 
-const CollectionItem = ({ item, imageType }) => {
+const CollectionItem = ({ item, addItem, imageType }) => {
     const [favorited, setFavorited] = useState(false);
-    const { name, price, articleCodes } = item;
-    const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
-    const productCode = item.code;
-    const logoPicture = item.defaultArticle.logoPicture[0].url;
-    const normalPicture = item.defaultArticle.images[0].url;
+    const { name, rgbColors, price } = item;
+    const logoPicture = item.articles[0].logoPicture[0].url;
+    const normalPicture = item.articles[0].images[0].url;
+    console.log(item)
 
     const toggleFavorited = () => {
         setFavorited(!favorited);
     }
-    if (!item) return null;
+
     return (
         <div className='collection-item'>
-            <Link to={`/product-page/${productCode}`}>
-                <div className='image-container'>
-                    <BackgroundImage src={logoPicture} main={imageType === 'model'} />
-                    <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
-                    <HeartIcon className='heart-icon' selected={favorited} onClick={toggleFavorited}/>
-                </div>
-            </Link>
+            <div className='image-container'>
+                <BackgroundImage src={logoPicture} main={imageType === 'model'} />
+                <BackgroundImage src={normalPicture} main={imageType === 'product'}/>
+                <HeartIcon className='heart-icon' selected={favorited} onClick={toggleFavorited}/>
+            </div>
             <div className='item-details'>
                 <span className='product-name'>{name}</span>
                 <span className='price'>{`$${price.value}`}</span>
                 <div className='colors-row'>
                     {
-                        rgbColors.map((color, c) => {
+                        rgbColors.map(color => {
                             return (
-                                <div className='color-circle' style={{ background: color }} key={c}/>
+                                <div className='color-circle' style={{ background: color }}/>
                             )
                         })
                     }
@@ -69,4 +66,7 @@ const mapDispatchToProps = dispatch => ({
     addItem: item => dispatch(addItem(item))
 })
 
-export default CollectionItem;
+export default connect(
+    null, 
+    mapDispatchToProps
+)(CollectionItem);
