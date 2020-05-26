@@ -2,14 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import Select from 'react-select'
+
+import ArticleSelector from './article-selector.component.js';
 import Spinner from '../../components/spinner/spinner.component.js';
+import HeartIcon from '../../assets/heart-icon.js';
+import CustomButton from '../../components/custom-button/custom-button.component.js';
 
 import { fetchProductDetailsStart } from '../../redux/shop/shop.actions.js';
 import { selectProductDetailsByCode } from '../../redux/shop/shop.selectors.js';
 
 import './product-page.styles.scss';
 
-const BackgroundImage = styled.img`
+const options = [
+    {
+        value: 'XS',
+        label: 'XS'
+    },
+    {
+        value: 'SM',
+        label: 'SM'
+    }
+];
+
+export const BackgroundImage = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -45,6 +61,22 @@ class ProductPage extends React.Component {
         }
     }
 
+    _getVariantSelection = (variantsList) => {
+        if (!variantsList) return [];
+        
+        const variantsSelection = variantsList.filter(variant => Object.keys(variant).length !== 0)
+        .map((variant, index) => {
+            const label = variant.size.name;
+
+            return {
+                label,
+                value: variant
+            }
+        });
+
+        return variantsSelection;
+    }
+
     _setSelectedArticle = (article) => {
         this.setState({ selectedArticle: article });
     }
@@ -56,12 +88,14 @@ class ProductPage extends React.Component {
         if (!productDetails || !selectedArticle) return <Spinner />;
         
         console.log(selectedArticle);
-        const { description, fits, code } = productDetails;
+        const { description, fits, code, name } = productDetails;
         const galleryDetails = selectedArticle.galleryDetails;
         const productDescription = description || '';
         const fit = fits ? fits[0] : null;
         const compositions = selectedArticle.compositions;
         const modelHeight = selectedArticle.modelHeight;
+        const price = `$${selectedArticle.whitePrice.price}` || '';
+        const variantsSelection = this._getVariantSelection(selectedArticle.variantsList);
 
         return (
             <div className='product-page'>
@@ -125,7 +159,27 @@ class ProductPage extends React.Component {
                         </div>
                     </div> 
                     <div className='selection-box'>
-
+                        <div className='inner'>
+                            <div className='name-price'>
+                                <div className="name-heart">
+                                    <span>{name}</span>
+                                    <HeartIcon className='heart-icon' selected={false} onClick={() => null}/>
+                                </div>
+                                <span className='price'>{price}</span>
+                            </div>
+                            <div className='slider-container'>
+                                <ArticleSelector 
+                                    articlesList={productDetails.articlesList} 
+                                    onSelect={article => this._setSelectedArticle(article)} 
+                                    selectedArticle={this.state.selectedArticle}
+                                /> 
+                            </div>
+                            <Select 
+                                isSearchable={false}
+                                options={variantsSelection}
+                                placeholder='Select size'
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
