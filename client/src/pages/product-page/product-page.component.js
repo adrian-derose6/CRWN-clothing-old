@@ -8,22 +8,33 @@ import ArticleSelector from './article-selector.component.js';
 import Spinner from '../../components/spinner/spinner.component.js';
 import HeartIcon from '../../assets/heart-icon.js';
 import CustomButton from '../../components/custom-button/custom-button.component.js';
+import CartIcon from '../../components/'
 
 import { fetchProductDetailsStart } from '../../redux/shop/shop.actions.js';
 import { selectProductDetailsByCode } from '../../redux/shop/shop.selectors.js';
 
 import './product-page.styles.scss';
 
-const options = [
-    {
-        value: 'XS',
-        label: 'XS'
-    },
-    {
-        value: 'SM',
-        label: 'SM'
-    }
-];
+const selectionStyles = {
+    control: base => ({
+        ...base,
+        borderRadius: 0,
+        border: 'none',
+        boxShadow: 'none',
+        outline: 'none',
+        cursor: 'pointer'
+    }),
+    container: base => ({
+        ...base,
+        border: '1px solid lightgray',
+        borderRadius: 0
+    }),
+    option: (base, state) => ({
+        ...base,
+        backgroundColor: state.isSelected || state.isFocused ? "lightgray" : 'none',
+        cursor: 'pointer'
+    })
+}
 
 export const BackgroundImage = styled.img`
     width: 100%;
@@ -178,7 +189,12 @@ class ProductPage extends React.Component {
                                 isSearchable={false}
                                 options={variantsSelection}
                                 placeholder='Select size'
+                                styles={selectionStyles}
                             />
+
+                            <CustomButton style={{marginTop: 20}}>
+                                ADD
+                            </CustomButton>
                         </div>
                     </div>
                 </div>

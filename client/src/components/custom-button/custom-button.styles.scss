@@ -16,24 +16,12 @@
     text-align: center;
     align-content: center;
     justify-content: center;
-    transition: background-color .2s ease-out;
-  
-    &:hover {
-      background-color: white;
-      color: #292a33;
-      border: 1px solid #292a33;
-    }
+    outline: none;
 
     &.inverted {
       background-color: white;
       color: #292a33;
       border: 1px solid #292a33;
-
-      &:hover {
-        background-color: #292a33;
-        color: white;
-        border: none;
-      }
     }
 
     &.google-sign-in {
