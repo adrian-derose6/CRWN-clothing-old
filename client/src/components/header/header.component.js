@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { ReactComponent as MenuIcon } from '../../assets/menu-icon.svg';
+import { ReactComponent as UserIcon } from '../../assets/user.svg';
 
 import RightPopover from '../right-popover/right-popover.component';
 import NavPopover from '../nav-popover/nav-popover.component';
@@ -17,6 +18,7 @@ import BagPopoverContent from '../bag-popover/bag-popover.component';
 
 import { selectCartHidden } from '../../redux/cart/cart.selectors.js';
 import { selectCurrentUser } from '../../redux/user/user.selectors.js';
+import { signOutStart } from '../../redux/user/user.actions';
 
 import guysNavImage from '../../assets/nav-dropdowns/guys-nav-image.jpg';
 import girlsNavImage from '../../assets/nav-dropdowns/girls-nav-image.jpg';
@@ -50,13 +52,13 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <span className='brand-name'>CRWN</span>
                 </Link>
                 <div className='options left'>
-                    <NavPopover label='Guys' value='men' link='/men' image={guysNavImage}/>
-                    <NavPopover label='Women' value='ladies' link='/ladies' image={girlsNavImage} />
+                    <NavPopover label='Guys' value='men' link='/men' />
+                    <NavPopover label='Women' value='ladies' link='/ladies' />
                     <NavPopover label='Kids' value='guys'/>
-                    <NavPopover label='Bottoms' value='men' image={bottomsNavImage} />
+                    <NavPopover label='Bottoms' value='men' />
                     <NavPopover label='Jackets' value='ladies' />
                 </div>
-                <div className='options'>                 
+                <div className='options'>
                     <RightPopover icon={<CustomerIcon />}>
                         <CustomerPopoverContent />
                     </RightPopover>
@@ -64,8 +66,9 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                     <RightPopover icon={<CartIcon />} >
                         <BagPopoverContent />
                     </RightPopover>
+
                 </div>
-                { hidden ? null : <CartDropdown /> }
+                { hidden ? null : <CartDropdown />}
             </MediaQuery>
         </div>
     );
@@ -76,4 +79,8 @@ const mapStateToProps = createStructuredSelector({
     hidden: selectCartHidden
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+    signOutStart: () => dispatch(signOutStart())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

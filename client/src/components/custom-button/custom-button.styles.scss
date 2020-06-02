@@ -3,7 +3,6 @@
     width: auto;
     height: 50px;
     letter-spacing: 1px;
-    padding: 0 35px 0 35px;
     font-size: 15px;
     background-color: #292a33;
     color: white;
@@ -12,28 +11,25 @@
     font-weight: bolder;
     border: none;
     cursor: pointer;
-    display: flex;
     text-align: center;
-    align-content: center;
+    outline: none;
+    display: flex;
     justify-content: center;
-    transition: background-color .2s ease-out;
-  
+    align-items: center;
+
+    &.inactive {
+      opacity: 0.8;
+      cursor: default;
+    }
+
     &:hover {
-      background-color: white;
-      color: #292a33;
-      border: 1px solid #292a33;
+      opacity: 0.8;
     }
 
     &.inverted {
       background-color: white;
       color: #292a33;
       border: 1px solid #292a33;
-
-      &:hover {
-        background-color: #292a33;
-        color: white;
-        border: none;
-      }
     }
 
     &.google-sign-in {

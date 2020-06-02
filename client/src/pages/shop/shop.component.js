@@ -59,6 +59,7 @@ class ShopPage extends React.Component {
         const { url } = this.props.match;
 
         if (!this.shouldComponentRender()) return <Spinner />;
+        
         return (
             <div className='shop-page'>  
                 <Suspense fallback={<Spinner />}>          

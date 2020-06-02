@@ -33,21 +33,23 @@ const App = ({ categories, checkUserSession, user, clearCart, fetchCategoriesSta
       <div>
         <TopBanner />
         <Header />
-          <Switch>
-            <ErrorBoundary> 
-              <Suspense fallback={<Spinner />}>
-                  <Route exact path='/' component={HomePage} />
-                  <Route path='/:categoryId(men|ladies)' component={ShopPage} />
-                  <Route exact path='/checkout' component={CheckoutPage} />
-                  <Route exact path='/product-page/:productId' component={ProductPage} />
-                  <Route 
-                    exact 
-                    path='/signin' 
-                    render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
-                  />
-              </Suspense>
-            </ErrorBoundary>
-          </Switch>
+          <div style={{ minHeight: '100vh' }}>
+            <Switch>
+              <ErrorBoundary> 
+                <Suspense fallback={<Spinner />}>
+                    <Route exact path='/' component={HomePage} />
+                    <Route path='/:categoryId(men|ladies)' component={ShopPage} />
+                    <Route exact path='/checkout' component={CheckoutPage} />
+                    <Route exact path='/product-page/:articleCode' component={ProductPage} />
+                    <Route 
+                      exact 
+                      path='/signin' 
+                      render={() => user ? <Redirect to='/' /> : <SignInAndSignUp />} 
+                    />
+                </Suspense>
+              </ErrorBoundary>
+            </Switch>
+          </div>
       </div>
       <Footer />
     </div>
