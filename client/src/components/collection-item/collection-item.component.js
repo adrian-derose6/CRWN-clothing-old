@@ -27,7 +27,7 @@ const BackgroundImage = styled.img`
     }
 `
 
-const CollectionItem = ({ item, imageType, subcategory }) => {
+const CollectionItem = ({ item, imageType, topCategory, category, subcategory }) => {
     const [favorited, setFavorited] = useState(false);
     const { name, price } = item;
     const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
@@ -45,6 +45,8 @@ const CollectionItem = ({ item, imageType, subcategory }) => {
             <Link to={{
                 pathname: `/product-page/${articleCode}`,
                 state: {
+                    topCategory,
+                    category,
                     subcategory
                 }
             }}>

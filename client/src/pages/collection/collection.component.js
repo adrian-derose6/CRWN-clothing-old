@@ -11,6 +11,7 @@ import {
     selectIsCollectionFetching 
 } from '../../redux/shop/shop.selectors';
 
+import NavBreadcrumbs from '../../components/nav-breadcrumbs/nav-breadcrumbs.component';
 import Spinner from '../../components/spinner/spinner.component';
 import CollectionItem from '../../components/collection-item/collection-item.component';
 import FilterBar from '../../components/filter-bar/filter-bar.component';
@@ -66,14 +67,19 @@ class CollectionList extends React.Component {
 
     render() {
         const { imageSize, imageType } = this.state;
-        const { productsList, subcategory, facets, pagination } = this.props;
-        console.log(subcategory)
+        const { productsList, category, categoryId, subcategory, facets, pagination } = this.props;
+
         const collectionParam = subcategory.tagCodes[0];
 
         if (!this.shouldComponentRender()) return <Spinner />;
         
         return (
-            <div className='collection-page'> 
+            <div className='collection-page'>
+                <NavBreadcrumbs style={{ marginTop: 20 }}
+                    topCategory={categoryId}
+                    category={category}
+                    subcategory={subcategory}
+                />
                 <h2 className='title'>{subcategory.CatName}</h2>
                 
                 <FilterBar 
@@ -98,6 +104,8 @@ class CollectionList extends React.Component {
                                     item={item} 
                                     key={index}
                                     imageType={imageType}
+                                    topCategory={categoryId}
+                                    category={category}
                                     subcategory={subcategory}
                                 />
                             ) 

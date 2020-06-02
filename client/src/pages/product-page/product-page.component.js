@@ -138,7 +138,7 @@ class ProductPage extends React.Component {
     render() {
         const { productDetails, location } = this.props;
         const { selectedArticle, selectedVariant, styleWithList } = this.state;
-        const { subcategory } = location.state;
+        const { topCategory, category, subcategory } = location.state;
 
         if (!productDetails || !selectedArticle) return <Spinner />;
 
@@ -153,7 +153,12 @@ class ProductPage extends React.Component {
 
         return (
             <div className='product-page'>
-                <NavBreadcrumbs />
+                <NavBreadcrumbs style={{ marginTop: 40 }}
+                    topCategory={topCategory}
+                    category={category}
+                    subcategory={subcategory}
+                    itemName={name}
+                />
                 <div className='top-container'>
                     <div className='description-container'>
                         <div className='image-row'>

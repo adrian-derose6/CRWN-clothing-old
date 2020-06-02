@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
 
     ul {
         list-style: none;
@@ -13,6 +12,10 @@
         li {
             display: inline-block;
             white-space: nowrap;
+
+            span {
+                text-transform: capitalize;
+            }
 
             &:hover {
                 cursor: pointer;
@@ -34,6 +37,7 @@
                         color: inherit;
                     }
                 }
+                
                 &::after {
                     content: "";
                 }

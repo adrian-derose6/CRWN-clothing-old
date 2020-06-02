@@ -33,30 +33,9 @@ class ShopPage extends React.Component {
         return true;
     }
 
-    renderCategoryRoutes = () => {
-        const { categories } = this.props;
-        const { path, params, url } = this.props.match;
-        return categories.map((category, index) => {
-            if (category.CategoriesArray) {
-                category.CategoriesArray.map((subcategory, i) => (
-                    <Route exact key={index} path={`${url}/${category.CategoryValue}/:subcategoryId`}>
-                        <CollectionList subcategory={subcategory}/>
-                    </Route>
-                ))
-            }
-            else { 
-                return (
-                    <Route exact key={index} path={`${url}/${category.CategoryValue}`}>
-                        <CollectionList category={category} />
-                    </Route>
-                )
-            }
-        })
-    }
-
     render() {
         const { categories } = this.props;
-        const { url } = this.props.match;
+        const { url, params } = this.props.match;
 
         if (!this.shouldComponentRender()) return <Spinner />;
         
@@ -82,7 +61,7 @@ class ShopPage extends React.Component {
                                     return category.CategoriesArray.map((subcategory, i) => {
                                         return (
                                             <Route exact key={index + i} path={`${url}/${category.CategoryValue}/${subcategory.CategoryValue}`}>
-                                                <CollectionList category={category} subcategory={subcategory} />
+                                                <CollectionList categoryId={params.categoryId} category={category} subcategory={subcategory} />
                                             </Route>
                                         )
                                     })
