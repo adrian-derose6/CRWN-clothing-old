@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import styled from 'styled-components';
 import Select from 'react-select'
+import { Carousel } from 'react-responsive-carousel';
 
 import ArticleSelector from './article-selector.component.js';
 import Spinner from '../../components/spinner/spinner.component.js';
@@ -49,6 +50,7 @@ class ProductPage extends React.Component {
     state = {
         selectedArticle: null,
         selectedVariant: null,
+        styleWithList: null
     };
 
     componentDidMount() {
@@ -58,7 +60,7 @@ class ProductPage extends React.Component {
         fetchProductDetails({ articleCode });
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         const { productDetails } = this.props;
         const { selectedArticle } = this.state;
 
@@ -71,8 +73,36 @@ class ProductPage extends React.Component {
                     return;
                 }
             });
-        }
+        } 
     }
+
+    /*fetchStyleWithList = async () => {
+        const { selectedArticle } = this.state;
+        const styleWithCodes = selectedArticle.styleWith.map(item => item.code);
+
+        const styleWithList = styleWithCodes.map(async (code) => {
+            const response = await fetch(`https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail?country=us&lang=en&productcode=${code}`, {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
+                    "x-rapidapi-key": "0e3e663af0msh5a39e9c2bfe5aecp190e1ajsn157832385380",
+                }
+            });
+
+            const responseJSON = await response.json();
+            console.log(responseJSON.product)
+            const displayedArticle = responseJSON.product.articlesList.find(item => item.code === code);
+            const articleCode = displayedArticle.code;
+            const thumbnailUrl = displayedArticle.galleryDetails[0];
+
+            return {
+                articleCode,
+                thumbnailUrl
+            }
+        });
+
+        await Promise.all(styleWithList).then(results => this.setState({ styleWithList: results }))
+    } */
 
     getVariantSelection = (variantsList) => {
         if (!variantsList) return [];
@@ -104,18 +134,19 @@ class ProductPage extends React.Component {
 
         if (!selectedVariant) return;
 
-
     }
 
     render() {
         const { productDetails } = this.props;
-        const { selectedArticle, selectedVariant } = this.state;
+        const { selectedArticle, selectedVariant, styleWithList } = this.state;
 
         console.log(selectedVariant)
 
         if (!productDetails || !selectedArticle) return <Spinner />;
         
         console.log(selectedArticle);
+        console.log(styleWithList);
+
         const { description, fits, code, name } = productDetails;
         const galleryDetails = selectedArticle.galleryDetails;
         const productDescription = description || '';
@@ -222,10 +253,11 @@ class ProductPage extends React.Component {
                                 <BagIcon className='bag-icon' />
                                 <span style={{marginLeft: 10}}>ADD</span>
                             </CustomButton>
-
-                            
                         </div>
                     </div>
+                </div>
+                <div>
+                    <span>Style With</span>
                 </div>
             </div>
         );

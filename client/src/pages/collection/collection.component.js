@@ -74,7 +74,7 @@ class CollectionList extends React.Component {
         return (
             <div className='collection-page'> 
                 <h2 className='title'>{subcategory.CatName}</h2>
-                <span className='description'>This is the description</span>
+                
                 <FilterBar 
                     setImageSize={(imageSize) => this.setImageSize(imageSize)}
                     setImageType={(imageType) => this.setImageType(imageType)}

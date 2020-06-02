@@ -2,7 +2,6 @@
 
 .product-page {
     width: 100%;
-    border: 2px solid purple;
     min-height: 100vh;
     position: relative;
     overflow: visible;
@@ -14,7 +13,6 @@
         width: 100%;
         padding: 32px;
         margin-bottom: 234px;
-        border: 1px solid red;
         display: flex;
         flex-direction: row;
         position: relative;
@@ -30,7 +28,7 @@
             .image-row {
                 width: 100%;
                 display: grid;
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(4, 1fr);
                 grid-gap: 4px;
 
                 .image-container {
@@ -39,6 +37,11 @@
                     padding-bottom: 140%;
                     height: auto;
                     overflow: hidden;
+                    grid-column: span 2;
+
+                    &:nth-last-child(1):nth-child(odd) {
+                        grid-column: 2 / span 2;
+                    }
                 }
             }
 
