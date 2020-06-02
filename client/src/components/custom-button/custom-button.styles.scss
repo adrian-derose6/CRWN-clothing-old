@@ -3,7 +3,6 @@
     width: auto;
     height: 50px;
     letter-spacing: 1px;
-    padding: 0 35px 0 35px;
     font-size: 15px;
     background-color: #292a33;
     color: white;
@@ -12,11 +11,20 @@
     font-weight: bolder;
     border: none;
     cursor: pointer;
-    display: flex;
     text-align: center;
-    align-content: center;
-    justify-content: center;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.inactive {
+      opacity: 0.8;
+      cursor: default;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
 
     &.inverted {
       background-color: white;

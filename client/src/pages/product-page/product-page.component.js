@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 
+import styled from 'styled-components';
 import Select from 'react-select'
 
 import ArticleSelector from './article-selector.component.js';
 import Spinner from '../../components/spinner/spinner.component.js';
 import HeartIcon from '../../assets/heart-icon.js';
 import CustomButton from '../../components/custom-button/custom-button.component.js';
-import CartIcon from '../../components/'
+import { ReactComponent as BagIcon } from '../../assets/shopping-bag-3.svg';
 
 import { fetchProductDetailsStart } from '../../redux/shop/shop.actions.js';
 import { selectProductDetailsByCode } from '../../redux/shop/shop.selectors.js';
@@ -47,11 +47,12 @@ export const BackgroundImage = styled.img`
 
 class ProductPage extends React.Component {
     state = {
-        selectedArticle: null
+        selectedArticle: null,
+        selectedVariant: null,
     };
 
     componentDidMount() {
-        const { match, fetchProductDetails, productDetails } = this.props;
+        const { match, fetchProductDetails } = this.props;
         const { articleCode } = match.params; 
 
         fetchProductDetails({ articleCode });
@@ -63,16 +64,17 @@ class ProductPage extends React.Component {
 
         if (productDetails && !selectedArticle) {    
             const { articlesList } = productDetails;
+
             articlesList.forEach(item => {
                 if (item.color.code === productDetails.color.code) {
-                    this._setSelectedArticle(item);
+                    this.setSelectedArticle(item);
                     return;
                 }
             });
         }
     }
 
-    _getVariantSelection = (variantsList) => {
+    getVariantSelection = (variantsList) => {
         if (!variantsList) return [];
         
         const variantsSelection = variantsList.filter(variant => Object.keys(variant).length !== 0)
@@ -88,13 +90,28 @@ class ProductPage extends React.Component {
         return variantsSelection;
     }
 
-    _setSelectedArticle = (article) => {
+    setSelectedArticle = (article) => {
+        console.log(article)
         this.setState({ selectedArticle: article });
+    }
+
+    setSelectedVariant = (variant) => {
+        this.setState({ selectedVariant: variant });
+    }
+
+    onBagClick = () => {
+        const { selectedVariant } = this.state;
+
+        if (!selectedVariant) return;
+
+
     }
 
     render() {
         const { productDetails } = this.props;
-        const { selectedArticle } = this.state;
+        const { selectedArticle, selectedVariant } = this.state;
+
+        console.log(selectedVariant)
 
         if (!productDetails || !selectedArticle) return <Spinner />;
         
@@ -106,7 +123,7 @@ class ProductPage extends React.Component {
         const compositions = selectedArticle.compositions;
         const modelHeight = selectedArticle.modelHeight;
         const price = `$${selectedArticle.whitePrice.price}` || '';
-        const variantsSelection = this._getVariantSelection(selectedArticle.variantsList);
+        const variantsSelection = this.getVariantSelection(selectedArticle.variantsList);
 
         return (
             <div className='product-page'>
@@ -118,7 +135,9 @@ class ProductPage extends React.Component {
                                 const url = item.url + '&call=url[file:/product/main]';
                                 return (
                                     <div className='image-container'>
-                                        <BackgroundImage src={url} />
+                                        <Suspense fallback={<Spinner />}>
+                                            <BackgroundImage src={url} />
+                                        </Suspense>
                                     </div>
                                 )
                             })}
@@ -163,7 +182,9 @@ class ProductPage extends React.Component {
                                 const url = item.url + '&call=url[file:/product/main]';
                                 return (
                                     <div className='image-container'>
-                                        <BackgroundImage src={url} />
+                                        <Suspense fallback={<Spinner />}>
+                                            <BackgroundImage src={url} />
+                                        </Suspense>
                                     </div>
                                 )
                             })}
@@ -181,20 +202,28 @@ class ProductPage extends React.Component {
                             <div className='slider-container'>
                                 <ArticleSelector 
                                     articlesList={productDetails.articlesList} 
-                                    onSelect={article => this._setSelectedArticle(article)} 
+                                    onSelect={(article) => this.setSelectedArticle(article)} 
                                     selectedArticle={this.state.selectedArticle}
                                 /> 
                             </div>
                             <Select 
                                 isSearchable={false}
+                                onChange={this.setSelectedVariant}
                                 options={variantsSelection}
                                 placeholder='Select size'
                                 styles={selectionStyles}
                             />
 
-                            <CustomButton style={{marginTop: 20}}>
-                                ADD
+                            <CustomButton 
+                                style={{marginTop: 20, marginBottom: 20, height: 45}} 
+                                onClick={() => this.onBagClick}
+                                inactive={(!this.state.selectedVariant)}
+                            >
+                                <BagIcon className='bag-icon' />
+                                <span style={{marginLeft: 10}}>ADD</span>
                             </CustomButton>
+
+                            
                         </div>
                     </div>
                 </div>

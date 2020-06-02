@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 
 import { BackgroundImage } from './product-page.component';
+import Spinner from '../../components/spinner/spinner.component';
 
 import './product-page.styles.scss';
 
@@ -17,11 +18,12 @@ const ArticleSelector = ({ articlesList, onSelect, selectedArticle }) => {
                     articlesList.map((article, index) => {
                         const thumbnailUrl = `${article.fabricSwatchThumbnails[0].url}&call=url[file:/product/style]`;
                         const isSelected = article.colourDescription == selectedArticle.colourDescription;
-
+                        
                         return (
                             <div 
                                 className='image-container' 
-                                key={index} onClick={(article) => onSelect(article)} 
+                                key={index} 
+                                onClick={() => onSelect(article)} 
                                 onMouseEnter={() => setArticleLabel(article.colourDescription)}
                                 onMouseLeave={() => setArticleLabel(selectedArticle.colourDescription)}
                                 style={ isSelected ? {border: '1px solid #222222'} : null}
