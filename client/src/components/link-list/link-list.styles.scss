@@ -20,6 +20,10 @@
         font-family: 'Sharp Sans No1 Semibold';
         color: #494d59;
         margin-bottom: 13px;
+        
+        &:hover {
+            color: #9c2224;
+        }
 
         &.large-link {
             font-size: 15px;

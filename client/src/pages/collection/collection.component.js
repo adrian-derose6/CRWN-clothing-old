@@ -75,13 +75,14 @@ class CollectionList extends React.Component {
         
         return (
             <div className='collection-page'>
-                <NavBreadcrumbs style={{ marginTop: 20 }}
-                    topCategory={categoryId}
-                    category={category}
-                    subcategory={subcategory}
-                />
-                <h2 className='title'>{subcategory.CatName}</h2>
-                
+                <div className='title-container'>
+                    <h2 className='title'>{subcategory.CatName}</h2>
+                    <NavBreadcrumbs style={{ marginTop: 20 }}
+                        topCategory={categoryId}
+                        category={category}
+                        subcategory={subcategory}
+                    />
+                </div>
                 <FilterBar 
                     setImageSize={(imageSize) => this.setImageSize(imageSize)}
                     setImageType={(imageType) => this.setImageType(imageType)}

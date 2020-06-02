@@ -10,18 +10,25 @@
     min-width: 100%;
   }
 
-  .title {
-    font-size: 40px;
-    height: 48px;
-    margin: 0 22px 22px 22px;
-    margin-left: 0;
-    text-transform: uppercase;
-    text-align: left;
-    font-family: "Sharp Sans No1 Semibold";
+  .title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
-    @media screen and (max-width: 800px) {
-      font-size: 30px;
-      height: 30px;
+    .title {
+      font-size: 40px;
+      height: 48px;
+      margin: 22px;
+      margin-left: 0;
+      text-transform: uppercase;
+      text-align: left;
+      font-family: "Sharp Sans No1 Semibold";
+
+      @media screen and (max-width: 800px) {
+        font-size: 30px;
+        height: 30px;
+      }
     }
   }
 
