@@ -67,6 +67,7 @@ class CollectionList extends React.Component {
     render() {
         const { imageSize, imageType } = this.state;
         const { productsList, subcategory, facets, pagination } = this.props;
+        console.log(subcategory)
         const collectionParam = subcategory.tagCodes[0];
 
         if (!this.shouldComponentRender()) return <Spinner />;
@@ -97,6 +98,7 @@ class CollectionList extends React.Component {
                                     item={item} 
                                     key={index}
                                     imageType={imageType}
+                                    subcategory={subcategory}
                                 />
                             ) 
                         })

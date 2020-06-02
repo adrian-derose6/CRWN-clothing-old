@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Select from 'react-select'
 import { Carousel } from 'react-responsive-carousel';
 
+import NavBreadcrumbs from '../../components/nav-breadcrumbs/nav-breadcrumbs.component';
 import ArticleSelector from './article-selector.component.js';
 import Spinner from '../../components/spinner/spinner.component.js';
 import HeartIcon from '../../assets/heart-icon.js';
@@ -121,7 +122,6 @@ class ProductPage extends React.Component {
     }
 
     setSelectedArticle = (article) => {
-        console.log(article)
         this.setState({ selectedArticle: article });
     }
 
@@ -133,19 +133,14 @@ class ProductPage extends React.Component {
         const { selectedVariant } = this.state;
 
         if (!selectedVariant) return;
-
     }
 
     render() {
-        const { productDetails } = this.props;
+        const { productDetails, location } = this.props;
         const { selectedArticle, selectedVariant, styleWithList } = this.state;
-
-        console.log(selectedVariant)
+        const { subcategory } = location.state;
 
         if (!productDetails || !selectedArticle) return <Spinner />;
-        
-        console.log(selectedArticle);
-        console.log(styleWithList);
 
         const { description, fits, code, name } = productDetails;
         const galleryDetails = selectedArticle.galleryDetails;
@@ -158,6 +153,7 @@ class ProductPage extends React.Component {
 
         return (
             <div className='product-page'>
+                <NavBreadcrumbs />
                 <div className='top-container'>
                     <div className='description-container'>
                         <div className='image-row'>

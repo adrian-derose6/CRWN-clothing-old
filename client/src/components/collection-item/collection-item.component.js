@@ -27,9 +27,9 @@ const BackgroundImage = styled.img`
     }
 `
 
-const CollectionItem = ({ item, imageType }) => {
+const CollectionItem = ({ item, imageType, subcategory }) => {
     const [favorited, setFavorited] = useState(false);
-    const { name, price, articleCodes } = item;
+    const { name, price } = item;
     const rgbColors = item.rgbColors ? item.rgbColors : [item.defaultArticle.rgbColor];
     const articleCode = item.defaultArticle.code;
     const logoPicture = item.defaultArticle.logoPicture[0].url;
@@ -42,7 +42,12 @@ const CollectionItem = ({ item, imageType }) => {
     if (!item) return null;
     return (
         <div className='collection-item'>
-            <Link to={`/product-page/${articleCode}`}>
+            <Link to={{
+                pathname: `/product-page/${articleCode}`,
+                state: {
+                    subcategory
+                }
+            }}>
                 <div className='image-container'>
                     <BackgroundImage src={logoPicture} main={imageType === 'model'} />
                     <BackgroundImage src={normalPicture} main={imageType === 'product'}/>

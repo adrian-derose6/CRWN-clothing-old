@@ -1,0 +1,43 @@
+.nav-breadcrumbs-container {
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+
+    ul {
+        list-style: none;
+        font-size: 13px;
+        font-family: "Sharp Sans No1 Semibold";
+
+        li {
+            display: inline-block;
+            white-space: nowrap;
+
+            &:hover {
+                cursor: pointer;
+
+                span {
+                    color: #9c2224;
+                }
+            }
+
+            &::after {
+                content: "\00a0/\00a0";
+            }
+
+            &:last-child {
+                &:hover {
+                    cursor: default;
+
+                    span {
+                        color: inherit;
+                    }
+                }
+                &::after {
+                    content: "";
+                }
+            }
+        }
+    }
+}
